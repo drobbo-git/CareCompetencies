@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -11,13 +11,19 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { ScopedCompetencySelector } from "@/components/common/ScopedCompetencySelector";
-import type { ObservationRating } from "@/data/types";
+import type { CompetencyStep, ObservationRating } from "@/data/types";
 import { localDateStringToISO, todayLocalISODate } from "@/lib/utils";
 
-/** Record a step observation for an orientee. */
+interface StepEntry {
+  step: CompetencyStep;
+  rating: ObservationRating | null;
+  notes: string;
+}
+
+/** Record step observations for an orientee. */
 export default function ObservePage() {
   const { currentLogin } = useAuth();
-  const { persons, steps, recordObservation, logAudit, competencies } = useData();
+  const { persons, steps, competencies, recordObservation, logAudit } = useData();
 
   const myOrientees = useMemo(() => {
     if (!currentLogin) return [];
@@ -27,60 +33,77 @@ export default function ObservePage() {
     return persons.filter((n) => n.primaryPreceptorId === currentLogin.id);
   }, [persons, currentLogin]);
 
-  const [personId, setPersonId] = useState<string>("");
-  const [competencyId, setCompetencyId] = useState<string>("");
-  const [stepId, setStepId] = useState<string>("");
-  const [rating, setRating] = useState<ObservationRating>("Satisfactory");
+  const [personId, setPersonId] = useState("");
+  const [competencyId, setCompetencyId] = useState("");
   const [observedAt, setObservedAt] = useState(todayLocalISODate());
-  const [notes, setNotes] = useState("");
+  const [entries, setEntries] = useState<StepEntry[]>([]);
+  const [saving, setSaving] = useState(false);
 
   const person = persons.find((n) => n.id === personId);
+
   const compSteps = useMemo(
     () => steps.filter((s) => s.competencyId === competencyId).sort((a, b) => a.orderIndex - b.orderIndex),
     [steps, competencyId],
   );
 
-  const canSave = !!currentLogin && !!personId && !!competencyId && !!stepId;
+  useEffect(() => {
+    setEntries(compSteps.map((s) => ({ step: s, rating: null, notes: "" })));
+  }, [competencyId, compSteps]);
 
-  function handleSave() {
+  function setRating(index: number, rating: ObservationRating) {
+    setEntries((prev) => prev.map((e, i) => i === index ? { ...e, rating } : e));
+  }
+
+  function setNote(index: number, notes: string) {
+    setEntries((prev) => prev.map((e, i) => i === index ? { ...e, notes } : e));
+  }
+
+  const ratedEntries = entries.filter((e) => e.rating !== null);
+  const canSave = !!currentLogin && !!personId && !!competencyId && ratedEntries.length > 0;
+
+  async function handleSave() {
     if (!currentLogin || !canSave) return;
-    const obs = recordObservation({
-      personId,
-      stepId,
-      competencyId,
-      preceptorId: currentLogin.id,
-      rating,
-      observedAt: localDateStringToISO(observedAt),
-      notes: notes.trim() || undefined,
-    });
-    const comp = competencies.find((c) => c.id === competencyId)?.name ?? competencyId;
-    logAudit({
-      actor: currentLogin.id,
-      actorRole: currentLogin.systemRole,
-      type: "StepObservationRecorded",
-      summary: `Recorded ${rating} on "${comp}" for ${person?.name ?? personId}`,
-      targetLabel: comp,
-      detail: notes.trim() || undefined,
-    });
-    void obs;
-    setStepId("");
-    setNotes("");
-    setRating("Satisfactory");
+    setSaving(true);
+    try {
+      await Promise.all(
+        ratedEntries.map((entry) =>
+          recordObservation({
+            personId,
+            stepId: entry.step.id,
+            competencyId,
+            preceptorId: currentLogin.id,
+            rating: entry.rating!,
+            observedAt: localDateStringToISO(observedAt),
+            notes: entry.notes.trim() || undefined,
+          }),
+        ),
+      );
+      const compName = competencies.find((c) => c.id === competencyId)?.name ?? competencyId;
+      void logAudit({
+        actor: currentLogin.id,
+        actorRole: currentLogin.systemRole,
+        type: "StepObservationRecorded",
+        summary: `Recorded ${ratedEntries.length} observation(s) on "${compName}" for ${person?.name ?? personId}`,
+        targetLabel: compName,
+      });
+      // Keep orientee + competency selected; reset step ratings for next round
+      setEntries(compSteps.map((s) => ({ step: s, rating: null, notes: "" })));
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
     <>
-      <PageHeader
-        title="Observe"
-        description="Record a step observation for an orientee."
-      />
+      <PageHeader title="Observe" description="Record step observations for an orientee." />
 
       <Card className="max-w-2xl">
         <CardHeader><CardTitle className="text-sm">New observation</CardTitle></CardHeader>
         <CardContent className="space-y-4">
+
           <div className="space-y-1.5">
             <Label>Orientee</Label>
-            <Select value={personId} onValueChange={(v) => { setPersonId(v); setCompetencyId(""); setStepId(""); }}>
+            <Select value={personId} onValueChange={(v) => { setPersonId(v); setCompetencyId(""); }}>
               <SelectTrigger><SelectValue placeholder="Pick an orientee…" /></SelectTrigger>
               <SelectContent>
                 {myOrientees.map((n) => <SelectItem key={n.id} value={n.id}>{n.name}</SelectItem>)}
@@ -95,39 +118,12 @@ export default function ObservePage() {
                 unitId={person.unitId}
                 roleId={person.roleId ?? "r-rn"}
                 value={competencyId}
-                onChange={(id) => { setCompetencyId(id); setStepId(""); }}
+                onChange={(id) => setCompetencyId(id)}
               />
             </div>
           )}
 
           {competencyId && (
-            <div className="space-y-1.5">
-              <Label>Step</Label>
-              <Select value={stepId} onValueChange={setStepId}>
-                <SelectTrigger><SelectValue placeholder="Pick a step…" /></SelectTrigger>
-                <SelectContent>
-                  {compSteps.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.orderIndex}. {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label>Outcome</Label>
-              <Select value={rating} onValueChange={(v) => setRating(v as ObservationRating)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Satisfactory">Satisfactory</SelectItem>
-                  <SelectItem value="Unsatisfactory">Unsatisfactory</SelectItem>
-                  <SelectItem value="NotObserved">Not Observed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
             <div className="space-y-1.5">
               <Label>Observed on</Label>
               <Input
@@ -136,21 +132,62 @@ export default function ObservePage() {
                 onChange={(e) => setObservedAt(e.target.value)}
               />
             </div>
-          </div>
+          )}
 
-          <div className="space-y-1.5">
-            <Label>Notes</Label>
-            <Textarea
-              rows={3}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Optional. Context for the audit record."
-            />
-          </div>
+          {competencyId && entries.length === 0 && (
+            <p className="text-sm text-muted-foreground">No steps defined for this competency.</p>
+          )}
 
-          <div className="flex justify-end">
-            <Button onClick={handleSave} disabled={!canSave}>Record observation</Button>
-          </div>
+          {entries.length > 0 && (
+            <div className="space-y-3">
+              <Label>Steps</Label>
+              {entries.map((entry, i) => (
+                <div key={entry.step.id} className="border rounded-lg p-3 space-y-2">
+                  <p className="text-sm font-medium">{i + 1}. {entry.step.name}</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      variant={entry.rating === "Satisfactory" ? "default" : "outline"}
+                      onClick={() => setRating(i, "Satisfactory")}
+                    >
+                      Satisfactory
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={entry.rating === "Unsatisfactory" ? "destructive" : "outline"}
+                      onClick={() => setRating(i, "Unsatisfactory")}
+                    >
+                      Unsatisfactory
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={entry.rating === "NotObserved" ? "secondary" : "outline"}
+                      onClick={() => setRating(i, "NotObserved")}
+                    >
+                      Not Observed
+                    </Button>
+                  </div>
+                  {entry.rating && (
+                    <Textarea
+                      placeholder="Note (optional)"
+                      value={entry.notes}
+                      onChange={(e) => setNote(i, e.target.value)}
+                      rows={2}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {canSave && (
+            <div className="flex justify-end">
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? "Saving…" : `Save ${ratedEntries.length} observation${ratedEntries.length === 1 ? "" : "s"}`}
+              </Button>
+            </div>
+          )}
+
         </CardContent>
       </Card>
     </>
