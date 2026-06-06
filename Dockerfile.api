@@ -1,13 +1,16 @@
 FROM node:20-alpine
 WORKDIR /app
 
-# Install dependencies
+# Install all deps (including devDeps for tsc)
 COPY api/package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
 # Copy API source and build
 COPY api/ ./
 RUN npm run build
+
+# Prune devDependencies from the final image
+RUN npm prune --omit=dev
 
 # Copy seed data alongside the compiled output so seed.ts can find it
 # Path matches: path.resolve(__dirname, '../../etl/data/...') from dist/
