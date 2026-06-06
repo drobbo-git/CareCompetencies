@@ -1,0 +1,31 @@
+# Dependencies
+**/node_modules
+
+# Build output
+**/dist
+**/dist-ssr
+api/dist
+
+# Environment — never commit real env files; .env.example files are safe
+.env
+.env.local
+.env.*.local
+**/. env
+**/.env.local
+**/.env.*.local
+
+# TypeScript build info
+**/*.tsbuildinfo
+
+# Logs
+*.log
+**/logs
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.sw?
