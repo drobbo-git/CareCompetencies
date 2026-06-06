@@ -142,7 +142,16 @@ export default function ObservePage() {
 
           {entries.length > 0 && (
             <div className="space-y-3">
-              <Label>Steps</Label>
+              <div className="flex items-center justify-between">
+                <Label>Steps</Label>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setEntries((prev) => prev.map((e) => ({ ...e, rating: "Satisfactory" })))}
+                >
+                  All Satisfactory
+                </Button>
+              </div>
               {entries.map((entry, i) => (
                 <div key={entry.step.id} className="border rounded-lg p-3 space-y-2">
                   <p className="text-sm font-medium">{i + 1}. {entry.step.name}</p>
