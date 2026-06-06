@@ -76,23 +76,23 @@ CREATE TABLE IF NOT EXISTS competency_assignments (
 
 CREATE TABLE IF NOT EXISTS step_observations (
   id             TEXT PRIMARY KEY,
-  person_id      TEXT NOT NULL REFERENCES persons(id),
-  step_id        TEXT NOT NULL REFERENCES competency_steps(id),
-  competency_id  TEXT NOT NULL REFERENCES competencies(id),
+  person_id      TEXT NOT NULL,
+  step_id        TEXT NOT NULL,
+  competency_id  TEXT NOT NULL,
   preceptor_id   TEXT NOT NULL,
-  rating         TEXT NOT NULL CHECK (rating IN ('Satisfactory', 'Unsatisfactory', 'NotObserved')),
+  rating         TEXT NOT NULL,
   observed_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   notes          TEXT
 );
 
 CREATE TABLE IF NOT EXISTS competency_achievements (
   id                TEXT PRIMARY KEY,
-  person_id         TEXT NOT NULL REFERENCES persons(id),
-  competency_id     TEXT NOT NULL REFERENCES competencies(id),
+  person_id         TEXT NOT NULL,
+  competency_id     TEXT NOT NULL,
   preceptor_id      TEXT NOT NULL,
   achieved_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   notes             TEXT,
-  earned_at_unit_id TEXT REFERENCES units(id)
+  earned_at_unit_id TEXT
 );
 
 CREATE TABLE IF NOT EXISTS change_requests (
