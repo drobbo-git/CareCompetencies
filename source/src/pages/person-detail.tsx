@@ -297,7 +297,7 @@ export default function PersonDetailPage() {
                           {o.rating}
                         </Badge>
                         <span className="text-xs text-muted-foreground whitespace-nowrap">
-                          {new Date(o.observedAt).toLocaleDateString()}
+                          {new Date(o.observedAt).toLocaleString(undefined, { dateStyle: "short", timeStyle: "short" })}
                         </span>
                       </div>
                     </li>
