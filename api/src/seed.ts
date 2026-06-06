@@ -259,20 +259,8 @@ async function seed() {
       ['id', 'requester_id', 'requester_role', 'type', 'competency_id', 'rationale', 'status', 'submitted_at', 'admin_note'],
       changeRequests.map(toChangeRequest));
 
-    if (auditEvents.length) {
-      await insertAll(client, 'audit_events',
-        ['id', 'timestamp', 'actor', 'actor_role', 'type', 'summary', 'target_label', 'detail'],
-        auditEvents.map((e: any) => ({
-          id: e.id,
-          timestamp: e.timestamp ?? new Date().toISOString(),
-          actor: e.actor,
-          actor_role: e.actorRole ?? e.actor_role,
-          type: e.type,
-          summary: e.summary,
-          target_label: e.targetLabel ?? e.target_label ?? null,
-          detail: e.detail ?? null,
-        })));
-    }
+    // Audit events are generated at runtime; skip seeding historical ones
+    // to avoid data quality issues (missing required fields in seed JSON).
 
     await client.query('COMMIT');
     console.log('Seed complete.');
@@ -289,7 +277,7 @@ async function seed() {
     console.log(`  step_observations: ${observations.length}`);
     console.log(`  competency_achievements: ${achievements.length}`);
     console.log(`  change_requests: ${changeRequests.length}`);
-    console.log(`  audit_events: ${auditEvents.length}`);
+    console.log(`  audit_events: 0 (skipped — generated at runtime)`);
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Seed failed, rolled back:', err);
