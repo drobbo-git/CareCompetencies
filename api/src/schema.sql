@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS persons (
   id                   TEXT PRIMARY KEY,
   name                 TEXT NOT NULL,
   unit_id              TEXT REFERENCES units(id),
-  role_id              TEXT REFERENCES person_roles(id),
+  role_id              TEXT,
   primary_preceptor_id TEXT REFERENCES preceptors(id),
   start_date           DATE,
   stage_override       TEXT,
