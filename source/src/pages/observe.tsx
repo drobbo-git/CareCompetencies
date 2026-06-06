@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { ScopedCompetencySelector } from "@/components/common/ScopedCompetencySelector";
 import type { CompetencyStep, ObservationRating } from "@/data/types";
-import { localDateStringToISO, todayLocalISODate } from "@/lib/utils";
+import { todayLocalISODate } from "@/lib/utils";
 
 interface StepEntry {
   step: CompetencyStep;
@@ -67,6 +67,12 @@ export default function ObservePage() {
     if (!currentLogin || !canSave) return;
     setSaving(true);
     try {
+      // Combine selected date with current time so the stored timestamp
+      // reflects the actual moment of the session, not noon.
+      const [y, mo, d] = observedAt.split("-").map(Number);
+      const now = new Date();
+      const observedAtISO = new Date(y, mo - 1, d, now.getHours(), now.getMinutes(), now.getSeconds()).toISOString();
+
       await Promise.all(
         ratedEntries.map((entry) =>
           recordObservation({
@@ -75,7 +81,7 @@ export default function ObservePage() {
             competencyId,
             preceptorId: currentLogin.id,
             rating: entry.rating!,
-            observedAt: localDateStringToISO(observedAt),
+            observedAt: observedAtISO,
             notes: entry.notes.trim() || undefined,
           }),
         ),
