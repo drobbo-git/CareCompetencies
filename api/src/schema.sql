@@ -5,13 +5,14 @@ CREATE TABLE IF NOT EXISTS units (
   id          TEXT PRIMARY KEY,
   name        TEXT NOT NULL,
   description TEXT,
-  created_at  TIMESTAMPTZ DEFAULT NOW(),
-  updated_at  TIMESTAMPTZ DEFAULT NOW()
+  cost_center TEXT,
+  stage_days  JSONB,
+  created_at  TIMESTAMPTZ,
+  updated_at  TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS person_roles (
   id   TEXT PRIMARY KEY,
-  code TEXT NOT NULL,
   name TEXT NOT NULL
 );
 
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS persons (
   unit_id              TEXT REFERENCES units(id),
   role_id              TEXT REFERENCES person_roles(id),
   primary_preceptor_id TEXT REFERENCES preceptors(id),
-  start_date           DATE NOT NULL,
+  start_date           DATE,
   stage_override       TEXT,
   duke_id              TEXT,
   job_code             TEXT
