@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -24,6 +25,7 @@ interface StepEntry {
 export default function ObservePage() {
   const { currentLogin } = useAuth();
   const { persons, steps, competencies, recordObservation, logAudit } = useData();
+  const { state } = useLocation();
 
   const myOrientees = useMemo(() => {
     if (!currentLogin) return [];
@@ -33,8 +35,8 @@ export default function ObservePage() {
     return persons.filter((n) => n.primaryPreceptorId === currentLogin.id);
   }, [persons, currentLogin]);
 
-  const [personId, setPersonId] = useState("");
-  const [competencyId, setCompetencyId] = useState("");
+  const [personId, setPersonId] = useState<string>((state as { personId?: string } | null)?.personId ?? "");
+  const [competencyId, setCompetencyId] = useState<string>((state as { competencyId?: string } | null)?.competencyId ?? "");
   const [observedAt, setObservedAt] = useState(todayLocalISODate());
   const [entries, setEntries] = useState<StepEntry[]>([]);
   const [saving, setSaving] = useState(false);

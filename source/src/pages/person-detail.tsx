@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -26,6 +26,8 @@ import { Printer, AlertTriangle } from "lucide-react";
 export default function PersonDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { currentLogin } = useAuth();
+  const navigate = useNavigate();
+  const isPreceptor = currentLogin?.systemRole === "Preceptor";
   const data = useData();
   const {
     persons, units, preceptors, personRoles, competencies, steps,
@@ -223,9 +225,18 @@ export default function PersonDetailPage() {
               <ul className="divide-y">
                 {group.rows.map((r) => (
                   <li key={r.c.id} className="px-4 py-2 flex items-center justify-between gap-3">
-                    <Link to={`/competencies/${r.c.id}`} className="text-sm hover:underline truncate min-w-0">
-                      {r.c.name}
-                    </Link>
+                    {isPreceptor ? (
+                      <button
+                        className="text-sm hover:underline truncate min-w-0 text-left text-primary"
+                        onClick={() => navigate("/observe", { state: { personId: person.id, competencyId: r.c.id } })}
+                      >
+                        {r.c.name}
+                      </button>
+                    ) : (
+                      <Link to={`/competencies/${r.c.id}`} className="text-sm hover:underline truncate min-w-0">
+                        {r.c.name}
+                      </Link>
+                    )}
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <StageBadge stage={r.stage} size="sm" />
                       <StatusBadge status={r.status as any} size="sm" />
