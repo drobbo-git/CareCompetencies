@@ -264,7 +264,7 @@ async function seed() {
         ['id', 'timestamp', 'actor', 'actor_role', 'type', 'summary', 'target_label', 'detail'],
         auditEvents.map((e: any) => ({
           id: e.id,
-          timestamp: e.timestamp,
+          timestamp: e.timestamp ?? new Date().toISOString(),
           actor: e.actor,
           actor_role: e.actorRole ?? e.actor_role,
           type: e.type,
