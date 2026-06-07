@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList, FileBarChart2,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
-  Grid3x3, Sparkles, LogOut, UserCircle2,
+  Grid3x3, Sparkles, LogOut,
 } from "lucide-react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -30,13 +30,12 @@ interface NavItem {
 function getNavItems(role: SystemRole, isUnitLeader: boolean): { primary: NavItem[]; devOpsItems: NavItem[] } {
   const primary: NavItem[] = [
     { to: "/",              label: "Home",                     icon: Home,           roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
-    { to: "/my-competencies", label: "My Competencies",        icon: UserCircle2,    roles: ["Person"] },
     { to: "/my-orientees",  label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
     { to: "/observe",       label: "Observe",                  icon: Stethoscope,    roles: ["Preceptor", "UnitLeader"] },
     { to: "/sign-off",      label: "Sign off",                 icon: ClipboardCheck, roles: ["Preceptor", "UnitLeader"] },
     { to: "/persons",       label: "Person Roster",            icon: Users,          roles: ["UnitLeader"] },
     { to: "/competency-matrix", label: "Competency Matrix",    icon: Grid3x3,        roles: ["UnitLeader"] },
-    { to: "/competencies",  label: "Catalog",                  icon: BookOpen,       roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
+    { to: "/competencies",  label: "Search Competencies",       icon: BookOpen,       roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
     { to: "/groups",        label: "Manage Groups",            icon: Layers,         roles: ["Administrator"] },
     { to: "/assignments",   label: "Assignments",              icon: ClipboardList,  roles: ["Administrator"] },
     { to: "/people",        label: "People",                   icon: Users,          roles: ["Administrator"] },
@@ -104,19 +103,16 @@ export function Sidebar() {
             ))}
           </>
         )}
-      </nav>
-
-      {/* Footer / sign out */}
-      <div className="p-3 border-t border-sidebar-border">
+        <div className="my-2 border-t border-sidebar-border" />
         <button
           type="button"
           onClick={signOut}
-          className="w-full text-left px-2 py-1.5 rounded text-sm hover:bg-sidebar-accent inline-flex items-center gap-2"
+          className="w-full text-left px-2 py-1.5 rounded-md text-sm hover:bg-sidebar-accent/60 inline-flex items-center gap-2 text-sidebar-foreground/85"
         >
-          <LogOut className="h-4 w-4 text-muted-foreground" />
+          <LogOut className="h-4 w-4" />
           Sign out
         </button>
-      </div>
+      </nav>
     </aside>
   );
 }

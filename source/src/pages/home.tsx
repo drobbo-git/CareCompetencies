@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, Navigate } from "react-router-dom";
+import MyCompetenciesPage from "./my-competencies";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
@@ -31,7 +32,7 @@ export default function Home() {
     return <Navigate to="/unit-leader-dashboard" replace />;
   }
   if (currentLogin.systemRole === "Person") {
-    return <Navigate to="/my-competencies" replace />;
+    return <MyCompetenciesPage />;
   }
 
   if (currentLogin.systemRole === "Administrator") {
