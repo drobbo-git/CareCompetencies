@@ -30,7 +30,7 @@ export default function PersonDetailPage() {
   const isPreceptor = currentLogin?.systemRole === "Preceptor";
   const data = useData();
   const {
-    persons, units, preceptors, personRoles, competencies, steps,
+    persons, units, personRoles, competencies, steps,
     categories, groups, assignments, observations, achievements,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
   } = data;
@@ -38,8 +38,8 @@ export default function PersonDetailPage() {
   const person = useMemo(() => persons.find((n) => n.id === id), [persons, id]);
   const unit = person ? units.find((u) => u.id === person.unitId) : undefined;
   const role = person ? personRoles.find((r) => r.id === (person.roleId ?? "r-rn")) : undefined;
-  const primaryPreceptor = person?.primaryPreceptorId
-    ? preceptors.find((p) => p.id === person.primaryPreceptorId)
+  const primaryPreceptorName = person?.primaryPreceptorId
+    ? persons.find((p) => p.id === person.primaryPreceptorId)?.name
     : undefined;
 
   const stage = person ? getPersonStage(person.id) : "Core";
@@ -145,8 +145,7 @@ export default function PersonDetailPage() {
       person,
       unit,
       role,
-      primaryPreceptor,
-      preceptors,
+      primaryPreceptorName,
       persons,
       competencies,
       steps,

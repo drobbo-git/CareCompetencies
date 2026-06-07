@@ -71,11 +71,11 @@ IF OBJECT_ID('rpt.v_observation_throughput') IS NOT NULL DROP VIEW rpt.v_observa
 GO
 CREATE VIEW rpt.v_observation_throughput AS
 SELECT CAST(o.observed_at AS DATE) AS observed_date,
-       p.full_name AS preceptor_name,
+       obs.full_name AS observer_name,
        o.outcome_code, COUNT(*) AS observation_count
 FROM fact.step_observation o
-JOIN dim.preceptor p ON p.preceptor_sk = o.preceptor_sk
-GROUP BY CAST(o.observed_at AS DATE), p.full_name, o.outcome_code;
+JOIN dim.person obs ON obs.person_sk = o.observer_sk
+GROUP BY CAST(o.observed_at AS DATE), obs.full_name, o.outcome_code;
 GO
 
 PRINT 'rpt.* views ready.';

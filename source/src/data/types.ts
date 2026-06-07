@@ -46,18 +46,15 @@ export interface PersonRole {
   name: string;     // e.g. "Registered Nurse"
 }
 
-export interface Preceptor {
-  id: string;
-  name: string;     // "Stacy Hester, RN"
-  unitId: string;
-  email?: string;
-}
+/** A privilege grants a person access to a set of system functions, optionally scoped to a unit. */
+export type Privilege = "Preceptor" | "UnitLeader" | "Administrator";
 
-export interface Administrator {
+export interface PersonPrivilege {
   id: string;
-  name: string;
-  email?: string;
-  title?: string;
+  personId: string;
+  privilege: Privilege;
+  /** Unit scope for Preceptor / UnitLeader; null for Administrator (global). */
+  unitId: string | null;
 }
 
 export interface Person {
@@ -128,7 +125,7 @@ export interface StepObservation {
   personId: string;
   stepId: string;
   competencyId: string;
-  preceptorId: string;
+  observerId: string;          // person_bk of the preceptor/unit-leader who observed
   rating: ObservationRating;
   observedAt: string;          // ISO timestamp
   notes?: string;
@@ -138,7 +135,7 @@ export interface CompetencyAchievement {
   id: string;
   personId: string;
   competencyId: string;
-  preceptorId: string;
+  observerId: string;          // person_bk of the preceptor/unit-leader who signed off
   achievedAt: string;          // ISO timestamp
   notes?: string;
   /** Provenance for cross-train/prior-unit credentials. Defaults to nurse's home unit. */
@@ -184,11 +181,11 @@ export interface AuditEvent {
 export type SystemRole = "Administrator" | "UnitLeader" | "Preceptor" | "Person";
 
 export interface Login {
-  id: string;                  // user id (matches Nurse/Preceptor/Administrator id when applicable)
+  id: string;                  // person id
   displayName: string;
   systemRole: SystemRole;
-  /** For UnitLeaders: the unit they lead. Derived from preceptor + unit hierarchy. */
-  unitId?: string;
+  /** Units in scope for this login (Preceptor / UnitLeader); empty for Administrator / Person. */
+  unitIds?: string[];
 }
 
 // -----------------------------------------------------------------------------

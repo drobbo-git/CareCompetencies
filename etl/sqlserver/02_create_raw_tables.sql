@@ -31,13 +31,9 @@ CREATE TABLE raw.competency_groups (
     parentGroupId NVARCHAR(64) NULL, sortOrder NVARCHAR(32) NULL,
     description NVARCHAR(MAX) NULL
 );
-CREATE TABLE raw.preceptors (
-    id NVARCHAR(64) NOT NULL, fullName NVARCHAR(200) NULL, email NVARCHAR(200) NULL,
-    unitId NVARCHAR(64) NULL, roleId NVARCHAR(64) NULL, hireDate NVARCHAR(64) NULL
-);
-CREATE TABLE raw.administrators (
-    id NVARCHAR(64) NOT NULL, fullName NVARCHAR(200) NULL,
-    email NVARCHAR(200) NULL, title NVARCHAR(200) NULL
+CREATE TABLE raw.person_privileges (
+    id NVARCHAR(64) NOT NULL, personId NVARCHAR(64) NULL,
+    privilege NVARCHAR(32) NULL, unitId NVARCHAR(64) NULL
 );
 CREATE TABLE raw.persons (
     id NVARCHAR(64) NOT NULL, fullName NVARCHAR(200) NULL, email NVARCHAR(200) NULL,

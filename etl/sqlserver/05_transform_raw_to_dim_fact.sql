@@ -46,45 +46,41 @@ UPDATE g SET g.parent_group_sk = p.group_sk
   JOIN raw.competency_groups r ON r.id = g.group_bk
   LEFT JOIN dim.competency_group p ON p.group_bk = r.parentGroupId;
 
-MERGE dim.preceptor AS tgt
-USING (SELECT r.id, r.fullName, r.email, u.unit_sk, rl.person_role_sk,
-              TRY_CONVERT(date, r.hireDate) AS hire_date
-       FROM raw.preceptors r
-       LEFT JOIN dim.unit u       ON u.unit_bk = r.unitId
-       LEFT JOIN dim.person_role rl ON rl.role_bk = r.roleId) src
-ON tgt.preceptor_bk = src.id
-WHEN MATCHED THEN UPDATE SET full_name=src.fullName, email=src.email,
-                             unit_sk=src.unit_sk, person_role_sk=src.person_role_sk, hire_date=src.hire_date
-WHEN NOT MATCHED THEN INSERT (preceptor_bk, full_name, email, unit_sk, person_role_sk, hire_date)
-                       VALUES (src.id, src.fullName, src.email, src.unit_sk, src.person_role_sk, src.hire_date);
-
-MERGE dim.administrator AS tgt
-USING (SELECT id, fullName, email, title FROM raw.administrators) src
-ON tgt.admin_bk = src.id
-WHEN MATCHED THEN UPDATE SET full_name=src.fullName, email=src.email, title=src.title
-WHEN NOT MATCHED THEN INSERT (admin_bk, full_name, email, title)
-                       VALUES (src.id, src.fullName, src.email, src.title);
-
 MERGE dim.person AS tgt
 USING (SELECT n.id, n.fullName, n.email,
-              u.unit_sk, rl.person_role_sk, p.preceptor_sk,
+              u.unit_sk, rl.person_role_sk,
               n.stage AS stage_code,
               TRY_CONVERT(date, n.hireDate) AS hire_date,
               TRY_CONVERT(date, n.startDate) AS start_date,
               n.dukeId, n.jobCode
        FROM raw.persons n
-       LEFT JOIN dim.unit u        ON u.unit_bk = n.unitId
-       LEFT JOIN dim.person_role rl ON rl.role_bk = n.roleId
-       LEFT JOIN dim.preceptor p   ON p.preceptor_bk = n.primaryPreceptorId) src
+       LEFT JOIN dim.unit u         ON u.unit_bk = n.unitId
+       LEFT JOIN dim.person_role rl ON rl.role_bk = n.roleId) src
 ON tgt.person_bk = src.id
 WHEN MATCHED THEN UPDATE SET full_name=src.fullName, email=src.email,
                              unit_sk=src.unit_sk, person_role_sk=src.person_role_sk,
-                             primary_preceptor_sk=src.preceptor_sk,
                              stage_code=src.stage_code,
                              hire_date=src.hire_date, start_date=src.start_date,
                              duke_id=src.dukeId, job_code=src.jobCode
-WHEN NOT MATCHED THEN INSERT (person_bk, full_name, email, unit_sk, person_role_sk, primary_preceptor_sk, stage_code, hire_date, start_date, duke_id, job_code)
-                       VALUES (src.id, src.fullName, src.email, src.unit_sk, src.person_role_sk, src.preceptor_sk, src.stage_code, src.hire_date, src.start_date, src.dukeId, src.jobCode);
+WHEN NOT MATCHED THEN INSERT (person_bk, full_name, email, unit_sk, person_role_sk, stage_code, hire_date, start_date, duke_id, job_code)
+                       VALUES (src.id, src.fullName, src.email, src.unit_sk, src.person_role_sk, src.stage_code, src.hire_date, src.start_date, src.dukeId, src.jobCode);
+
+-- Resolve self-referential primary_preceptor_sk now that all persons exist.
+UPDATE n SET n.primary_preceptor_sk = p.person_sk
+FROM dim.person n
+JOIN raw.persons r ON r.id = n.person_bk
+JOIN dim.person p  ON p.person_bk = r.primaryPreceptorId
+WHERE r.primaryPreceptorId IS NOT NULL;
+
+MERGE dim.person_privilege AS tgt
+USING (SELECT pp.id, n.person_sk, pp.privilege, u.unit_sk
+       FROM raw.person_privileges pp
+       JOIN dim.person n      ON n.person_bk = pp.personId
+       LEFT JOIN dim.unit u   ON u.unit_bk = pp.unitId) src
+ON tgt.privilege_bk = src.id
+WHEN MATCHED THEN UPDATE SET person_sk=src.person_sk, privilege_code=src.privilege, unit_sk=src.unit_sk
+WHEN NOT MATCHED THEN INSERT (privilege_bk, person_sk, privilege_code, unit_sk)
+                       VALUES (src.id, src.person_sk, src.privilege, src.unit_sk);
 
 MERGE dim.competency AS tgt
 USING (SELECT c.id, c.name, g.group_sk, cat.category_sk, c.description,
@@ -129,7 +125,7 @@ WHEN NOT MATCHED THEN INSERT (assignment_bk, competency_sk, unit_sk, person_role
                        VALUES (src.id, src.competency_sk, src.unit_sk, src.person_role_sk, src.stage);
 
 MERGE fact.step_observation AS tgt
-USING (SELECT o.id, n.person_sk, s.step_sk, c.competency_sk, p.preceptor_sk,
+USING (SELECT o.id, n.person_sk, s.step_sk, c.competency_sk, obs.person_sk AS observer_sk,
               o.outcome,
               TRY_CONVERT(datetime2(0), o.observedAt) AS observed_at,
               o.note
@@ -137,30 +133,30 @@ USING (SELECT o.id, n.person_sk, s.step_sk, c.competency_sk, p.preceptor_sk,
        JOIN dim.person n           ON n.person_bk = o.personId
        JOIN dim.competency_step s ON s.step_bk = o.stepId
        JOIN dim.competency c      ON c.competency_bk = o.competencyId
-       JOIN dim.preceptor p       ON p.preceptor_bk = o.preceptorId) src
+       JOIN dim.person obs        ON obs.person_bk = o.preceptorId) src
 ON tgt.observation_bk = src.id
 WHEN MATCHED THEN UPDATE SET person_sk=src.person_sk, step_sk=src.step_sk,
-                             competency_sk=src.competency_sk, preceptor_sk=src.preceptor_sk,
+                             competency_sk=src.competency_sk, observer_sk=src.observer_sk,
                              outcome_code=src.outcome, observed_at=src.observed_at, note=src.note
-WHEN NOT MATCHED THEN INSERT (observation_bk, person_sk, step_sk, competency_sk, preceptor_sk, outcome_code, observed_at, note)
-                       VALUES (src.id, src.person_sk, src.step_sk, src.competency_sk, src.preceptor_sk, src.outcome, src.observed_at, src.note);
+WHEN NOT MATCHED THEN INSERT (observation_bk, person_sk, step_sk, competency_sk, observer_sk, outcome_code, observed_at, note)
+                       VALUES (src.id, src.person_sk, src.step_sk, src.competency_sk, src.observer_sk, src.outcome, src.observed_at, src.note);
 
 MERGE fact.competency_achievement AS tgt
-USING (SELECT a.id, n.person_sk, c.competency_sk, p.preceptor_sk,
+USING (SELECT a.id, n.person_sk, c.competency_sk, obs.person_sk AS observer_sk,
               TRY_CONVERT(datetime2(0), a.achievedAt) AS achieved_at,
               a.stage, a.note, eu.unit_sk AS earned_at_unit_sk
        FROM raw.competency_achievements a
        JOIN dim.person n      ON n.person_bk = a.personId
-       JOIN dim.competency c ON c.competency_bk = a.competencyId
-       JOIN dim.preceptor p  ON p.preceptor_bk = a.preceptorId
-       LEFT JOIN dim.unit eu ON eu.unit_bk = a.earnedAtUnitId) src
+       JOIN dim.competency c  ON c.competency_bk = a.competencyId
+       JOIN dim.person obs    ON obs.person_bk = a.preceptorId
+       LEFT JOIN dim.unit eu  ON eu.unit_bk = a.earnedAtUnitId) src
 ON tgt.achievement_bk = src.id
 WHEN MATCHED THEN UPDATE SET person_sk=src.person_sk, competency_sk=src.competency_sk,
-                             preceptor_sk=src.preceptor_sk, achieved_at=src.achieved_at,
+                             observer_sk=src.observer_sk, achieved_at=src.achieved_at,
                              stage_code=src.stage, note=src.note,
                              earned_at_unit_sk=src.earned_at_unit_sk
-WHEN NOT MATCHED THEN INSERT (achievement_bk, person_sk, competency_sk, preceptor_sk, achieved_at, stage_code, note, earned_at_unit_sk)
-                       VALUES (src.id, src.person_sk, src.competency_sk, src.preceptor_sk, src.achieved_at, src.stage, src.note, src.earned_at_unit_sk);
+WHEN NOT MATCHED THEN INSERT (achievement_bk, person_sk, competency_sk, observer_sk, achieved_at, stage_code, note, earned_at_unit_sk)
+                       VALUES (src.id, src.person_sk, src.competency_sk, src.observer_sk, src.achieved_at, src.stage, src.note, src.earned_at_unit_sk);
 
 MERGE fact.change_request AS tgt
 USING (SELECT id, requesterId, requesterRole, targetType, targetId, requestType,

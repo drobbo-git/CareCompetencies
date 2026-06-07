@@ -5,13 +5,11 @@ import { useAuth } from "@/data/auth";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Tabs, TabsList, TabsTrigger, TabsContent,
-} from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 export default function PeoplePage() {
   const { currentLogin } = useAuth();
-  const { nurses, preceptors, administrators, units } = useData();
+  const { persons, privileges, units } = useData();
   const [query, setQuery] = useState("");
 
   const unitName = useMemo(() => {
@@ -20,20 +18,32 @@ export default function PeoplePage() {
     return m;
   }, [units]);
 
+  // Build a map of personId → privilege labels for display
+  const personPrivilegeLabels = useMemo(() => {
+    const m = new Map<string, string[]>();
+    for (const p of privileges) {
+      const labels = m.get(p.personId) ?? [];
+      const unitLabel = p.unitId ? ` (${unitName.get(p.unitId) ?? p.unitId})` : "";
+      labels.push(`${p.privilege}${unitLabel}`);
+      m.set(p.personId, labels);
+    }
+    return m;
+  }, [privileges, unitName]);
+
   if (currentLogin?.systemRole !== "Administrator") {
     return <p className="text-sm text-muted-foreground">Administrator access required.</p>;
   }
 
   const q = query.trim().toLowerCase();
-  const matchN = nurses.filter((n) => !q || n.name.toLowerCase().includes(q) || (unitName.get(n.unitId) ?? "").toLowerCase().includes(q));
-  const matchP = preceptors.filter((p) => !q || p.name.toLowerCase().includes(q) || (unitName.get(p.unitId) ?? "").toLowerCase().includes(q));
-  const matchA = administrators.filter((a) => !q || a.name.toLowerCase().includes(q));
+  const matched = persons.filter(
+    (n) => !q || n.name.toLowerCase().includes(q) || (unitName.get(n.unitId) ?? "").toLowerCase().includes(q)
+  );
 
   return (
     <>
       <PageHeader
         title="People"
-        description="All nurses, preceptors, and administrators in the system."
+        description="All persons in the system, with their clinical roles and privileges."
       />
 
       <div className="mb-4 max-w-md">
@@ -45,60 +55,28 @@ export default function PeoplePage() {
         />
       </div>
 
-      <Tabs defaultValue="nurses">
-        <TabsList>
-          <TabsTrigger value="nurses">Nurses ({matchN.length})</TabsTrigger>
-          <TabsTrigger value="preceptors">Preceptors ({matchP.length})</TabsTrigger>
-          <TabsTrigger value="admins">Administrators ({matchA.length})</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="nurses">
-          <Card>
-            <CardContent className="p-0">
-              <ul className="divide-y">
-                {matchN.map((n) => (
-                  <li key={n.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
-                    <Link to={`/nurses/${n.id}`} className="text-sm font-medium hover:underline">
-                      {n.name}
-                    </Link>
+      <Card>
+        <CardContent className="p-0">
+          <ul className="divide-y">
+            {matched.map((n) => {
+              const privLabels = personPrivilegeLabels.get(n.id) ?? [];
+              return (
+                <li key={n.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
+                  <Link to={`/people/${n.id}`} className="text-sm font-medium hover:underline truncate min-w-0">
+                    {n.name}
+                  </Link>
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <span className="text-xs text-muted-foreground">{unitName.get(n.unitId) ?? "—"}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="preceptors">
-          <Card>
-            <CardContent className="p-0">
-              <ul className="divide-y">
-                {matchP.map((p) => (
-                  <li key={p.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
-                    <span className="text-sm font-medium">{p.name}</span>
-                    <span className="text-xs text-muted-foreground">{unitName.get(p.unitId) ?? "—"}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="admins">
-          <Card>
-            <CardContent className="p-0">
-              <ul className="divide-y">
-                {matchA.map((a) => (
-                  <li key={a.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
-                    <span className="text-sm font-medium">{a.name}</span>
-                    <span className="text-xs text-muted-foreground">{a.title ?? "Administrator"}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                    {privLabels.map((label) => (
+                      <Badge key={label} variant="secondary" className="text-[10px]">{label}</Badge>
+                    ))}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </CardContent>
+      </Card>
     </>
   );
 }

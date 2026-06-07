@@ -15,11 +15,12 @@
 // =============================================================================
 
 import type {
-  Unit, PersonRole, Preceptor, Administrator, Person,
+  Unit, PersonRole, Person,
+  PersonPrivilege, Privilege,
   CompetencyCategory, CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
   ChangeRequest, Login, Stage, StageOrFully, ObservationRating,
-  RequesterRole, ChangeRequestStatus, ChangeRequestType,
+  RequesterRole, ChangeRequestStatus, ChangeRequestType, SystemRole,
 } from "./types";
 import { DEFAULT_ROLE_ID } from "./_other";
 
@@ -35,9 +36,8 @@ interface RawSeed {
   personRoles: any[];
   competencyCategories: any[];
   competencyGroups: any[];
-  preceptors: any[];
-  administrators: any[];
   persons: any[];
+  personPrivileges: any[];
   competencies: any[];
   competencySteps: any[];
   competencyAssignments: any[];
@@ -45,7 +45,7 @@ interface RawSeed {
   competencyAchievements: any[];
   changeRequests: any[];
   auditEvents?: any[];
-  logins?: any[]; // optional; if absent we synthesize from people below.
+  logins?: any[];
 }
 
 // ---------------------------------------------------------------------------
@@ -58,7 +58,6 @@ interface RawSeed {
 function loadSeedSync(): RawSeed {
   try {
     const xhr = new XMLHttpRequest();
-    // Resolve relative to where the app is served (works with `base: "./"`).
     const url = new URL("./carecompetencies_seed.json", document.baseURI).toString();
     xhr.open("GET", url, false); // synchronous
     xhr.send(null);
@@ -69,10 +68,9 @@ function loadSeedSync(): RawSeed {
   } catch (e) {
     console.error("Seed load threw:", e);
   }
-  // Safe empty fallback so the app at least renders.
   return {
     units: [], personRoles: [], competencyCategories: [], competencyGroups: [],
-    preceptors: [], administrators: [], persons: [],
+    persons: [], personPrivileges: [],
     competencies: [], competencySteps: [], competencyAssignments: [],
     stepObservations: [], competencyAchievements: [], changeRequests: [],
     auditEvents: [],
@@ -100,24 +98,6 @@ function toPersonRole(r: any): PersonRole {
   return { id: r.id, name: r.name };
 }
 
-function toPreceptor(p: any): Preceptor {
-  return {
-    id: p.id,
-    name: p.fullName ?? p.name ?? "",
-    unitId: p.unitId,
-    email: p.email ?? undefined,
-  };
-}
-
-function toAdmin(a: any): Administrator {
-  return {
-    id: a.id,
-    name: a.fullName ?? a.name ?? "",
-    email: a.email ?? undefined,
-    title: a.title ?? undefined,
-  };
-}
-
 function toPerson(n: any): Person {
   return {
     id: n.id,
@@ -129,6 +109,15 @@ function toPerson(n: any): Person {
     stageOverride: (n.stage ?? n.stageOverride ?? undefined) as StageOrFully | undefined,
     dukeId: n.dukeId ?? undefined,
     jobCode: n.jobCode ?? undefined,
+  };
+}
+
+function toPersonPrivilege(p: any): PersonPrivilege {
+  return {
+    id: p.id,
+    personId: p.personId,
+    privilege: p.privilege as Privilege,
+    unitId: p.unitId ?? null,
   };
 }
 
@@ -187,7 +176,7 @@ function toObservation(o: any): StepObservation {
     personId: o.personId ?? o.nurseId,
     stepId: o.stepId,
     competencyId: o.competencyId,
-    preceptorId: o.preceptorId,
+    observerId: o.preceptorId ?? o.observerId,
     rating: (o.outcome ?? o.rating) as ObservationRating,
     observedAt: o.observedAt,
     notes: o.note ?? o.notes ?? undefined,
@@ -199,7 +188,7 @@ function toAchievement(a: any): CompetencyAchievement {
     id: a.id,
     personId: a.personId ?? a.nurseId,
     competencyId: a.competencyId,
-    preceptorId: a.preceptorId,
+    observerId: a.preceptorId ?? a.observerId,
     achievedAt: a.achievedAt,
     notes: a.note ?? a.notes ?? undefined,
     earnedAtUnitId: a.earnedAtUnitId ?? undefined,
@@ -221,35 +210,75 @@ function toChangeRequest(cr: any): ChangeRequest {
 }
 
 // ---------------------------------------------------------------------------
-// Synthesize logins if the JSON doesn't include them.
+// Synthesize logins from persons + privileges.
 // ---------------------------------------------------------------------------
 function synthesizeLogins(
-  admins: Administrator[],
-  preceptors: Preceptor[],
   persons: Person[],
+  privileges: PersonPrivilege[],
   units: Unit[],
 ): Login[] {
   const logins: Login[] = [];
-  for (const a of admins) {
-    logins.push({ id: a.id, displayName: `${a.name} (Administrator)`, systemRole: "Administrator" });
-  }
-  // One Unit Leader per unit, named after the unit (placeholder until DUHS provides the real org chart).
-  for (const u of units) {
+
+  // One login entry per privilege type, grouped by person.
+  // Admins get a single global login.
+  // Preceptors and UnitLeaders get a login showing their scoped units.
+  const adminPersonIds = new Set(
+    privileges.filter((p) => p.privilege === "Administrator").map((p) => p.personId)
+  );
+
+  for (const personId of adminPersonIds) {
+    const person = persons.find((n) => n.id === personId);
+    if (!person) continue;
     logins.push({
-      id: `ul-${u.id}`,
-      displayName: `Unit Leader — ${u.name}`,
-      systemRole: "UnitLeader",
-      unitId: u.id,
+      id: person.id,
+      displayName: `${person.name} (Administrator)`,
+      systemRole: "Administrator",
     });
   }
-  for (const p of preceptors) {
-    logins.push({ id: p.id, displayName: `${p.name} (Preceptor)`, systemRole: "Preceptor" });
+
+  // Collect unit leader person ids and their scoped units.
+  const ulMap = new Map<string, string[]>();
+  for (const p of privileges.filter((pp) => pp.privilege === "UnitLeader")) {
+    if (!ulMap.has(p.personId)) ulMap.set(p.personId, []);
+    if (p.unitId) ulMap.get(p.personId)!.push(p.unitId);
   }
-  // One person login for the My Competencies role view.
-  if (persons.length > 0) {
-    const n = persons[0];
-    logins.push({ id: n.id, displayName: `${n.name} (Orientee)`, systemRole: "Person" });
+  for (const [personId, unitIds] of ulMap) {
+    const person = persons.find((n) => n.id === personId);
+    if (!person) continue;
+    const unitNames = unitIds
+      .map((uid) => units.find((u) => u.id === uid)?.name ?? uid)
+      .join(", ");
+    logins.push({
+      id: person.id,
+      displayName: `${person.name} (Unit Leader — ${unitNames})`,
+      systemRole: "UnitLeader",
+      unitIds,
+    });
   }
+
+  // Collect preceptor person ids and their scoped units.
+  const precMap = new Map<string, string[]>();
+  for (const p of privileges.filter((pp) => pp.privilege === "Preceptor")) {
+    if (!precMap.has(p.personId)) precMap.set(p.personId, []);
+    if (p.unitId) precMap.get(p.personId)!.push(p.unitId);
+  }
+  for (const [personId, unitIds] of precMap) {
+    const person = persons.find((n) => n.id === personId);
+    if (!person) continue;
+    logins.push({
+      id: person.id,
+      displayName: `${person.name} (Preceptor)`,
+      systemRole: "Preceptor",
+      unitIds,
+    });
+  }
+
+  // One orientee login for the Person role view.
+  const orientee = persons.find((n) => !adminPersonIds.has(n.id) && !precMap.has(n.id) && !ulMap.has(n.id));
+  if (orientee) {
+    logins.push({ id: orientee.id, displayName: `${orientee.name} (Orientee)`, systemRole: "Person" });
+  }
+
   return logins;
 }
 
@@ -260,9 +289,8 @@ export const seedUnits: Unit[] = RAW.units.map(toUnit);
 export const seedPersonRoles: PersonRole[] = RAW.personRoles.map(toPersonRole);
 export const seedCategories: CompetencyCategory[] = RAW.competencyCategories.map(toCategory);
 export const seedGroups: CompetencyGroup[] = RAW.competencyGroups.map(toGroup);
-export const seedPreceptors: Preceptor[] = RAW.preceptors.map(toPreceptor);
-export const seedAdministrators: Administrator[] = RAW.administrators.map(toAdmin);
 export const seedPersons: Person[] = RAW.persons.map(toPerson);
+export const seedPrivileges: PersonPrivilege[] = RAW.personPrivileges.map(toPersonPrivilege);
 export const seedCompetencies: Competency[] = RAW.competencies.map(toCompetency);
 export const seedSteps: CompetencyStep[] = RAW.competencySteps.map(toStep);
 export const seedAssignments: CompetencyAssignment[] = RAW.competencyAssignments.map(toAssignment);
@@ -272,4 +300,4 @@ export const seedChangeRequests: ChangeRequest[] = RAW.changeRequests.map(toChan
 
 export const seedLogins: Login[] = (RAW.logins && RAW.logins.length > 0)
   ? RAW.logins as Login[]
-  : synthesizeLogins(seedAdministrators, seedPreceptors, seedPersons, seedUnits);
+  : synthesizeLogins(seedPersons, seedPrivileges, seedUnits);

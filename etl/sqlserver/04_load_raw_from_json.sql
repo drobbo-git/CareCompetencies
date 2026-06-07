@@ -27,8 +27,7 @@ TRUNCATE TABLE raw.units;
 TRUNCATE TABLE raw.person_roles;
 TRUNCATE TABLE raw.competency_categories;
 TRUNCATE TABLE raw.competency_groups;
-TRUNCATE TABLE raw.preceptors;
-TRUNCATE TABLE raw.administrators;
+TRUNCATE TABLE raw.person_privileges;
 TRUNCATE TABLE raw.persons;
 TRUNCATE TABLE raw.competencies;
 TRUNCATE TABLE raw.competency_steps;
@@ -64,18 +63,11 @@ WITH (id NVARCHAR(64) '$.id', name NVARCHAR(200) '$.name',
       sortOrder NVARCHAR(32) '$.sortOrder',
       description NVARCHAR(MAX) '$.description');
 
-INSERT raw.preceptors (id, fullName, email, unitId, roleId, hireDate)
-SELECT id, fullName, email, unitId, roleId, hireDate
-FROM OPENJSON(@json, '$.preceptors')
-WITH (id NVARCHAR(64) '$.id', fullName NVARCHAR(200) '$.fullName',
-      email NVARCHAR(200) '$.email', unitId NVARCHAR(64) '$.unitId',
-      roleId NVARCHAR(64) '$.roleId', hireDate NVARCHAR(64) '$.hireDate');
-
-INSERT raw.administrators (id, fullName, email, title)
-SELECT id, fullName, email, title
-FROM OPENJSON(@json, '$.administrators')
-WITH (id NVARCHAR(64) '$.id', fullName NVARCHAR(200) '$.fullName',
-      email NVARCHAR(200) '$.email', title NVARCHAR(200) '$.title');
+INSERT raw.person_privileges (id, personId, privilege, unitId)
+SELECT id, personId, privilege, unitId
+FROM OPENJSON(@json, '$.personPrivileges')
+WITH (id NVARCHAR(64) '$.id', personId NVARCHAR(64) '$.personId',
+      privilege NVARCHAR(32) '$.privilege', unitId NVARCHAR(64) '$.unitId');
 
 INSERT raw.persons (id, fullName, email, unitId, roleId, primaryPreceptorId, stage, hireDate, startDate, dukeId, jobCode)
 SELECT id, fullName, email, unitId, roleId, primaryPreceptorId, stage, hireDate, startDate, dukeId, jobCode

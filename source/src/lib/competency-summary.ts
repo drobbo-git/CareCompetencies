@@ -21,7 +21,7 @@
 // =============================================================================
 
 import type {
-  Person, Unit, Preceptor, PersonRole, Competency, CompetencyStep,
+  Person, Unit, PersonRole, Competency, CompetencyStep,
   CompetencyCategory, CompetencyGroup, CompetencyAssignment, StepObservation,
   CompetencyAchievement, Stage, StageOrFully,
 } from "@/data/types";
@@ -31,8 +31,7 @@ export interface CompetencySummaryInput {
   person: Person;
   unit?: Unit;
   role?: PersonRole;
-  primaryPreceptor?: Preceptor;
-  preceptors: Preceptor[];
+  primaryPreceptorName?: string;
   persons: Person[];
   competencies: Competency[];
   steps: CompetencyStep[];
@@ -163,7 +162,7 @@ function statusColor(s: OverallStatus): string {
 
 export function buildCompetencySummaryHtml(input: CompetencySummaryInput): string {
   const {
-    person, unit, role, primaryPreceptor, preceptors, persons,
+    person, unit, role, primaryPreceptorName, persons,
     competencies, steps, categories, groups, assignments,
     observations, achievements, units, currentStage, daysSinceStart,
   } = input;
@@ -184,10 +183,9 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
 
   const requiredCompIds = new Set(myAssignments.map((a) => a.competencyId));
 
-  function signerCrossUnitLabel(preceptorId: string | undefined): string | undefined {
-    if (!preceptorId) return undefined;
-    const p = preceptors.find((pp) => pp.id === preceptorId);
-    const signerUnitId = p?.unitId ?? persons.find((nn) => nn.id === preceptorId)?.unitId;
+  function signerCrossUnitLabel(observerId: string | undefined): string | undefined {
+    if (!observerId) return undefined;
+    const signerUnitId = persons.find((nn) => nn.id === observerId)?.unitId;
     if (!signerUnitId) return undefined;
     if (signerUnitId === personHomeUnitId) return undefined;
     const u = units.find((uu) => uu.id === signerUnitId);
@@ -198,7 +196,7 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
     const c = competencies.find((cc) => cc.id === a.competencyId);
     const cat = categories.find((cc) => cc.id === c?.categoryId);
     const ach = achievements.find((x) => x.personId === person.id && x.competencyId === a.competencyId);
-    const signer = ach ? (preceptors.find((p) => p.id === ach.preceptorId) ?? persons.find((nn) => nn.id === ach.preceptorId)) : undefined;
+    const signer = ach ? persons.find((nn) => nn.id === ach.observerId) : undefined;
     const compSteps = steps.filter((s) => s.competencyId === a.competencyId);
     let hasUnsat = false;
     let hasAny = false;
@@ -221,7 +219,7 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
       stage: a.stage,
       achievement: ach,
       signerName: signer?.name,
-      signerUnitLabel: signerCrossUnitLabel(ach?.preceptorId),
+      signerUnitLabel: signerCrossUnitLabel(ach?.observerId),
       hasUnsatisfactory: hasUnsat,
       hasAnyObservation: hasAny,
     };
@@ -249,8 +247,8 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
       categoryColor: cat?.color ?? "#94a3b8",
       earnedAtUnitName: earnedAtUnit?.name,
       earnedAtStage,
-      signerName: preceptors.find((p) => p.id === ach.preceptorId)?.name ?? persons.find((nn) => nn.id === ach.preceptorId)?.name,
-      signerUnitLabel: signerCrossUnitLabel(ach.preceptorId),
+      signerName: persons.find((nn) => nn.id === ach.observerId)?.name,
+      signerUnitLabel: signerCrossUnitLabel(ach.observerId),
     });
   }
   otherRows.sort((a, b) => {
@@ -433,7 +431,7 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
       ${identityField("Clinical Role", role?.name ?? "\u2014")}
       ${identityField("Home Unit", unit?.name ?? "\u2014")}
       ${identityField("Cost Center", unit?.costCenter ?? "\u2014")}
-      ${identityField("Primary Preceptor", primaryPreceptor?.name ?? "\u2014")}
+      ${identityField("Primary Preceptor", primaryPreceptorName ?? "\u2014")}
       ${identityField("Start Date", fmtDate(person.startDate))}
     </div>
 

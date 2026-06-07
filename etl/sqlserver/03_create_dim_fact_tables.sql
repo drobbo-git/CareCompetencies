@@ -80,24 +80,6 @@ CREATE TABLE dim.competency_group (
     sort_order INT NULL, description NVARCHAR(MAX) NULL
 );
 
-IF OBJECT_ID('dim.preceptor') IS NULL
-CREATE TABLE dim.preceptor (
-    preceptor_sk BIGINT IDENTITY(1,1) PRIMARY KEY,
-    preceptor_bk NVARCHAR(64) NOT NULL UNIQUE,
-    full_name NVARCHAR(200) NOT NULL, email NVARCHAR(200) NULL,
-    unit_sk BIGINT NULL REFERENCES dim.unit(unit_sk),
-    person_role_sk BIGINT NULL REFERENCES dim.person_role(person_role_sk),
-    hire_date DATE NULL
-);
-
-IF OBJECT_ID('dim.administrator') IS NULL
-CREATE TABLE dim.administrator (
-    admin_sk BIGINT IDENTITY(1,1) PRIMARY KEY,
-    admin_bk NVARCHAR(64) NOT NULL UNIQUE,
-    full_name NVARCHAR(200) NOT NULL, email NVARCHAR(200) NULL,
-    title NVARCHAR(200) NULL
-);
-
 IF OBJECT_ID('dim.person') IS NULL
 CREATE TABLE dim.person (
     person_sk BIGINT IDENTITY(1,1) PRIMARY KEY,
@@ -105,10 +87,19 @@ CREATE TABLE dim.person (
     full_name NVARCHAR(200) NOT NULL, email NVARCHAR(200) NULL,
     unit_sk BIGINT NULL REFERENCES dim.unit(unit_sk),
     person_role_sk BIGINT NULL REFERENCES dim.person_role(person_role_sk),
-    primary_preceptor_sk BIGINT NULL REFERENCES dim.preceptor(preceptor_sk),
+    primary_preceptor_sk BIGINT NULL REFERENCES dim.person(person_sk),
     stage_code NVARCHAR(32) NULL REFERENCES ref.stage(stage_code),
     hire_date DATE NULL, start_date DATE NULL,
     duke_id NVARCHAR(64) NULL, job_code NVARCHAR(64) NULL
+);
+
+IF OBJECT_ID('dim.person_privilege') IS NULL
+CREATE TABLE dim.person_privilege (
+    privilege_sk BIGINT IDENTITY(1,1) PRIMARY KEY,
+    privilege_bk NVARCHAR(64) NOT NULL UNIQUE,
+    person_sk BIGINT NOT NULL REFERENCES dim.person(person_sk),
+    privilege_code NVARCHAR(32) NOT NULL,
+    unit_sk BIGINT NULL REFERENCES dim.unit(unit_sk)
 );
 
 IF OBJECT_ID('dim.competency') IS NULL
@@ -154,7 +145,7 @@ CREATE TABLE fact.step_observation (
     person_sk BIGINT NOT NULL REFERENCES dim.person(person_sk),
     step_sk BIGINT NOT NULL REFERENCES dim.competency_step(step_sk),
     competency_sk BIGINT NOT NULL REFERENCES dim.competency(competency_sk),
-    preceptor_sk BIGINT NOT NULL REFERENCES dim.preceptor(preceptor_sk),
+    observer_sk BIGINT NOT NULL REFERENCES dim.person(person_sk),
     outcome_code NVARCHAR(32) NOT NULL REFERENCES ref.observation_outcome(outcome_code),
     observed_at DATETIME2(0) NOT NULL, note NVARCHAR(MAX) NULL
 );
@@ -165,7 +156,7 @@ CREATE TABLE fact.competency_achievement (
     achievement_bk NVARCHAR(64) NOT NULL UNIQUE,
     person_sk BIGINT NOT NULL REFERENCES dim.person(person_sk),
     competency_sk BIGINT NOT NULL REFERENCES dim.competency(competency_sk),
-    preceptor_sk BIGINT NOT NULL REFERENCES dim.preceptor(preceptor_sk),
+    observer_sk BIGINT NOT NULL REFERENCES dim.person(person_sk),
     achieved_at DATETIME2(0) NOT NULL,
     stage_code NVARCHAR(32) NULL REFERENCES ref.stage(stage_code),
     note NVARCHAR(MAX) NULL,

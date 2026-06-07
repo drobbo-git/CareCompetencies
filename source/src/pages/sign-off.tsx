@@ -39,7 +39,7 @@ export default function SignOffPage() {
     recordAchievement({
       personId,
       competencyId,
-      preceptorId: currentLogin.id,
+      observerId: currentLogin.id,
       achievedAt: localDateStringToISO(achievedAt),
       notes: notes.trim() || undefined,
       earnedAtUnitId: person.unitId,

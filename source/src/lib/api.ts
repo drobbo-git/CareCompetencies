@@ -1,5 +1,5 @@
 import type {
-  Unit, PersonRole, Preceptor, Administrator, Person,
+  Unit, PersonRole, Person, PersonPrivilege,
   CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
   ChangeRequest, AuditEvent, Login,
@@ -41,10 +41,9 @@ export const api = {
   login: (loginId: string) => post<{ token: string; login: Login }>('/auth/login', { loginId }),
 
   // reference — read-only
-  getUnits:          () => get<Unit[]>('/units'),
-  getPersonRoles:    () => get<PersonRole[]>('/person-roles'),
-  getPreceptors:     () => get<Preceptor[]>('/preceptors'),
-  getAdministrators: () => get<Administrator[]>('/administrators'),
+  getUnits:           () => get<Unit[]>('/units'),
+  getPersonRoles:     () => get<PersonRole[]>('/person-roles'),
+  getPersonPrivileges: () => get<PersonPrivilege[]>('/person-privileges'),
 
   // persons
   getPersons: () => get<Person[]>('/persons'),

@@ -4,7 +4,7 @@
 
 import {
   seedUnits, seedPersonRoles, seedCategories, seedGroups,
-  seedPreceptors, seedAdministrators, seedPersons,
+  seedPersons, seedPrivileges,
   seedCompetencies, seedSteps, seedAssignments,
   seedObservations, seedAchievements, seedChangeRequests,
 } from "@/data/seed";
@@ -15,9 +15,8 @@ export interface SeedJsonCounts {
   personRoles: number;
   competencyCategories: number;
   competencyGroups: number;
-  preceptors: number;
-  administrators: number;
   persons: number;
+  personPrivileges: number;
   competencies: number;
   competencySteps: number;
   competencyAssignments: number;
@@ -29,7 +28,7 @@ export interface SeedJsonCounts {
 
 export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
   const payload = {
-    schemaVersion: "1.0",
+    schemaVersion: "2.0",
     generatedAt: new Date().toISOString(),
     units: seedUnits.map((u) => ({
       id: u.id,
@@ -56,20 +55,6 @@ export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
       sortOrder: g.orderIndex ?? 0,
       description: (g as any).description ?? "",
     })),
-    preceptors: seedPreceptors.map((p) => ({
-      id: p.id,
-      fullName: p.name,
-      email: (p as any).email ?? "",
-      unitId: p.unitId,
-      roleId: "r-rn",
-      hireDate: undefined,
-    })),
-    administrators: seedAdministrators.map((a) => ({
-      id: a.id,
-      fullName: a.name,
-      email: (a as any).email ?? "",
-      title: (a as any).title ?? "Administrator",
-    })),
     persons: seedPersons.map((n) => ({
       id: n.id,
       fullName: n.name,
@@ -80,6 +65,12 @@ export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
       stage: n.stageOverride ?? null,
       hireDate: n.startDate,
       startDate: n.startDate,
+    })),
+    personPrivileges: seedPrivileges.map((p) => ({
+      id: p.id,
+      personId: p.personId,
+      privilege: p.privilege,
+      unitId: p.unitId ?? null,
     })),
     competencies: seedCompetencies.map((c) => ({
       id: c.id,
@@ -109,7 +100,7 @@ export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
       personId: o.personId,
       stepId: o.stepId,
       competencyId: o.competencyId,
-      preceptorId: o.preceptorId,
+      preceptorId: o.observerId,
       outcome: o.rating,
       observedAt: o.observedAt,
       note: o.notes ?? "",
@@ -118,7 +109,7 @@ export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
       id: a.id,
       personId: a.personId,
       competencyId: a.competencyId,
-      preceptorId: a.preceptorId,
+      preceptorId: a.observerId,
       achievedAt: a.achievedAt,
       stage: undefined,
       note: a.notes ?? "",
@@ -155,9 +146,8 @@ export function buildSeedJson(): { json: string; counts: SeedJsonCounts } {
     personRoles: payload.personRoles.length,
     competencyCategories: payload.competencyCategories.length,
     competencyGroups: payload.competencyGroups.length,
-    preceptors: payload.preceptors.length,
-    administrators: payload.administrators.length,
     persons: payload.persons.length,
+    personPrivileges: payload.personPrivileges.length,
     competencies: payload.competencies.length,
     competencySteps: payload.competencySteps.length,
     competencyAssignments: payload.competencyAssignments.length,

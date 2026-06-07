@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0",
-  "generatedAt": "2026-05-30T13:14:20.924Z",
+  "schemaVersion": "2.0",
+  "generatedAt": "2026-06-07T11:32:52.508Z",
   "units": [
     {
       "id": "u-2b2c",
@@ -38,6 +38,16 @@
       "id": "r-rn",
       "code": "RN",
       "name": "RN"
+    },
+    {
+      "id": "r-nca",
+      "code": "NCA",
+      "name": "NCA"
+    },
+    {
+      "id": "r-huc",
+      "code": "HUC",
+      "name": "HUC"
     }
   ],
   "competencyCategories": [
@@ -172,71 +182,6 @@
       "description": ""
     }
   ],
-  "preceptors": [
-    {
-      "id": "p-msimmons",
-      "fullName": "Michele Simmons, RN",
-      "email": "",
-      "unitId": "u-dn4100",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-staylor",
-      "fullName": "Shayla Taylor, RN",
-      "email": "",
-      "unitId": "u-dn4100",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-fgregory",
-      "fullName": "Frances Gregory, RN",
-      "email": "",
-      "unitId": "u-2b2c",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-greasor",
-      "fullName": "Gabrielle Reasor, RN",
-      "email": "",
-      "unitId": "u-ascpacu",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-rbrown",
-      "fullName": "Renee Brown, RN",
-      "email": "",
-      "unitId": "u-drhcathlab",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-coakley",
-      "fullName": "Cathy Oakley, RN",
-      "email": "",
-      "unitId": "u-drhcathlab",
-      "roleId": "r-rn"
-    },
-    {
-      "id": "p-lhoover",
-      "fullName": "Lillian Hoover, RN",
-      "email": "",
-      "unitId": "u-drahradonc",
-      "roleId": "r-rn"
-    }
-  ],
-  "administrators": [
-    {
-      "id": "a-thicks",
-      "fullName": "Tammi Hicks",
-      "email": "",
-      "title": "Sr Dir, Nursing"
-    },
-    {
-      "id": "a-wrodgers",
-      "fullName": "William Rodgers",
-      "email": "",
-      "title": "Education/Training Coordinator"
-    }
-  ],
   "persons": [
     {
       "id": "n-96948",
@@ -255,7 +200,7 @@
       "email": "",
       "unitId": "u-dn4100",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-msimmons",
+      "primaryPreceptorId": "n-96948",
       "stage": "Orientation",
       "hireDate": "2026-03-15",
       "startDate": "2026-03-15"
@@ -266,7 +211,7 @@
       "email": "",
       "unitId": "u-dn4100",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-msimmons",
+      "primaryPreceptorId": "n-96948",
       "stage": "Core",
       "hireDate": "2026-05-20",
       "startDate": "2026-05-20"
@@ -277,7 +222,7 @@
       "email": "",
       "unitId": "u-dn4100",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-staylor",
+      "primaryPreceptorId": "n-1130738",
       "stage": "Education",
       "hireDate": "2025-09-11",
       "startDate": "2025-09-11"
@@ -288,7 +233,7 @@
       "email": "",
       "unitId": "u-dn4100",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-msimmons",
+      "primaryPreceptorId": "n-96948",
       "stage": "Core",
       "hireDate": "2026-05-01",
       "startDate": "2026-05-01"
@@ -332,7 +277,7 @@
       "email": "",
       "unitId": "u-2b2c",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-fgregory",
+      "primaryPreceptorId": "n-488930",
       "stage": "Core",
       "hireDate": "2026-05-13",
       "startDate": "2026-05-13"
@@ -343,7 +288,7 @@
       "email": "",
       "unitId": "u-2b2c",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-fgregory",
+      "primaryPreceptorId": "n-488930",
       "stage": "Education",
       "hireDate": "2025-11-15",
       "startDate": "2025-11-15"
@@ -354,7 +299,7 @@
       "email": "",
       "unitId": "u-2b2c",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-fgregory",
+      "primaryPreceptorId": "n-488930",
       "stage": "Education",
       "hireDate": "2025-07-13",
       "startDate": "2025-07-13"
@@ -387,7 +332,7 @@
       "email": "",
       "unitId": "u-ascpacu",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-greasor",
+      "primaryPreceptorId": "n-1034024",
       "stage": "Orientation",
       "hireDate": "2026-03-15",
       "startDate": "2026-03-15"
@@ -409,7 +354,7 @@
       "email": "",
       "unitId": "u-ascpacu",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-greasor",
+      "primaryPreceptorId": "n-1034024",
       "stage": "Core",
       "hireDate": "2026-05-21",
       "startDate": "2026-05-21"
@@ -431,7 +376,7 @@
       "email": "",
       "unitId": "u-drhcathlab",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-rbrown",
+      "primaryPreceptorId": "n-361404",
       "stage": "Orientation",
       "hireDate": "2026-04-01",
       "startDate": "2026-04-01"
@@ -442,7 +387,7 @@
       "email": "",
       "unitId": "u-drhcathlab",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-rbrown",
+      "primaryPreceptorId": "n-361404",
       "stage": "Core",
       "hireDate": "2026-05-18",
       "startDate": "2026-05-18"
@@ -464,7 +409,7 @@
       "email": "",
       "unitId": "u-drhcathlab",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-coakley",
+      "primaryPreceptorId": "n-224104",
       "stage": "Education",
       "hireDate": "2025-10-29",
       "startDate": "2025-10-29"
@@ -508,7 +453,7 @@
       "email": "",
       "unitId": "u-drahradonc",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-lhoover",
+      "primaryPreceptorId": "n-1125158",
       "stage": "Core",
       "hireDate": "2026-05-08",
       "startDate": "2026-05-08"
@@ -519,7 +464,7 @@
       "email": "",
       "unitId": "u-drahradonc",
       "roleId": "r-rn",
-      "primaryPreceptorId": "p-lhoover",
+      "primaryPreceptorId": "n-1125158",
       "stage": "Education",
       "hireDate": "2026-02-09",
       "startDate": "2026-02-09"
@@ -556,6 +501,62 @@
       "stage": "Nonclinical",
       "hireDate": "2008-05-30",
       "startDate": "2008-05-30"
+    }
+  ],
+  "personPrivileges": [
+    {
+      "id": "priv-n-96948-prec-u-dn4100",
+      "personId": "n-96948",
+      "privilege": "Preceptor",
+      "unitId": "u-dn4100"
+    },
+    {
+      "id": "priv-n-1130738-prec-u-dn4100",
+      "personId": "n-1130738",
+      "privilege": "Preceptor",
+      "unitId": "u-dn4100"
+    },
+    {
+      "id": "priv-n-488930-prec-u-2b2c",
+      "personId": "n-488930",
+      "privilege": "Preceptor",
+      "unitId": "u-2b2c"
+    },
+    {
+      "id": "priv-n-1034024-prec-u-ascpacu",
+      "personId": "n-1034024",
+      "privilege": "Preceptor",
+      "unitId": "u-ascpacu"
+    },
+    {
+      "id": "priv-n-361404-prec-u-drhcathlab",
+      "personId": "n-361404",
+      "privilege": "Preceptor",
+      "unitId": "u-drhcathlab"
+    },
+    {
+      "id": "priv-n-224104-prec-u-drhcathlab",
+      "personId": "n-224104",
+      "privilege": "Preceptor",
+      "unitId": "u-drhcathlab"
+    },
+    {
+      "id": "priv-n-1125158-prec-u-drahradonc",
+      "personId": "n-1125158",
+      "privilege": "Preceptor",
+      "unitId": "u-drahradonc"
+    },
+    {
+      "id": "priv-n-573641-admin",
+      "personId": "n-573641",
+      "privilege": "Administrator",
+      "unitId": null
+    },
+    {
+      "id": "priv-n-480015-admin",
+      "personId": "n-480015",
+      "privilege": "Administrator",
+      "unitId": null
     }
   ],
   "competencies": [
@@ -12829,7 +12830,7 @@
       "id": "o-1",
       "stepId": "s-c-cl-cvad-adult-1",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-10T14:15:00.000Z",
       "note": "",
@@ -12839,7 +12840,7 @@
       "id": "o-2",
       "stepId": "s-c-cl-cvad-adult-2",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-17T14:15:00.000Z",
       "note": "",
@@ -12849,7 +12850,7 @@
       "id": "o-3",
       "stepId": "s-c-cl-cvad-adult-3",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-21T14:15:00.000Z",
       "note": "",
@@ -12859,7 +12860,7 @@
       "id": "o-4",
       "stepId": "s-c-ng-maint-1",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-23T14:15:00.000Z",
       "note": "",
@@ -12869,7 +12870,7 @@
       "id": "o-5",
       "stepId": "s-c-ng-maint-2",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-22T14:15:00.000Z",
       "note": "",
@@ -12879,7 +12880,7 @@
       "id": "o-6",
       "stepId": "s-c-ng-maint-3",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Unsatisfactory",
       "observedAt": "2026-05-18T14:15:00.000Z",
       "note": "Coached at bedside; will re-observe.",
@@ -12889,7 +12890,7 @@
       "id": "o-7",
       "stepId": "s-c-ng-maint-4",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-22T14:15:00.000Z",
       "note": "",
@@ -12899,7 +12900,7 @@
       "id": "o-8",
       "stepId": "s-c-ng-remove-1",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -12909,7 +12910,7 @@
       "id": "o-9",
       "stepId": "s-c-ng-remove-2",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-25T14:15:00.000Z",
       "note": "",
@@ -12919,7 +12920,7 @@
       "id": "o-10",
       "stepId": "s-c-bpa-transfusion-1",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-17T14:15:00.000Z",
       "note": "",
@@ -12929,7 +12930,7 @@
       "id": "o-11",
       "stepId": "s-c-bpa-transfusion-2",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
@@ -12939,7 +12940,7 @@
       "id": "o-12",
       "stepId": "s-c-bpa-transfusion-3",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-23T14:15:00.000Z",
       "note": "",
@@ -12949,7 +12950,7 @@
       "id": "o-13",
       "stepId": "s-c-bpa-transfusion-4",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-17T14:15:00.000Z",
       "note": "",
@@ -12959,7 +12960,7 @@
       "id": "o-14",
       "stepId": "s-c-piv-maint-1",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-19T14:15:00.000Z",
       "note": "",
@@ -12969,7 +12970,7 @@
       "id": "o-15",
       "stepId": "s-c-piv-maint-2",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -12979,7 +12980,7 @@
       "id": "o-16",
       "stepId": "s-c-piv-maint-3",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
@@ -12989,7 +12990,7 @@
       "id": "o-17",
       "stepId": "s-c-piv-maint-4",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-18T14:15:00.000Z",
       "note": "",
@@ -12999,7 +13000,7 @@
       "id": "o-18",
       "stepId": "s-c-cardiac-mon-1",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-24T14:15:00.000Z",
       "note": "",
@@ -13009,7 +13010,7 @@
       "id": "o-19",
       "stepId": "s-c-cardiac-mon-2",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
@@ -13019,7 +13020,7 @@
       "id": "o-20",
       "stepId": "s-c-cardiac-mon-3",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-28T14:15:00.000Z",
       "note": "",
@@ -13029,7 +13030,7 @@
       "id": "o-21",
       "stepId": "s-c-cardiac-mon-4",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-28T14:15:00.000Z",
       "note": "",
@@ -13039,7 +13040,7 @@
       "id": "o-22",
       "stepId": "s-c-npwt-1",
       "competencyId": "c-npwt",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
@@ -13049,7 +13050,7 @@
       "id": "o-23",
       "stepId": "s-c-npwt-2",
       "competencyId": "c-npwt",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-17T14:15:00.000Z",
       "note": "",
@@ -13059,7 +13060,7 @@
       "id": "o-24",
       "stepId": "s-c-npwt-3",
       "competencyId": "c-npwt",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-16T14:15:00.000Z",
       "note": "",
@@ -13069,7 +13070,7 @@
       "id": "o-25",
       "stepId": "s-c-wound-care-1",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13079,7 +13080,7 @@
       "id": "o-26",
       "stepId": "s-c-wound-care-2",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13089,7 +13090,7 @@
       "id": "o-27",
       "stepId": "s-c-cl-cvad-adult-1",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-11T14:15:00.000Z",
       "note": "",
@@ -13099,7 +13100,7 @@
       "id": "o-28",
       "stepId": "s-c-cl-cvad-adult-2",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
@@ -13109,7 +13110,7 @@
       "id": "o-29",
       "stepId": "s-c-cl-cvad-adult-3",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-22T14:15:00.000Z",
       "note": "",
@@ -13119,7 +13120,7 @@
       "id": "o-30",
       "stepId": "s-c-cl-cvad-adult-4",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
@@ -13129,7 +13130,7 @@
       "id": "o-31",
       "stepId": "s-c-pump-alaris-1",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Unsatisfactory",
       "observedAt": "2026-05-14T14:15:00.000Z",
       "note": "Coached at bedside; will re-observe.",
@@ -13139,7 +13140,7 @@
       "id": "o-32",
       "stepId": "s-c-pump-alaris-2",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
@@ -13149,7 +13150,7 @@
       "id": "o-33",
       "stepId": "s-c-pump-alaris-3",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -13159,7 +13160,7 @@
       "id": "o-34",
       "stepId": "s-c-pump-alaris-4",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-12T14:15:00.000Z",
       "note": "",
@@ -13169,7 +13170,7 @@
       "id": "o-35",
       "stepId": "s-c-piv-maint-1",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13179,7 +13180,7 @@
       "id": "o-36",
       "stepId": "s-c-piv-maint-2",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
@@ -13189,7 +13190,7 @@
       "id": "o-37",
       "stepId": "s-c-piv-maint-3",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-10T14:15:00.000Z",
       "note": "",
@@ -13199,7 +13200,7 @@
       "id": "o-38",
       "stepId": "s-c-pump-alaris-1",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-17T14:15:00.000Z",
       "note": "",
@@ -13209,7 +13210,7 @@
       "id": "o-39",
       "stepId": "s-c-pump-alaris-2",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13219,7 +13220,7 @@
       "id": "o-40",
       "stepId": "s-c-pump-alaris-3",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Unsatisfactory",
       "observedAt": "2026-05-11T14:15:00.000Z",
       "note": "Coached at bedside; will re-observe.",
@@ -13229,7 +13230,7 @@
       "id": "o-41",
       "stepId": "s-c-staple-rem-1",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
@@ -13239,7 +13240,7 @@
       "id": "o-42",
       "stepId": "s-c-staple-rem-2",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13249,7 +13250,7 @@
       "id": "o-43",
       "stepId": "s-c-staple-rem-3",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-18T14:15:00.000Z",
       "note": "",
@@ -13259,7 +13260,7 @@
       "id": "o-44",
       "stepId": "s-c-staple-rem-4",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-24T14:15:00.000Z",
       "note": "",
@@ -13269,7 +13270,7 @@
       "id": "o-45",
       "stepId": "s-c-staple-rem-1",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
@@ -13279,7 +13280,7 @@
       "id": "o-46",
       "stepId": "s-c-staple-rem-2",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13289,7 +13290,7 @@
       "id": "o-47",
       "stepId": "s-c-staple-rem-3",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
@@ -13299,7 +13300,7 @@
       "id": "o-48",
       "stepId": "s-c-staple-rem-4",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-16T14:15:00.000Z",
       "note": "",
@@ -13309,7 +13310,7 @@
       "id": "o-49",
       "stepId": "s-c-naso-op-suction-1",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
@@ -13319,7 +13320,7 @@
       "id": "o-50",
       "stepId": "s-c-naso-op-suction-2",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -13329,7 +13330,7 @@
       "id": "o-51",
       "stepId": "s-c-naso-op-suction-3",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-12T14:15:00.000Z",
       "note": "",
@@ -13339,7 +13340,7 @@
       "id": "o-52",
       "stepId": "s-c-naso-op-suction-4",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-28T14:15:00.000Z",
       "note": "",
@@ -13349,7 +13350,7 @@
       "id": "o-53",
       "stepId": "s-c-suction-equip-1",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -13359,7 +13360,7 @@
       "id": "o-54",
       "stepId": "s-c-suction-equip-2",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-28T14:15:00.000Z",
       "note": "",
@@ -13369,7 +13370,7 @@
       "id": "o-55",
       "stepId": "s-c-suction-equip-1",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-11T14:15:00.000Z",
       "note": "",
@@ -13379,7 +13380,7 @@
       "id": "o-56",
       "stepId": "s-c-suction-equip-2",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-12T14:15:00.000Z",
       "note": "",
@@ -13389,7 +13390,7 @@
       "id": "o-57",
       "stepId": "s-c-suction-equip-3",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
@@ -13399,7 +13400,7 @@
       "id": "o-58",
       "stepId": "s-c-suction-equip-4",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-29T14:15:00.000Z",
       "note": "",
@@ -13409,7 +13410,7 @@
       "id": "o-59",
       "stepId": "s-c-piv-insert-1",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
@@ -13419,7 +13420,7 @@
       "id": "o-60",
       "stepId": "s-c-piv-insert-2",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Unsatisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "Coached at bedside; will re-observe.",
@@ -13429,7 +13430,7 @@
       "id": "o-61",
       "stepId": "s-c-piv-insert-3",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-24T14:15:00.000Z",
       "note": "",
@@ -13439,7 +13440,7 @@
       "id": "o-62",
       "stepId": "s-c-pericardial-flush-1",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
@@ -13449,7 +13450,7 @@
       "id": "o-63",
       "stepId": "s-c-pericardial-flush-2",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
@@ -13459,7 +13460,7 @@
       "id": "o-64",
       "stepId": "s-c-pericardial-flush-3",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
@@ -13469,7 +13470,7 @@
       "id": "o-65",
       "stepId": "s-c-pericardial-flush-4",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "outcome": "Satisfactory",
       "observedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
@@ -13480,7 +13481,7 @@
     {
       "id": "a-1",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-19T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13488,7 +13489,7 @@
     {
       "id": "a-2",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-15T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13496,7 +13497,7 @@
     {
       "id": "a-3",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-27T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13504,7 +13505,7 @@
     {
       "id": "a-4",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-24T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13512,7 +13513,7 @@
     {
       "id": "a-5",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-20T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13520,7 +13521,7 @@
     {
       "id": "a-6",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-11T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13528,7 +13529,7 @@
     {
       "id": "a-7",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-14T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13536,7 +13537,7 @@
     {
       "id": "a-8",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-13T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13544,7 +13545,7 @@
     {
       "id": "a-9",
       "competencyId": "c-fim",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-06T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13552,7 +13553,7 @@
     {
       "id": "a-10",
       "competencyId": "c-ng-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-10T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13560,7 +13561,7 @@
     {
       "id": "a-11",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-31T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13568,7 +13569,7 @@
     {
       "id": "a-12",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-29T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13576,7 +13577,7 @@
     {
       "id": "a-13",
       "competencyId": "c-ud-ext",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-19T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13584,7 +13585,7 @@
     {
       "id": "a-14",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-10T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13592,7 +13593,7 @@
     {
       "id": "a-15",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-16T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13600,7 +13601,7 @@
     {
       "id": "a-16",
       "competencyId": "c-cl-tun-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-16T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13608,7 +13609,7 @@
     {
       "id": "a-17",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-09T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13616,7 +13617,7 @@
     {
       "id": "a-18",
       "competencyId": "c-tpn",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-20T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13624,7 +13625,7 @@
     {
       "id": "a-19",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-13T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13632,7 +13633,7 @@
     {
       "id": "a-20",
       "competencyId": "c-ct-site",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-07T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13640,7 +13641,7 @@
     {
       "id": "a-21",
       "competencyId": "c-ct-smallbore",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-24T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13648,7 +13649,7 @@
     {
       "id": "a-22",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-15T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13656,7 +13657,7 @@
     {
       "id": "a-23",
       "competencyId": "c-rectal-tube",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-06T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13664,7 +13665,7 @@
     {
       "id": "a-24",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-24T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13672,7 +13673,7 @@
     {
       "id": "a-25",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-21T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13680,7 +13681,7 @@
     {
       "id": "a-26",
       "competencyId": "c-cl-midline-rem",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-17T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13688,7 +13689,7 @@
     {
       "id": "a-27",
       "competencyId": "c-cl-rem-picc-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-11T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13696,7 +13697,7 @@
     {
       "id": "a-28",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13704,7 +13705,7 @@
     {
       "id": "a-29",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-13T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13712,7 +13713,7 @@
     {
       "id": "a-30",
       "competencyId": "c-ostomy",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-27T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13720,7 +13721,7 @@
     {
       "id": "a-31",
       "competencyId": "c-npwt",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-20T14:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13728,7 +13729,7 @@
     {
       "id": "a-32",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-17T15:15:00.000Z",
       "note": "",
       "personId": "n-96948"
@@ -13736,7 +13737,7 @@
     {
       "id": "a-33",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-19T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13744,7 +13745,7 @@
     {
       "id": "a-34",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-21T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13752,7 +13753,7 @@
     {
       "id": "a-35",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-18T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13760,7 +13761,7 @@
     {
       "id": "a-36",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-23T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13768,7 +13769,7 @@
     {
       "id": "a-37",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-21T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13776,7 +13777,7 @@
     {
       "id": "a-38",
       "competencyId": "c-tpn",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-02T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13784,7 +13785,7 @@
     {
       "id": "a-39",
       "competencyId": "c-ud-ext",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-05T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13792,7 +13793,7 @@
     {
       "id": "a-40",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13800,7 +13801,7 @@
     {
       "id": "a-41",
       "competencyId": "c-cl-tun-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-05T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13808,7 +13809,7 @@
     {
       "id": "a-42",
       "competencyId": "c-fim",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-22T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13816,7 +13817,7 @@
     {
       "id": "a-43",
       "competencyId": "c-ng-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-01T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13824,7 +13825,7 @@
     {
       "id": "a-44",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-24T14:15:00.000Z",
       "note": "",
       "personId": "n-205051"
@@ -13832,7 +13833,7 @@
     {
       "id": "a-45",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-24T14:15:00.000Z",
       "note": "",
       "personId": "n-813703"
@@ -13840,7 +13841,7 @@
     {
       "id": "a-46",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-29T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13848,7 +13849,7 @@
     {
       "id": "a-47",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-07T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13856,7 +13857,7 @@
     {
       "id": "a-48",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-02-16T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13864,7 +13865,7 @@
     {
       "id": "a-49",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-06T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13872,7 +13873,7 @@
     {
       "id": "a-50",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-29T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13880,7 +13881,7 @@
     {
       "id": "a-51",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-30T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13888,7 +13889,7 @@
     {
       "id": "a-52",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-02-03T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13896,7 +13897,7 @@
     {
       "id": "a-53",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-11-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13904,7 +13905,7 @@
     {
       "id": "a-54",
       "competencyId": "c-fim",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-30T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13912,7 +13913,7 @@
     {
       "id": "a-55",
       "competencyId": "c-ng-insert",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-02T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13920,7 +13921,7 @@
     {
       "id": "a-56",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-09T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13928,7 +13929,7 @@
     {
       "id": "a-57",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-09T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13936,7 +13937,7 @@
     {
       "id": "a-58",
       "competencyId": "c-ud-ext",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-01-08T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13944,7 +13945,7 @@
     {
       "id": "a-59",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-01-13T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13952,7 +13953,7 @@
     {
       "id": "a-60",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-26T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13960,7 +13961,7 @@
     {
       "id": "a-61",
       "competencyId": "c-cl-tun-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-11-17T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13968,7 +13969,7 @@
     {
       "id": "a-62",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-12-31T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13976,7 +13977,7 @@
     {
       "id": "a-63",
       "competencyId": "c-tpn",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2025-11-11T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13984,7 +13985,7 @@
     {
       "id": "a-64",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-03-02T15:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -13992,7 +13993,7 @@
     {
       "id": "a-65",
       "competencyId": "c-ct-smallbore",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-02T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14000,7 +14001,7 @@
     {
       "id": "a-66",
       "competencyId": "c-cl-midline-rem",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-11T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14008,7 +14009,7 @@
     {
       "id": "a-67",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-04T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14016,7 +14017,7 @@
     {
       "id": "a-68",
       "competencyId": "c-ct-site",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14024,7 +14025,7 @@
     {
       "id": "a-69",
       "competencyId": "c-ostomy",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-01T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14032,7 +14033,7 @@
     {
       "id": "a-70",
       "competencyId": "c-rectal-tube",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14040,7 +14041,7 @@
     {
       "id": "a-71",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-07T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14048,7 +14049,7 @@
     {
       "id": "a-72",
       "competencyId": "c-cl-rem-picc-adult",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-04-09T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14056,7 +14057,7 @@
     {
       "id": "a-73",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2026-05-04T14:15:00.000Z",
       "note": "",
       "personId": "n-1474684"
@@ -14064,7 +14065,7 @@
     {
       "id": "a-74",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
       "personId": "n-1583340"
@@ -14072,7 +14073,7 @@
     {
       "id": "a-75",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-27T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14080,7 +14081,7 @@
     {
       "id": "a-76",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-24T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14088,7 +14089,7 @@
     {
       "id": "a-77",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-22T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14096,7 +14097,7 @@
     {
       "id": "a-78",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-23T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14104,7 +14105,7 @@
     {
       "id": "a-79",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-08T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14112,7 +14113,7 @@
     {
       "id": "a-80",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-07T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14120,7 +14121,7 @@
     {
       "id": "a-81",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-31T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14128,7 +14129,7 @@
     {
       "id": "a-82",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-28T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14136,7 +14137,7 @@
     {
       "id": "a-83",
       "competencyId": "c-fim",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-21T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14144,7 +14145,7 @@
     {
       "id": "a-84",
       "competencyId": "c-ng-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-25T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14152,7 +14153,7 @@
     {
       "id": "a-85",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-24T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14160,7 +14161,7 @@
     {
       "id": "a-86",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-04T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14168,7 +14169,7 @@
     {
       "id": "a-87",
       "competencyId": "c-ud-ext",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-02T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14176,7 +14177,7 @@
     {
       "id": "a-88",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-11T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14184,7 +14185,7 @@
     {
       "id": "a-89",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-18T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14192,7 +14193,7 @@
     {
       "id": "a-90",
       "competencyId": "c-cl-tun-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14200,7 +14201,7 @@
     {
       "id": "a-91",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-11T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14208,7 +14209,7 @@
     {
       "id": "a-92",
       "competencyId": "c-tpn",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-04T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14216,7 +14217,7 @@
     {
       "id": "a-93",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-01T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14224,7 +14225,7 @@
     {
       "id": "a-94",
       "competencyId": "c-ct-site",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-28T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14232,7 +14233,7 @@
     {
       "id": "a-95",
       "competencyId": "c-ct-smallbore",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-13T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14240,7 +14241,7 @@
     {
       "id": "a-96",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14248,7 +14249,7 @@
     {
       "id": "a-97",
       "competencyId": "c-rectal-tube",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-16T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14256,7 +14257,7 @@
     {
       "id": "a-98",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14264,7 +14265,7 @@
     {
       "id": "a-99",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14272,7 +14273,7 @@
     {
       "id": "a-100",
       "competencyId": "c-cl-midline-rem",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-10T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14280,7 +14281,7 @@
     {
       "id": "a-101",
       "competencyId": "c-cl-rem-picc-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-22T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14288,7 +14289,7 @@
     {
       "id": "a-102",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-17T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14296,7 +14297,7 @@
     {
       "id": "a-103",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-19T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14304,7 +14305,7 @@
     {
       "id": "a-104",
       "competencyId": "c-ostomy",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-20T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14312,7 +14313,7 @@
     {
       "id": "a-105",
       "competencyId": "c-npwt",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14320,7 +14321,7 @@
     {
       "id": "a-106",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-07T15:15:00.000Z",
       "note": "",
       "personId": "n-1130738"
@@ -14328,7 +14329,7 @@
     {
       "id": "a-107",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-30T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14336,7 +14337,7 @@
     {
       "id": "a-108",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-03T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14344,7 +14345,7 @@
     {
       "id": "a-109",
       "competencyId": "c-uc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-15T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14352,7 +14353,7 @@
     {
       "id": "a-110",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-26T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14360,7 +14361,7 @@
     {
       "id": "a-111",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-11-29T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14368,7 +14369,7 @@
     {
       "id": "a-112",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-18T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14376,7 +14377,7 @@
     {
       "id": "a-113",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-16T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14384,7 +14385,7 @@
     {
       "id": "a-114",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14392,7 +14393,7 @@
     {
       "id": "a-115",
       "competencyId": "c-fim",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-13T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14400,7 +14401,7 @@
     {
       "id": "a-116",
       "competencyId": "c-ng-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-25T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14408,7 +14409,7 @@
     {
       "id": "a-117",
       "competencyId": "c-ng-remove",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14416,7 +14417,7 @@
     {
       "id": "a-118",
       "competencyId": "c-ng-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-28T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14424,7 +14425,7 @@
     {
       "id": "a-119",
       "competencyId": "c-ud-ext",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-28T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14432,7 +14433,7 @@
     {
       "id": "a-120",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-13T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14440,7 +14441,7 @@
     {
       "id": "a-121",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-30T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14448,7 +14449,7 @@
     {
       "id": "a-122",
       "competencyId": "c-cl-tun-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-17T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14456,7 +14457,7 @@
     {
       "id": "a-123",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-12T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14464,7 +14465,7 @@
     {
       "id": "a-124",
       "competencyId": "c-tpn",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-16T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14472,7 +14473,7 @@
     {
       "id": "a-125",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-21T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14480,7 +14481,7 @@
     {
       "id": "a-126",
       "competencyId": "c-ct-site",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-08T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14488,7 +14489,7 @@
     {
       "id": "a-127",
       "competencyId": "c-ct-smallbore",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-02-22T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14496,7 +14497,7 @@
     {
       "id": "a-128",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-06T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14504,7 +14505,7 @@
     {
       "id": "a-129",
       "competencyId": "c-rectal-tube",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-23T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14512,7 +14513,7 @@
     {
       "id": "a-130",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-03-12T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14520,7 +14521,7 @@
     {
       "id": "a-131",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-05-16T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14528,7 +14529,7 @@
     {
       "id": "a-132",
       "competencyId": "c-cl-midline-rem",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-21T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14536,7 +14537,7 @@
     {
       "id": "a-133",
       "competencyId": "c-cl-rem-picc-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-01-06T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14544,7 +14545,7 @@
     {
       "id": "a-134",
       "competencyId": "c-cl-cvad-adult",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-05T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14552,7 +14553,7 @@
     {
       "id": "a-135",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-14T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14560,7 +14561,7 @@
     {
       "id": "a-136",
       "competencyId": "c-ostomy",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2026-04-19T14:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14568,7 +14569,7 @@
     {
       "id": "a-137",
       "competencyId": "c-npwt",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-22T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14576,7 +14577,7 @@
     {
       "id": "a-138",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2025-12-27T15:15:00.000Z",
       "note": "",
       "personId": "n-1560857"
@@ -14584,7 +14585,7 @@
     {
       "id": "a-139",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-05T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14592,7 +14593,7 @@
     {
       "id": "a-140",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14600,7 +14601,7 @@
     {
       "id": "a-141",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-12T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14608,7 +14609,7 @@
     {
       "id": "a-142",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14616,7 +14617,7 @@
     {
       "id": "a-143",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-03T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14624,7 +14625,7 @@
     {
       "id": "a-144",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-01T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14632,7 +14633,7 @@
     {
       "id": "a-145",
       "competencyId": "c-uc-im-clinic",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-04T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14640,7 +14641,7 @@
     {
       "id": "a-146",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-29T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14648,7 +14649,7 @@
     {
       "id": "a-147",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-30T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14656,7 +14657,7 @@
     {
       "id": "a-148",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-06T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14664,7 +14665,7 @@
     {
       "id": "a-149",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-05T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14672,7 +14673,7 @@
     {
       "id": "a-150",
       "competencyId": "c-medsurg-asepsis-proc",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-20T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14680,7 +14681,7 @@
     {
       "id": "a-151",
       "competencyId": "c-proc-tray",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-15T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14688,7 +14689,7 @@
     {
       "id": "a-152",
       "competencyId": "c-wound-care-amb",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-14T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14696,7 +14697,7 @@
     {
       "id": "a-153",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-26T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14704,7 +14705,7 @@
     {
       "id": "a-154",
       "competencyId": "c-suture-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-28T15:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14712,7 +14713,7 @@
     {
       "id": "a-155",
       "competencyId": "c-npwt",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-11T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14720,7 +14721,7 @@
     {
       "id": "a-156",
       "competencyId": "c-npwt-dressing",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-19T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14728,7 +14729,7 @@
     {
       "id": "a-157",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-27T14:15:00.000Z",
       "note": "",
       "personId": "n-488930"
@@ -14736,7 +14737,7 @@
     {
       "id": "a-158",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-18T14:15:00.000Z",
       "note": "",
       "personId": "n-988556"
@@ -14744,7 +14745,7 @@
     {
       "id": "a-159",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-10T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14752,7 +14753,7 @@
     {
       "id": "a-160",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-11T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14760,7 +14761,7 @@
     {
       "id": "a-161",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-19T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14768,7 +14769,7 @@
     {
       "id": "a-162",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-26T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14776,7 +14777,7 @@
     {
       "id": "a-163",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-31T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14784,7 +14785,7 @@
     {
       "id": "a-164",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-23T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14792,7 +14793,7 @@
     {
       "id": "a-165",
       "competencyId": "c-uc-im-clinic",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-05T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14800,7 +14801,7 @@
     {
       "id": "a-166",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-18T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14808,7 +14809,7 @@
     {
       "id": "a-167",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-21T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14816,7 +14817,7 @@
     {
       "id": "a-168",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-27T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14824,7 +14825,7 @@
     {
       "id": "a-169",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-27T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14832,7 +14833,7 @@
     {
       "id": "a-170",
       "competencyId": "c-medsurg-asepsis-proc",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-26T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14840,7 +14841,7 @@
     {
       "id": "a-171",
       "competencyId": "c-proc-tray",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-15T15:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14848,7 +14849,7 @@
     {
       "id": "a-172",
       "competencyId": "c-wound-care-amb",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-15T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14856,7 +14857,7 @@
     {
       "id": "a-173",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-12T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14864,7 +14865,7 @@
     {
       "id": "a-174",
       "competencyId": "c-suture-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-28T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14872,7 +14873,7 @@
     {
       "id": "a-175",
       "competencyId": "c-npwt-dressing",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-19T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14880,7 +14881,7 @@
     {
       "id": "a-176",
       "competencyId": "c-npwt",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-04T14:15:00.000Z",
       "note": "",
       "personId": "n-1160174"
@@ -14888,7 +14889,7 @@
     {
       "id": "a-177",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-14T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14896,7 +14897,7 @@
     {
       "id": "a-178",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-27T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14904,7 +14905,7 @@
     {
       "id": "a-179",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14912,7 +14913,7 @@
     {
       "id": "a-180",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-30T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14920,7 +14921,7 @@
     {
       "id": "a-181",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-17T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14928,7 +14929,7 @@
     {
       "id": "a-182",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-20T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14936,7 +14937,7 @@
     {
       "id": "a-183",
       "competencyId": "c-uc-im-clinic",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-17T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14944,7 +14945,7 @@
     {
       "id": "a-184",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-06T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14952,7 +14953,7 @@
     {
       "id": "a-185",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-23T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14960,7 +14961,7 @@
     {
       "id": "a-186",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-03T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14968,7 +14969,7 @@
     {
       "id": "a-187",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-12T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14976,7 +14977,7 @@
     {
       "id": "a-188",
       "competencyId": "c-medsurg-asepsis-proc",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-17T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14984,7 +14985,7 @@
     {
       "id": "a-189",
       "competencyId": "c-proc-tray",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-25T15:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -14992,7 +14993,7 @@
     {
       "id": "a-190",
       "competencyId": "c-wound-care-amb",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-17T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -15000,7 +15001,7 @@
     {
       "id": "a-191",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-25T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -15008,7 +15009,7 @@
     {
       "id": "a-192",
       "competencyId": "c-suture-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-13T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -15016,7 +15017,7 @@
     {
       "id": "a-193",
       "competencyId": "c-npwt-dressing",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-10T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -15024,7 +15025,7 @@
     {
       "id": "a-194",
       "competencyId": "c-npwt",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-12T14:15:00.000Z",
       "note": "",
       "personId": "n-1335362"
@@ -15032,7 +15033,7 @@
     {
       "id": "a-195",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-11-24T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15040,7 +15041,7 @@
     {
       "id": "a-196",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-02T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15048,7 +15049,7 @@
     {
       "id": "a-197",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-25T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15056,7 +15057,7 @@
     {
       "id": "a-198",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-17T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15064,7 +15065,7 @@
     {
       "id": "a-199",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-23T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15072,7 +15073,7 @@
     {
       "id": "a-200",
       "competencyId": "c-drainage-tubes",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-01T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15080,7 +15081,7 @@
     {
       "id": "a-201",
       "competencyId": "c-uc-im-clinic",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-01T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15088,7 +15089,7 @@
     {
       "id": "a-202",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-22T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15096,7 +15097,7 @@
     {
       "id": "a-203",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-01T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15104,7 +15105,7 @@
     {
       "id": "a-204",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-30T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15112,7 +15113,7 @@
     {
       "id": "a-205",
       "competencyId": "c-picc-maint",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-01-17T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15120,7 +15121,7 @@
     {
       "id": "a-206",
       "competencyId": "c-medsurg-asepsis-proc",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-06T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15128,7 +15129,7 @@
     {
       "id": "a-207",
       "competencyId": "c-proc-tray",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2025-12-21T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15136,7 +15137,7 @@
     {
       "id": "a-208",
       "competencyId": "c-wound-care-amb",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-25T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15144,7 +15145,7 @@
     {
       "id": "a-209",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-06T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15152,7 +15153,7 @@
     {
       "id": "a-210",
       "competencyId": "c-suture-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-02-28T15:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15160,7 +15161,7 @@
     {
       "id": "a-211",
       "competencyId": "c-npwt",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-30T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15168,7 +15169,7 @@
     {
       "id": "a-212",
       "competencyId": "c-npwt-dressing",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-03-16T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15176,7 +15177,7 @@
     {
       "id": "a-213",
       "competencyId": "c-staple-rem",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-04-14T14:15:00.000Z",
       "note": "",
       "personId": "n-628807"
@@ -15184,7 +15185,7 @@
     {
       "id": "a-214",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-16T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15192,7 +15193,7 @@
     {
       "id": "a-215",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-30T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15200,7 +15201,7 @@
     {
       "id": "a-216",
       "competencyId": "c-piv-maint-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-28T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15208,7 +15209,7 @@
     {
       "id": "a-217",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-23T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15216,7 +15217,7 @@
     {
       "id": "a-218",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-21T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15224,7 +15225,7 @@
     {
       "id": "a-219",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-29T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15232,7 +15233,7 @@
     {
       "id": "a-220",
       "competencyId": "c-self-cath",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-15T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15240,7 +15241,7 @@
     {
       "id": "a-221",
       "competencyId": "c-voiding-trials",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-12-22T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15248,7 +15249,7 @@
     {
       "id": "a-222",
       "competencyId": "c-bpa-rapid",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-27T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15256,7 +15257,7 @@
     {
       "id": "a-223",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-09T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15264,7 +15265,7 @@
     {
       "id": "a-224",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-05-28T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15272,7 +15273,7 @@
     {
       "id": "a-225",
       "competencyId": "c-preop-clip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15280,7 +15281,7 @@
     {
       "id": "a-226",
       "competencyId": "c-pos-knee",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-03T15:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15288,7 +15289,7 @@
     {
       "id": "a-227",
       "competencyId": "c-pos-crutches",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-29T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15296,7 +15297,7 @@
     {
       "id": "a-228",
       "competencyId": "c-pos-walker",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-05T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15304,7 +15305,7 @@
     {
       "id": "a-229",
       "competencyId": "c-npwt-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-27T14:15:00.000Z",
       "note": "",
       "personId": "n-1034024"
@@ -15312,7 +15313,7 @@
     {
       "id": "a-230",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-05-09T14:15:00.000Z",
       "note": "",
       "personId": "n-1529896"
@@ -15320,7 +15321,7 @@
     {
       "id": "a-231",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-03-25T14:15:00.000Z",
       "note": "",
       "personId": "n-1529896"
@@ -15328,7 +15329,7 @@
     {
       "id": "a-232",
       "competencyId": "c-piv-maint-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-26T14:15:00.000Z",
       "note": "",
       "personId": "n-1529896"
@@ -15336,7 +15337,7 @@
     {
       "id": "a-233",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-14T14:15:00.000Z",
       "note": "",
       "personId": "n-1529896"
@@ -15344,7 +15345,7 @@
     {
       "id": "a-234",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-03-31T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15352,7 +15353,7 @@
     {
       "id": "a-235",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-06T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15360,7 +15361,7 @@
     {
       "id": "a-236",
       "competencyId": "c-piv-maint-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-27T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15368,7 +15369,7 @@
     {
       "id": "a-237",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-02T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15376,7 +15377,7 @@
     {
       "id": "a-238",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-07T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15384,7 +15385,7 @@
     {
       "id": "a-239",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-20T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15392,7 +15393,7 @@
     {
       "id": "a-240",
       "competencyId": "c-self-cath",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-12T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15400,7 +15401,7 @@
     {
       "id": "a-241",
       "competencyId": "c-voiding-trials",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-27T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15408,7 +15409,7 @@
     {
       "id": "a-242",
       "competencyId": "c-bpa-rapid",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-23T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15416,7 +15417,7 @@
     {
       "id": "a-243",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-03-24T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15424,7 +15425,7 @@
     {
       "id": "a-244",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-26T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15432,7 +15433,7 @@
     {
       "id": "a-245",
       "competencyId": "c-preop-clip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-27T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15440,7 +15441,7 @@
     {
       "id": "a-246",
       "competencyId": "c-pos-knee",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-09T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15448,7 +15449,7 @@
     {
       "id": "a-247",
       "competencyId": "c-pos-crutches",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-14T14:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15456,7 +15457,7 @@
     {
       "id": "a-248",
       "competencyId": "c-pos-walker",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-13T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15464,7 +15465,7 @@
     {
       "id": "a-249",
       "competencyId": "c-npwt-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-17T15:15:00.000Z",
       "note": "",
       "personId": "n-722643"
@@ -15472,7 +15473,7 @@
     {
       "id": "a-250",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-05-23T14:15:00.000Z",
       "note": "",
       "personId": "n-1538479"
@@ -15480,7 +15481,7 @@
     {
       "id": "a-251",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-28T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15488,7 +15489,7 @@
     {
       "id": "a-252",
       "competencyId": "c-pump-alaris",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-14T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15496,7 +15497,7 @@
     {
       "id": "a-253",
       "competencyId": "c-piv-maint-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-20T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15504,7 +15505,7 @@
     {
       "id": "a-254",
       "competencyId": "c-et-assists",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-13T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15512,7 +15513,7 @@
     {
       "id": "a-255",
       "competencyId": "c-naso-op-suction",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-13T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15520,7 +15521,7 @@
     {
       "id": "a-256",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-02-28T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15528,7 +15529,7 @@
     {
       "id": "a-257",
       "competencyId": "c-self-cath",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-10T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15536,7 +15537,7 @@
     {
       "id": "a-258",
       "competencyId": "c-voiding-trials",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-05-01T14:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15544,7 +15545,7 @@
     {
       "id": "a-259",
       "competencyId": "c-bpa-rapid",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-11-15T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15552,7 +15553,7 @@
     {
       "id": "a-260",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-12-07T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15560,7 +15561,7 @@
     {
       "id": "a-261",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-10T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15568,7 +15569,7 @@
     {
       "id": "a-262",
       "competencyId": "c-preop-clip",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-01-03T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15576,7 +15577,7 @@
     {
       "id": "a-263",
       "competencyId": "c-pos-knee",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2025-12-30T15:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15584,7 +15585,7 @@
     {
       "id": "a-264",
       "competencyId": "c-pos-crutches",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-04-21T14:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15592,7 +15593,7 @@
     {
       "id": "a-265",
       "competencyId": "c-pos-walker",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-05-07T14:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15600,7 +15601,7 @@
     {
       "id": "a-266",
       "competencyId": "c-npwt-pacu",
-      "preceptorId": "p-greasor",
+      "preceptorId": "n-1034024",
       "achievedAt": "2026-03-10T14:15:00.000Z",
       "note": "",
       "personId": "n-984835"
@@ -15608,7 +15609,7 @@
     {
       "id": "a-267",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-04-04T14:15:00.000Z",
       "note": "",
       "personId": "n-914781"
@@ -15616,7 +15617,7 @@
     {
       "id": "a-268",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-04-28T14:15:00.000Z",
       "note": "",
       "personId": "n-914781"
@@ -15624,7 +15625,7 @@
     {
       "id": "a-269",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-01-07T15:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15632,7 +15633,7 @@
     {
       "id": "a-270",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-03-10T14:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15640,7 +15641,7 @@
     {
       "id": "a-271",
       "competencyId": "c-pericardial-drain",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-05-20T14:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15648,7 +15649,7 @@
     {
       "id": "a-272",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-01-25T15:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15656,7 +15657,7 @@
     {
       "id": "a-273",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-11-14T15:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15664,7 +15665,7 @@
     {
       "id": "a-274",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-12-17T15:15:00.000Z",
       "note": "",
       "personId": "n-602435"
@@ -15672,7 +15673,7 @@
     {
       "id": "a-275",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "achievedAt": "2026-05-04T14:15:00.000Z",
       "note": "",
       "personId": "n-361404"
@@ -15680,7 +15681,7 @@
     {
       "id": "a-276",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "achievedAt": "2026-02-12T15:15:00.000Z",
       "note": "",
       "personId": "n-361404"
@@ -15688,7 +15689,7 @@
     {
       "id": "a-277",
       "competencyId": "c-pericardial-drain",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "achievedAt": "2026-04-18T14:15:00.000Z",
       "note": "",
       "personId": "n-361404"
@@ -15696,7 +15697,7 @@
     {
       "id": "a-278",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-coakley",
+      "preceptorId": "n-224104",
       "achievedAt": "2026-05-26T14:15:00.000Z",
       "note": "",
       "personId": "n-361404"
@@ -15704,7 +15705,7 @@
     {
       "id": "a-279",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-05-12T14:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15712,7 +15713,7 @@
     {
       "id": "a-280",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-03-19T14:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15720,7 +15721,7 @@
     {
       "id": "a-281",
       "competencyId": "c-pericardial-drain",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-01-13T15:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15728,7 +15729,7 @@
     {
       "id": "a-282",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-04-23T14:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15736,7 +15737,7 @@
     {
       "id": "a-283",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-05-02T14:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15744,7 +15745,7 @@
     {
       "id": "a-284",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-01-26T15:15:00.000Z",
       "note": "",
       "personId": "n-224104"
@@ -15752,7 +15753,7 @@
     {
       "id": "a-285",
       "competencyId": "c-suction-equip",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-11-26T15:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15760,7 +15761,7 @@
     {
       "id": "a-286",
       "competencyId": "c-pos-lateral",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-11-15T15:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15768,7 +15769,7 @@
     {
       "id": "a-287",
       "competencyId": "c-pericardial-drain",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-05-13T14:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15776,7 +15777,7 @@
     {
       "id": "a-288",
       "competencyId": "c-pericardial-flush",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-12-23T15:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15784,7 +15785,7 @@
     {
       "id": "a-289",
       "competencyId": "c-uc-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2025-11-15T15:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15792,7 +15793,7 @@
     {
       "id": "a-290",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-rbrown",
+      "preceptorId": "n-361404",
       "achievedAt": "2026-04-05T14:15:00.000Z",
       "note": "",
       "personId": "n-311406"
@@ -15800,7 +15801,7 @@
     {
       "id": "a-291",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-04-01T14:15:00.000Z",
       "note": "",
       "personId": "n-1125158"
@@ -15808,7 +15809,7 @@
     {
       "id": "a-292",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-03-21T14:15:00.000Z",
       "note": "",
       "personId": "n-1125158"
@@ -15816,7 +15817,7 @@
     {
       "id": "a-293",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2025-12-19T15:15:00.000Z",
       "note": "",
       "personId": "n-1125158"
@@ -15824,7 +15825,7 @@
     {
       "id": "a-294",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-04-03T14:15:00.000Z",
       "note": "",
       "personId": "n-1194888"
@@ -15832,7 +15833,7 @@
     {
       "id": "a-295",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-05-21T14:15:00.000Z",
       "note": "",
       "personId": "n-1194888"
@@ -15840,7 +15841,7 @@
     {
       "id": "a-296",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-04-04T14:15:00.000Z",
       "note": "",
       "personId": "n-1194888"
@@ -15848,7 +15849,7 @@
     {
       "id": "a-297",
       "competencyId": "c-piv-insert",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-03-29T14:15:00.000Z",
       "note": "",
       "personId": "n-330460"
@@ -15856,7 +15857,7 @@
     {
       "id": "a-298",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-04-11T14:15:00.000Z",
       "note": "",
       "personId": "n-330460"
@@ -15864,7 +15865,7 @@
     {
       "id": "a-299",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-lhoover",
+      "preceptorId": "n-1125158",
       "achievedAt": "2026-02-15T15:15:00.000Z",
       "note": "",
       "personId": "n-330460"
@@ -15872,7 +15873,7 @@
     {
       "id": "oa-1",
       "competencyId": "c-cardiac-mon",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2023-12-12T15:15:00.000Z",
       "note": "Maintained from prior DN 4100 tenure. Confirmed during 2023 unit drills.",
       "earnedAtUnitId": "u-dn4100",
@@ -15881,7 +15882,7 @@
     {
       "id": "oa-2",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2024-06-09T14:15:00.000Z",
       "note": "Maintained from prior DN 4100 tenure. Periodic refresh per Nursing Admin policy.",
       "earnedAtUnitId": "u-dn4100",
@@ -15890,7 +15891,7 @@
     {
       "id": "oa-3",
       "competencyId": "c-wound-care",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2024-12-06T15:15:00.000Z",
       "note": "Maintained from prior DN 4100 tenure.",
       "earnedAtUnitId": "u-dn4100",
@@ -15899,7 +15900,7 @@
     {
       "id": "oa-4",
       "competencyId": "c-piv-maint",
-      "preceptorId": "p-staylor",
+      "preceptorId": "n-1130738",
       "achievedAt": "2022-11-07T15:15:00.000Z",
       "note": "Earned during DN 4100 service prior to Cath Lab transfer.",
       "earnedAtUnitId": "u-dn4100",
@@ -15908,7 +15909,7 @@
     {
       "id": "oa-5",
       "competencyId": "c-bpa-transfusion",
-      "preceptorId": "p-msimmons",
+      "preceptorId": "n-96948",
       "achievedAt": "2022-11-27T15:15:00.000Z",
       "note": "Earned during DN 4100 service prior to Cath Lab transfer.",
       "earnedAtUnitId": "u-dn4100",
@@ -15917,7 +15918,7 @@
     {
       "id": "oa-6",
       "competencyId": "c-cl-port",
-      "preceptorId": "p-fgregory",
+      "preceptorId": "n-488930",
       "achievedAt": "2026-05-12T14:15:00.000Z",
       "note": "Cross-trained at 2B/2C during ambulatory rotation.",
       "earnedAtUnitId": "u-2b2c",

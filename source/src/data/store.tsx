@@ -9,7 +9,7 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
-  Unit, PersonRole, Preceptor, Administrator, Person,
+  Unit, PersonRole, Person, PersonPrivilege,
   CompetencyCategory, CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
   ChangeRequest, AuditEvent, Stage, ObservationRating, StageOrFully,
@@ -27,8 +27,7 @@ interface DataCtx {
   // Collections
   units: Unit[];
   personRoles: PersonRole[];
-  preceptors: Preceptor[];
-  administrators: Administrator[];
+  privileges: PersonPrivilege[];
   persons: Person[];
   categories: CompetencyCategory[];
   groups: CompetencyGroup[];
@@ -83,11 +82,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   // -------------------------------------------------------------------------
   // Queries — only run when authenticated
   // -------------------------------------------------------------------------
-  const unitsQ          = useQuery({ queryKey: ['units'],           queryFn: api.getUnits,          enabled, staleTime: 60_000 });
-  const personRolesQ    = useQuery({ queryKey: ['person-roles'],    queryFn: api.getPersonRoles,    enabled, staleTime: 60_000 });
-  const preceptorsQ     = useQuery({ queryKey: ['preceptors'],      queryFn: api.getPreceptors,     enabled, staleTime: 60_000 });
-  const administratorsQ = useQuery({ queryKey: ['administrators'],  queryFn: api.getAdministrators, enabled, staleTime: 60_000 });
-  const personsQ        = useQuery({ queryKey: ['persons'],         queryFn: api.getPersons,        enabled, staleTime: 30_000 });
+  const unitsQ       = useQuery({ queryKey: ['units'],            queryFn: api.getUnits,             enabled, staleTime: 60_000 });
+  const personRolesQ = useQuery({ queryKey: ['person-roles'],     queryFn: api.getPersonRoles,       enabled, staleTime: 60_000 });
+  const privilegesQ  = useQuery({ queryKey: ['person-privileges'], queryFn: api.getPersonPrivileges, enabled, staleTime: 60_000 });
+  const personsQ     = useQuery({ queryKey: ['persons'],           queryFn: api.getPersons,          enabled, staleTime: 30_000 });
   const groupsQ         = useQuery({ queryKey: ['groups'],          queryFn: api.getGroups,         enabled, staleTime: 30_000 });
   const competenciesQ   = useQuery({ queryKey: ['competencies'],    queryFn: api.getCompetencies,   enabled, staleTime: 30_000 });
   const stepsQ          = useQuery({ queryKey: ['steps'],           queryFn: api.getAllSteps,        enabled, staleTime: 30_000 });
@@ -97,11 +95,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
   const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled, staleTime: 10_000 });
 
-  const units          = unitsQ.data          ?? [];
-  const personRoles    = personRolesQ.data    ?? [];
-  const preceptors     = preceptorsQ.data     ?? [];
-  const administrators = administratorsQ.data ?? [];
-  const persons        = personsQ.data        ?? [];
+  const units       = unitsQ.data       ?? [];
+  const personRoles = personRolesQ.data ?? [];
+  const privileges  = privilegesQ.data  ?? [];
+  const persons     = personsQ.data     ?? [];
   const groups         = groupsQ.data         ?? [];
   const competencies   = competenciesQ.data   ?? [];
   const steps          = stepsQ.data          ?? [];
@@ -276,7 +273,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }
 
   const value: DataCtx = {
-    units, personRoles, preceptors, administrators, persons,
+    units, personRoles, privileges, persons,
     categories: seedCategories,
     groups, competencies, steps,
     assignments, observations, achievements,

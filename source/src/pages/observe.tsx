@@ -79,7 +79,7 @@ export default function ObservePage() {
             personId,
             stepId: entry.step.id,
             competencyId,
-            preceptorId: currentLogin.id,
+            observerId: currentLogin.id,
             rating: entry.rating!,
             observedAt: observedAtISO,
             notes: entry.notes.trim() || undefined,
