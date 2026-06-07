@@ -37,8 +37,7 @@ const del = (path: string) => request<void>('DELETE', path);
 
 export const api = {
   // auth — public endpoints (no token required)
-  getLogins: () => get<Login[]>('/auth/logins'),
-  login: (loginId: string) => post<{ token: string; login: Login }>('/auth/login', { loginId }),
+  login: (username: string, password: string) => post<{ token: string; login: Login }>('/auth/login', { username, password }),
 
   // reference — read-only
   getUnits:           () => get<Unit[]>('/units'),

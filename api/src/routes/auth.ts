@@ -76,25 +76,34 @@ router.get('/logins', async (_req, res, next) => {
   }
 });
 
-// Public — exchange a loginId for a JWT
+// Public — exchange username + password for a JWT
 router.post('/login', async (req, res, next) => {
   try {
-    const { loginId } = req.body as { loginId?: string };
-    if (!loginId) {
-      res.status(400).json({ error: 'loginId is required' });
+    const { username, password } = req.body as { username?: string; password?: string };
+    if (!username || !password) {
+      res.status(400).json({ error: 'username and password are required' });
       return;
     }
 
-    const { rows } = await pool.query('SELECT id, name FROM persons WHERE id = $1', [loginId]);
+    const devPassword = process.env.DEV_PASSWORD ?? 'duke24';
+    if (password !== devPassword) {
+      res.status(401).json({ error: 'Invalid credentials' });
+      return;
+    }
+
+    const { rows } = await pool.query(
+      'SELECT id, name FROM persons WHERE username = $1',
+      [username.toLowerCase().trim()],
+    );
     if (rows.length === 0) {
-      res.status(404).json({ error: 'Login not found' });
+      res.status(401).json({ error: 'Invalid credentials' });
       return;
     }
 
     const person = rows[0];
     const { rows: privRows } = await pool.query(
       'SELECT privilege, unit_id FROM person_privileges WHERE person_id = $1',
-      [loginId],
+      [person.id],
     );
 
     // Determine effective role and collect unit IDs for that role

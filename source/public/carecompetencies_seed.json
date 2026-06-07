@@ -192,7 +192,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2015-12-13",
-      "startDate": "2015-12-13"
+      "startDate": "2015-12-13",
+      "username": "simmonsm"
     },
     {
       "id": "n-205051",
@@ -203,7 +204,8 @@
       "primaryPreceptorId": "n-96948",
       "stage": "Orientation",
       "hireDate": "2026-03-15",
-      "startDate": "2026-03-15"
+      "startDate": "2026-03-15",
+      "username": "hesters"
     },
     {
       "id": "n-813703",
@@ -214,7 +216,8 @@
       "primaryPreceptorId": "n-96948",
       "stage": "Core",
       "hireDate": "2026-05-20",
-      "startDate": "2026-05-20"
+      "startDate": "2026-05-20",
+      "username": "kramerc"
     },
     {
       "id": "n-1474684",
@@ -225,7 +228,8 @@
       "primaryPreceptorId": "n-1130738",
       "stage": "Education",
       "hireDate": "2025-09-11",
-      "startDate": "2025-09-11"
+      "startDate": "2025-09-11",
+      "username": "perryg"
     },
     {
       "id": "n-1583340",
@@ -236,7 +240,8 @@
       "primaryPreceptorId": "n-96948",
       "stage": "Core",
       "hireDate": "2026-05-01",
-      "startDate": "2026-05-01"
+      "startDate": "2026-05-01",
+      "username": "reynoldsc"
     },
     {
       "id": "n-1130738",
@@ -247,7 +252,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2013-10-18",
-      "startDate": "2013-10-18"
+      "startDate": "2013-10-18",
+      "username": "taylors"
     },
     {
       "id": "n-1560857",
@@ -258,7 +264,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2002-05-14",
-      "startDate": "2002-05-14"
+      "startDate": "2002-05-14",
+      "username": "vankirkw"
     },
     {
       "id": "n-488930",
@@ -269,7 +276,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2022-05-21",
-      "startDate": "2022-05-21"
+      "startDate": "2022-05-21",
+      "username": "gregoryf"
     },
     {
       "id": "n-988556",
@@ -280,7 +288,8 @@
       "primaryPreceptorId": "n-488930",
       "stage": "Core",
       "hireDate": "2026-05-13",
-      "startDate": "2026-05-13"
+      "startDate": "2026-05-13",
+      "username": "grayj"
     },
     {
       "id": "n-1160174",
@@ -291,7 +300,8 @@
       "primaryPreceptorId": "n-488930",
       "stage": "Education",
       "hireDate": "2025-11-15",
-      "startDate": "2025-11-15"
+      "startDate": "2025-11-15",
+      "username": "guerrai"
     },
     {
       "id": "n-1335362",
@@ -302,7 +312,8 @@
       "primaryPreceptorId": "n-488930",
       "stage": "Education",
       "hireDate": "2025-07-13",
-      "startDate": "2025-07-13"
+      "startDate": "2025-07-13",
+      "username": "lietop"
     },
     {
       "id": "n-628807",
@@ -313,7 +324,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2020-09-04",
-      "startDate": "2020-09-04"
+      "startDate": "2020-09-04",
+      "username": "owenst"
     },
     {
       "id": "n-1034024",
@@ -324,7 +336,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2018-04-18",
-      "startDate": "2018-04-18"
+      "startDate": "2018-04-18",
+      "username": "reasorg"
     },
     {
       "id": "n-1529896",
@@ -335,7 +348,8 @@
       "primaryPreceptorId": "n-1034024",
       "stage": "Orientation",
       "hireDate": "2026-03-15",
-      "startDate": "2026-03-15"
+      "startDate": "2026-03-15",
+      "username": "reichc"
     },
     {
       "id": "n-722643",
@@ -346,7 +360,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2021-08-18",
-      "startDate": "2021-08-18"
+      "startDate": "2021-08-18",
+      "username": "gouldb"
     },
     {
       "id": "n-1538479",
@@ -357,7 +372,8 @@
       "primaryPreceptorId": "n-1034024",
       "stage": "Core",
       "hireDate": "2026-05-21",
-      "startDate": "2026-05-21"
+      "startDate": "2026-05-21",
+      "username": "clairenarvasaf"
     },
     {
       "id": "n-984835",
@@ -368,7 +384,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2022-03-23",
-      "startDate": "2022-03-23"
+      "startDate": "2022-03-23",
+      "username": "neumana"
     },
     {
       "id": "n-914781",
@@ -379,7 +396,8 @@
       "primaryPreceptorId": "n-361404",
       "stage": "Orientation",
       "hireDate": "2026-04-01",
-      "startDate": "2026-04-01"
+      "startDate": "2026-04-01",
+      "username": "scottb"
     },
     {
       "id": "n-1434690",
@@ -390,7 +408,8 @@
       "primaryPreceptorId": "n-361404",
       "stage": "Core",
       "hireDate": "2026-05-18",
-      "startDate": "2026-05-18"
+      "startDate": "2026-05-18",
+      "username": "fischert"
     },
     {
       "id": "n-602435",
@@ -401,7 +420,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2014-01-28",
-      "startDate": "2014-01-28"
+      "startDate": "2014-01-28",
+      "username": "mileys"
     },
     {
       "id": "n-361404",
@@ -412,7 +432,8 @@
       "primaryPreceptorId": "n-224104",
       "stage": "Education",
       "hireDate": "2025-10-29",
-      "startDate": "2025-10-29"
+      "startDate": "2025-10-29",
+      "username": "brownr"
     },
     {
       "id": "n-224104",
@@ -423,7 +444,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2014-01-28",
-      "startDate": "2014-01-28"
+      "startDate": "2014-01-28",
+      "username": "oakleyc"
     },
     {
       "id": "n-311406",
@@ -434,7 +456,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2018-08-18",
-      "startDate": "2018-08-18"
+      "startDate": "2018-08-18",
+      "username": "browninga"
     },
     {
       "id": "n-1125158",
@@ -445,7 +468,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2019-07-14",
-      "startDate": "2019-07-14"
+      "startDate": "2019-07-14",
+      "username": "hooverl"
     },
     {
       "id": "n-1197462",
@@ -456,7 +480,8 @@
       "primaryPreceptorId": "n-1125158",
       "stage": "Core",
       "hireDate": "2026-05-08",
-      "startDate": "2026-05-08"
+      "startDate": "2026-05-08",
+      "username": "smithsonh"
     },
     {
       "id": "n-1194888",
@@ -467,7 +492,8 @@
       "primaryPreceptorId": "n-1125158",
       "stage": "Education",
       "hireDate": "2026-02-09",
-      "startDate": "2026-02-09"
+      "startDate": "2026-02-09",
+      "username": "patels"
     },
     {
       "id": "n-330460",
@@ -478,7 +504,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2004-12-07",
-      "startDate": "2004-12-07"
+      "startDate": "2004-12-07",
+      "username": "bollingerb"
     },
     {
       "id": "n-573641",
@@ -489,7 +516,8 @@
       "primaryPreceptorId": null,
       "stage": "FullyOriented",
       "hireDate": "2012-08-02",
-      "startDate": "2012-08-02"
+      "startDate": "2012-08-02",
+      "username": "hickst"
     },
     {
       "id": "n-480015",
@@ -500,7 +528,8 @@
       "primaryPreceptorId": null,
       "stage": "Nonclinical",
       "hireDate": "2008-05-30",
-      "startDate": "2008-05-30"
+      "startDate": "2008-05-30",
+      "username": "rodgersw"
     }
   ],
   "personPrivileges": [

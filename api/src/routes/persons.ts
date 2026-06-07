@@ -22,6 +22,7 @@ router.get('/:id', requireAuth, async (req, res, next) => {
 function toPerson(r: Record<string, unknown>) {
   return {
     id: r.id,
+    username: r.username ?? undefined,
     name: r.name,
     unitId: r.unit_id,
     roleId: r.role_id ?? undefined,

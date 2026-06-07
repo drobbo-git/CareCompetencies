@@ -37,7 +37,9 @@ function toPersonRole(r: any) {
 
 function toPerson(n: any) {
   return {
-    id: n.id, name: n.fullName ?? n.name ?? '',
+    id: n.id,
+    username: n.username ?? null,
+    name: n.fullName ?? n.name ?? '',
     unit_id: n.unitId,
     role_id: n.roleId ?? DEFAULT_ROLE_ID,
     primary_preceptor_id: n.primaryPreceptorId ?? null,
@@ -182,7 +184,7 @@ async function seed() {
       personRoles.map(toPersonRole));
 
     await insertAll(client, 'persons',
-      ['id', 'name', 'unit_id', 'role_id', 'primary_preceptor_id', 'start_date', 'stage_override', 'duke_id', 'job_code'],
+      ['id', 'username', 'name', 'unit_id', 'role_id', 'primary_preceptor_id', 'start_date', 'stage_override', 'duke_id', 'job_code'],
       persons.map(toPerson));
 
     await insertAll(client, 'person_privileges',

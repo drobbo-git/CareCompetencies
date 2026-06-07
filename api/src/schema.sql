@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS person_roles (
 
 CREATE TABLE IF NOT EXISTS persons (
   id                   TEXT PRIMARY KEY,
+  username             TEXT UNIQUE,
   name                 TEXT NOT NULL,
   unit_id              TEXT REFERENCES units(id),
   role_id              TEXT,
