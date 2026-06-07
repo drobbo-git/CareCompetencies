@@ -557,6 +557,66 @@
       "personId": "n-480015",
       "privilege": "Administrator",
       "unitId": null
+    },
+    {
+      "id": "priv-n-1560857-prec-u-dn4100",
+      "personId": "n-1560857",
+      "privilege": "Preceptor",
+      "unitId": "u-dn4100"
+    },
+    {
+      "id": "priv-n-1560857-ul-u-dn4100",
+      "personId": "n-1560857",
+      "privilege": "UnitLeader",
+      "unitId": "u-dn4100"
+    },
+    {
+      "id": "priv-n-628807-prec-u-2b2c",
+      "personId": "n-628807",
+      "privilege": "Preceptor",
+      "unitId": "u-2b2c"
+    },
+    {
+      "id": "priv-n-628807-ul-u-2b2c",
+      "personId": "n-628807",
+      "privilege": "UnitLeader",
+      "unitId": "u-2b2c"
+    },
+    {
+      "id": "priv-n-984835-prec-u-ascpacu",
+      "personId": "n-984835",
+      "privilege": "Preceptor",
+      "unitId": "u-ascpacu"
+    },
+    {
+      "id": "priv-n-984835-ul-u-ascpacu",
+      "personId": "n-984835",
+      "privilege": "UnitLeader",
+      "unitId": "u-ascpacu"
+    },
+    {
+      "id": "priv-n-311406-prec-u-drhcathlab",
+      "personId": "n-311406",
+      "privilege": "Preceptor",
+      "unitId": "u-drhcathlab"
+    },
+    {
+      "id": "priv-n-311406-ul-u-drhcathlab",
+      "personId": "n-311406",
+      "privilege": "UnitLeader",
+      "unitId": "u-drhcathlab"
+    },
+    {
+      "id": "priv-n-330460-prec-u-drahradonc",
+      "personId": "n-330460",
+      "privilege": "Preceptor",
+      "unitId": "u-drahradonc"
+    },
+    {
+      "id": "priv-n-330460-ul-u-drahradonc",
+      "personId": "n-330460",
+      "privilege": "UnitLeader",
+      "unitId": "u-drahradonc"
     }
   ],
   "competencies": [
