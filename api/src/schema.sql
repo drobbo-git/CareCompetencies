@@ -111,14 +111,6 @@ CREATE TABLE IF NOT EXISTS audit_events (
   detail       TEXT
 );
 
--- Login records (synthesized from seed data; no passwords in prototype auth)
-CREATE TABLE IF NOT EXISTS logins (
-  id           TEXT PRIMARY KEY,
-  display_name TEXT NOT NULL,
-  system_role  TEXT NOT NULL,
-  unit_ids     JSONB         -- array of unit IDs; null for Administrator / Person
-);
-
 -- Indexes for the hot query paths
 CREATE INDEX IF NOT EXISTS ix_persons_unit     ON persons(unit_id);
 CREATE INDEX IF NOT EXISTS ix_privs_person     ON person_privileges(person_id);

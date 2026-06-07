@@ -129,74 +129,6 @@ function toChangeRequest(cr: any) {
   };
 }
 
-function synthesizeLogins(persons: any[], privileges: any[], units: any[]) {
-  const logins: any[] = [];
-
-  const unitNameMap = new Map(units.map((u: any) => [u.id, u.name]));
-
-  const adminPersonIds = new Set(
-    privileges.filter((p: any) => p.privilege === 'Administrator').map((p: any) => p.personId)
-  );
-
-  for (const personId of adminPersonIds) {
-    const person = persons.find((n: any) => n.id === personId);
-    if (!person) continue;
-    logins.push({
-      id: person.id,
-      display_name: `${person.fullName ?? person.name ?? ''} (Administrator)`,
-      system_role: 'Administrator',
-      unit_ids: null,
-    });
-  }
-
-  const ulMap = new Map<string, string[]>();
-  for (const p of privileges.filter((pp: any) => pp.privilege === 'UnitLeader')) {
-    if (!ulMap.has(p.personId)) ulMap.set(p.personId, []);
-    if (p.unitId) ulMap.get(p.personId)!.push(p.unitId);
-  }
-  for (const [personId, unitIds] of ulMap) {
-    const person = persons.find((n: any) => n.id === personId);
-    if (!person) continue;
-    const unitNames = unitIds.map((uid) => unitNameMap.get(uid) ?? uid).join(', ');
-    logins.push({
-      id: person.id,
-      display_name: `${person.fullName ?? person.name ?? ''} (Unit Leader — ${unitNames})`,
-      system_role: 'UnitLeader',
-      unit_ids: JSON.stringify(unitIds),
-    });
-  }
-
-  const precMap = new Map<string, string[]>();
-  for (const p of privileges.filter((pp: any) => pp.privilege === 'Preceptor')) {
-    if (!precMap.has(p.personId)) precMap.set(p.personId, []);
-    if (p.unitId) precMap.get(p.personId)!.push(p.unitId);
-  }
-  for (const [personId, unitIds] of precMap) {
-    const person = persons.find((n: any) => n.id === personId);
-    if (!person) continue;
-    logins.push({
-      id: person.id,
-      display_name: `${person.fullName ?? person.name ?? ''} (Preceptor)`,
-      system_role: 'Preceptor',
-      unit_ids: JSON.stringify(unitIds),
-    });
-  }
-
-  const orientee = persons.find(
-    (n: any) => !adminPersonIds.has(n.id) && !precMap.has(n.id) && !ulMap.has(n.id)
-  );
-  if (orientee) {
-    logins.push({
-      id: orientee.id,
-      display_name: `${orientee.fullName ?? orientee.name ?? ''} (Orientee)`,
-      system_role: 'Person',
-      unit_ids: null,
-    });
-  }
-
-  return logins;
-}
-
 // ---------------------------------------------------------------------------
 // Insert helpers
 // ---------------------------------------------------------------------------
@@ -224,7 +156,7 @@ async function seed() {
         competency_achievements, step_observations,
         competency_assignments, competency_steps,
         competencies, competency_groups,
-        logins, person_privileges, persons,
+        person_privileges, persons,
         person_roles, units
       RESTART IDENTITY CASCADE
     `);
@@ -256,12 +188,6 @@ async function seed() {
     await insertAll(client, 'person_privileges',
       ['id', 'person_id', 'privilege', 'unit_id'],
       personPrivileges.map(toPersonPrivilege));
-
-    const logins = synthesizeLogins(persons, personPrivileges, units);
-
-    await insertAll(client, 'logins',
-      ['id', 'display_name', 'system_role', 'unit_ids'],
-      logins);
 
     await insertAll(client, 'competency_groups',
       ['id', 'name', 'parent_group_id', 'order_index', 'description'],
@@ -297,7 +223,6 @@ async function seed() {
     console.log(`  person_roles: ${personRoles.length}`);
     console.log(`  persons: ${persons.length}`);
     console.log(`  person_privileges: ${personPrivileges.length}`);
-    console.log(`  logins: ${logins.length}`);
     console.log(`  competency_groups: ${groups.length}`);
     console.log(`  competencies: ${competencies.length}`);
     console.log(`  competency_steps: ${steps.length}`);
