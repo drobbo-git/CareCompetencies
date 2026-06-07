@@ -15,6 +15,7 @@ import SignOffPage from "./pages/sign-off";
 import RequestsPage from "./pages/requests";
 import ReportsPage from "./pages/reports";
 import MyOrienteesPage from "./pages/my-orientees";
+import OrienteeWorkspacePage from "./pages/orientee-workspace";
 import MyCompetenciesPage from "./pages/my-competencies";
 import GroupsPage from "./pages/groups";
 import AuditLogPage from "./pages/audit";
@@ -46,6 +47,7 @@ function App() {
                   <Route path="/" element={<Layout />}>
                     <Route index element={<Home />} />
                     <Route path="my-orientees" element={<MyOrienteesPage />} />
+                    <Route path="my-orientees/:id" element={<OrienteeWorkspacePage />} />
                     <Route path="my-competencies" element={<MyCompetenciesPage />} />
                     <Route path="competencies" element={<CompetenciesPage />} />
                     <Route path="competencies/:id" element={<CompetencyDetailPage />} />

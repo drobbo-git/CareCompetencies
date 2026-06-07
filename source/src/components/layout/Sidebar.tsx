@@ -1,8 +1,9 @@
+import { Fragment } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList, FileBarChart2,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
-  Grid3x3, Sparkles, LogOut,
+  Grid3x3, Sparkles, LogOut, UserCircle2,
 } from "lucide-react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -13,45 +14,29 @@ interface NavItem {
   label: string;
   icon: typeof Home;
   roles: SystemRole[];
+  /** Render a divider before this item for these roles. */
+  dividerBefore?: SystemRole[];
 }
 
-/**
- * Returns the nav items visible for the given system role.
- *
- * Notable role-specific behaviors built up over this session:
- *   - Preceptors and Unit Leaders both see /my-orientees, but Unit Leaders
- *     see it labeled "Unit Orientees" (all incomplete on their unit) while
- *     Preceptors see it as "My Orientees" (their paired orientees).
- *   - Administrators do NOT see Person Roster or Competency Matrix — those
- *     are scoped to Unit Leaders.
- *   - The dev/ops items (Export Seed JSON, Export Deployment Files) appear
- *     only for Administrators, in their own section below a divider.
- */
-function getNavItems(role: SystemRole, isUnitLeader: boolean): { primary: NavItem[]; devOpsItems: NavItem[] } {
-  const primary: NavItem[] = [
-    { to: "/",              label: "Home",                     icon: Home,           roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
-    { to: "/my-orientees",  label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
-    { to: "/observe",       label: "Observe",                  icon: Stethoscope,    roles: ["Preceptor", "UnitLeader"] },
-    { to: "/sign-off",      label: "Sign off",                 icon: ClipboardCheck, roles: ["Preceptor", "UnitLeader"] },
-    { to: "/persons",       label: "Person Roster",            icon: Users,          roles: ["UnitLeader"] },
-    { to: "/competency-matrix", label: "Competency Matrix",    icon: Grid3x3,        roles: ["UnitLeader"] },
-    { to: "/competencies",  label: "Search Competencies",       icon: BookOpen,       roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
-    { to: "/groups",        label: "Manage Groups",            icon: Layers,         roles: ["Administrator"] },
-    { to: "/assignments",   label: "Assignments",              icon: ClipboardList,  roles: ["Administrator"] },
-    { to: "/people",        label: "People",                   icon: Users,          roles: ["Administrator"] },
-    { to: "/requests",      label: "Change Requests",          icon: MailQuestion,   roles: ["Administrator", "Preceptor", "UnitLeader"] },
-    { to: "/reports",       label: "Reports",                  icon: FileBarChart2,  roles: ["Administrator", "UnitLeader"] },
-    { to: "/audit",         label: "Audit Log",                icon: ShieldCheck,    roles: ["Administrator"] },
+function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
+  const items: NavItem[] = [
+    { to: "/",                  label: "Home",               icon: Home,          roles: ["Administrator", "Person"] },
+    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,   roles: ["Preceptor"] },
+    { to: "/my-orientees",      label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
+    { to: "/observe",           label: "Observe Steps",      icon: Stethoscope,   roles: ["Preceptor", "UnitLeader"] },
+    { to: "/sign-off",          label: "Sign Off",           icon: ClipboardCheck,roles: ["Preceptor", "UnitLeader"] },
+    { to: "/persons",           label: "Person Roster",      icon: Users,         roles: ["UnitLeader"] },
+    { to: "/competency-matrix", label: "Competency Matrix",  icon: Grid3x3,       roles: ["UnitLeader"] },
+    { to: "/competencies",      label: "Search Competencies",icon: BookOpen,      roles: ["Administrator", "UnitLeader", "Preceptor", "Person"], dividerBefore: ["Preceptor", "UnitLeader"] },
+    { to: "/groups",            label: "Manage Groups",      icon: Layers,        roles: ["Administrator"] },
+    { to: "/assignments",       label: "Assignments",        icon: ClipboardList, roles: ["Administrator"] },
+    { to: "/people",            label: "People",             icon: Users,         roles: ["Administrator"] },
+    { to: "/requests",          label: "Change Requests",    icon: MailQuestion,  roles: ["Administrator", "Preceptor", "UnitLeader"] },
+    { to: "/reports",           label: "Reports",            icon: FileBarChart2, roles: ["Administrator", "UnitLeader"] },
+    { to: "/audit",             label: "Audit Log",          icon: ShieldCheck,   roles: ["Administrator"] },
   ];
-  
-  // Dev/ops affordances were App Builder–workflow only and have been removed.
-  // The empty array keeps the section gracefully no-op if anything is added later.
-  const devOpsItems: NavItem[] = [];
 
-  return {
-    primary: primary.filter((i) => i.roles.includes(role)),
-    devOpsItems: devOpsItems.filter((i) => i.roles.includes(role)),
-  };
+  return items.filter((i) => i.roles.includes(role));
 }
 
 export function Sidebar() {
@@ -61,7 +46,7 @@ export function Sidebar() {
   if (!currentLogin) return null;
 
   const isUnitLeader = currentLogin.systemRole === "UnitLeader";
-  const { primary, devOpsItems } = getNavItems(currentLogin.systemRole, isUnitLeader);
+  const navItems = getNavItems(currentLogin.systemRole, isUnitLeader);
   const homeUnit = currentLogin.unitId ? units.find((u) => u.id === currentLogin.unitId) : undefined;
 
   return (
@@ -93,17 +78,14 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-2 space-y-0.5">
-        {primary.map((item) => (
-          <NavItemLink key={item.to} item={item} />
+        {navItems.map((item) => (
+          <Fragment key={item.to}>
+            {item.dividerBefore?.includes(currentLogin.systemRole) && (
+              <div className="my-2 border-t border-sidebar-border" />
+            )}
+            <NavItemLink item={item} />
+          </Fragment>
         ))}
-        {devOpsItems.length > 0 && (
-          <>
-            <div className="my-2 border-t border-sidebar-border" />
-            {devOpsItems.map((item) => (
-              <NavItemLink key={item.to} item={item} />
-            ))}
-          </>
-        )}
         <div className="my-2 border-t border-sidebar-border" />
         <button
           type="button"
@@ -122,7 +104,7 @@ function NavItemLink({ item }: { item: NavItem }) {
   return (
     <NavLink
       to={item.to}
-      end={item.to === "/"}
+      end={item.to === "/" || item.to === "/my-competencies"}
       className={({ isActive }) =>
         `flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors ${
           isActive

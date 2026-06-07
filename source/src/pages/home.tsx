@@ -31,6 +31,9 @@ export default function Home() {
   if (currentLogin.systemRole === "UnitLeader") {
     return <Navigate to="/unit-leader-dashboard" replace />;
   }
+  if (currentLogin.systemRole === "Preceptor") {
+    return <Navigate to="/my-orientees" replace />;
+  }
   if (currentLogin.systemRole === "Person") {
     return <MyCompetenciesPage />;
   }
