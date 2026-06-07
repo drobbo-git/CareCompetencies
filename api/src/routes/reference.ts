@@ -1,4 +1,4 @@
-// Read-only reference data: units, person-roles, preceptors, administrators
+// Read-only reference data: units, person-roles, person-privileges
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
@@ -21,30 +21,18 @@ router.get('/units', requireAuth, async (_req, res, next) => {
 router.get('/person-roles', requireAuth, async (_req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT * FROM person_roles ORDER BY name');
-    res.json(rows.map((r) => ({ id: r.id, code: r.code, name: r.name })));
+    res.json(rows.map((r) => ({ id: r.id, name: r.name })));
   } catch (err) { next(err); }
 });
 
-router.get('/preceptors', requireAuth, async (_req, res, next) => {
+router.get('/person-privileges', requireAuth, async (_req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM preceptors ORDER BY name');
+    const { rows } = await pool.query('SELECT * FROM person_privileges ORDER BY person_id');
     res.json(rows.map((r) => ({
       id: r.id,
-      name: r.name,
-      unitId: r.unit_id,
-      email: r.email ?? undefined,
-    })));
-  } catch (err) { next(err); }
-});
-
-router.get('/administrators', requireAuth, async (_req, res, next) => {
-  try {
-    const { rows } = await pool.query('SELECT * FROM administrators ORDER BY name');
-    res.json(rows.map((r) => ({
-      id: r.id,
-      name: r.name,
-      email: r.email ?? undefined,
-      title: r.title ?? undefined,
+      personId: r.person_id,
+      privilege: r.privilege,
+      unitId: r.unit_id ?? null,
     })));
   } catch (err) { next(err); }
 });

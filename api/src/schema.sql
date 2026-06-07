@@ -1,4 +1,4 @@
--- CareCompetencies — PostgreSQL operational schema
+-- CareCompetencies — PostgreSQL operational schema (v2: additive privilege model)
 -- Run once against a fresh database (or re-run idempotently with IF NOT EXISTS).
 
 CREATE TABLE IF NOT EXISTS units (
@@ -16,30 +16,23 @@ CREATE TABLE IF NOT EXISTS person_roles (
   name TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS preceptors (
-  id      TEXT PRIMARY KEY,
-  name    TEXT NOT NULL,
-  unit_id TEXT REFERENCES units(id),
-  email   TEXT
-);
-
-CREATE TABLE IF NOT EXISTS administrators (
-  id    TEXT PRIMARY KEY,
-  name  TEXT NOT NULL,
-  email TEXT,
-  title TEXT
-);
-
 CREATE TABLE IF NOT EXISTS persons (
   id                   TEXT PRIMARY KEY,
   name                 TEXT NOT NULL,
   unit_id              TEXT REFERENCES units(id),
   role_id              TEXT,
-  primary_preceptor_id TEXT REFERENCES preceptors(id),
+  primary_preceptor_id TEXT,   -- soft ref to persons(id); no FK to avoid self-referential insert ordering
   start_date           DATE,
   stage_override       TEXT,
   duke_id              TEXT,
   job_code             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS person_privileges (
+  id        TEXT PRIMARY KEY,
+  person_id TEXT NOT NULL REFERENCES persons(id),
+  privilege TEXT NOT NULL,   -- 'Preceptor' | 'UnitLeader' | 'Administrator'
+  unit_id   TEXT REFERENCES units(id)
 );
 
 CREATE TABLE IF NOT EXISTS competency_groups (
@@ -75,21 +68,21 @@ CREATE TABLE IF NOT EXISTS competency_assignments (
 );
 
 CREATE TABLE IF NOT EXISTS step_observations (
-  id             TEXT PRIMARY KEY,
-  person_id      TEXT NOT NULL,
-  step_id        TEXT NOT NULL,
-  competency_id  TEXT NOT NULL,
-  preceptor_id   TEXT NOT NULL,
-  rating         TEXT NOT NULL,
-  observed_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  notes          TEXT
+  id            TEXT PRIMARY KEY,
+  person_id     TEXT NOT NULL,
+  step_id       TEXT NOT NULL,
+  competency_id TEXT NOT NULL,
+  observer_id   TEXT NOT NULL,
+  rating        TEXT NOT NULL,
+  observed_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  notes         TEXT
 );
 
 CREATE TABLE IF NOT EXISTS competency_achievements (
   id                TEXT PRIMARY KEY,
   person_id         TEXT NOT NULL,
   competency_id     TEXT NOT NULL,
-  preceptor_id      TEXT NOT NULL,
+  observer_id       TEXT NOT NULL,
   achieved_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   notes             TEXT,
   earned_at_unit_id TEXT
@@ -123,11 +116,12 @@ CREATE TABLE IF NOT EXISTS logins (
   id           TEXT PRIMARY KEY,
   display_name TEXT NOT NULL,
   system_role  TEXT NOT NULL,
-  unit_id      TEXT
+  unit_ids     JSONB         -- array of unit IDs; null for Administrator / Person
 );
 
 -- Indexes for the hot query paths
 CREATE INDEX IF NOT EXISTS ix_persons_unit     ON persons(unit_id);
+CREATE INDEX IF NOT EXISTS ix_privs_person     ON person_privileges(person_id);
 CREATE INDEX IF NOT EXISTS ix_obs_person_comp  ON step_observations(person_id, competency_id);
 CREATE INDEX IF NOT EXISTS ix_ach_person       ON competency_achievements(person_id);
 CREATE INDEX IF NOT EXISTS ix_ach_person_comp  ON competency_achievements(person_id, competency_id);

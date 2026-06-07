@@ -14,18 +14,18 @@ router.get('/', requireAuth, async (_req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { personId, competencyId, preceptorId, achievedAt, notes, earnedAtUnitId } = req.body as {
-      personId: string; competencyId: string; preceptorId: string;
+    const { personId, competencyId, observerId, achievedAt, notes, earnedAtUnitId } = req.body as {
+      personId: string; competencyId: string; observerId: string;
       achievedAt?: string; notes?: string; earnedAtUnitId?: string;
     };
     const id = `ach-${crypto.randomUUID().slice(0, 8)}`;
     const ts = achievedAt ?? new Date().toISOString();
     await pool.query(
-      `INSERT INTO competency_achievements (id, person_id, competency_id, preceptor_id, achieved_at, notes, earned_at_unit_id)
+      `INSERT INTO competency_achievements (id, person_id, competency_id, observer_id, achieved_at, notes, earned_at_unit_id)
        VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-      [id, personId, competencyId, preceptorId, ts, notes ?? null, earnedAtUnitId ?? null],
+      [id, personId, competencyId, observerId, ts, notes ?? null, earnedAtUnitId ?? null],
     );
-    res.status(201).json({ id, personId, competencyId, preceptorId, achievedAt: ts, notes, earnedAtUnitId });
+    res.status(201).json({ id, personId, competencyId, observerId, achievedAt: ts, notes, earnedAtUnitId });
   } catch (err) { next(err); }
 });
 
@@ -34,7 +34,7 @@ function toAch(r: Record<string, unknown>) {
     id: r.id,
     personId: r.person_id,
     competencyId: r.competency_id,
-    preceptorId: r.preceptor_id,
+    observerId: r.observer_id,
     achievedAt: (r.achieved_at as Date).toISOString(),
     notes: r.notes ?? undefined,
     earnedAtUnitId: r.earned_at_unit_id ?? undefined,

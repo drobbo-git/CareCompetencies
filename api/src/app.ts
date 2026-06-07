@@ -23,7 +23,7 @@ export function createApp() {
   app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
   app.use('/auth', authRouter);
-  app.use('/', referenceRouter);              // /units, /person-roles, /preceptors, /administrators
+  app.use('/', referenceRouter);              // /units, /person-roles, /person-privileges
   app.use('/persons', personsRouter);
   app.use('/competencies', competenciesRouter); // /competencies, /competencies/groups, /competencies/steps, /competencies/:id/steps
   app.use('/competency-assignments', assignmentsRouter);

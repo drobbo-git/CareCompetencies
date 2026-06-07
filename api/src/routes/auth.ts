@@ -9,13 +9,13 @@ const router = Router();
 router.get('/logins', async (_req, res, next) => {
   try {
     const { rows } = await pool.query(
-      'SELECT id, display_name, system_role, unit_id FROM logins ORDER BY system_role, display_name',
+      'SELECT id, display_name, system_role, unit_ids FROM logins ORDER BY system_role, display_name',
     );
     res.json(rows.map((r) => ({
       id: r.id,
       displayName: r.display_name,
       systemRole: r.system_role,
-      unitId: r.unit_id ?? undefined,
+      unitIds: r.unit_ids ?? undefined,
     })));
   } catch (err) {
     next(err);
@@ -31,7 +31,7 @@ router.post('/login', async (req, res, next) => {
       return;
     }
     const { rows } = await pool.query(
-      'SELECT id, display_name, system_role, unit_id FROM logins WHERE id = $1',
+      'SELECT id, display_name, system_role, unit_ids FROM logins WHERE id = $1',
       [loginId],
     );
     if (rows.length === 0) {
@@ -43,10 +43,10 @@ router.post('/login', async (req, res, next) => {
       id: row.id,
       displayName: row.display_name,
       systemRole: row.system_role,
-      unitId: row.unit_id ?? undefined,
+      unitIds: row.unit_ids ?? undefined,
     };
     const token = jwt.sign(
-      { loginId: login.id, displayName: login.displayName, systemRole: login.systemRole, unitId: login.unitId },
+      { loginId: login.id, displayName: login.displayName, systemRole: login.systemRole, unitIds: login.unitIds },
       process.env.JWT_SECRET!,
       { expiresIn: '12h' },
     );

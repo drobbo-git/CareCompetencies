@@ -5,7 +5,7 @@ export interface AuthPayload {
   loginId: string;
   displayName: string;
   systemRole: string;
-  unitId?: string;
+  unitIds?: string[];
 }
 
 declare global {

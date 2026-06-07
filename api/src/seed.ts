@@ -18,7 +18,7 @@ const raw = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
 // ---------------------------------------------------------------------------
 // Translation helpers (mirror source/src/data/seed.ts logic)
 // ---------------------------------------------------------------------------
-const DEFAULT_ROLE_ID = 'role-rn';
+const DEFAULT_ROLE_ID = 'r-rn';
 
 function toUnit(u: any) {
   return {
@@ -35,20 +35,6 @@ function toPersonRole(r: any) {
   return { id: r.id, name: r.name };
 }
 
-function toPreceptor(p: any) {
-  return {
-    id: p.id, name: p.fullName ?? p.name ?? '',
-    unit_id: p.unitId, email: p.email ?? null,
-  };
-}
-
-function toAdmin(a: any) {
-  return {
-    id: a.id, name: a.fullName ?? a.name ?? '',
-    email: a.email ?? null, title: a.title ?? null,
-  };
-}
-
 function toPerson(n: any) {
   return {
     id: n.id, name: n.fullName ?? n.name ?? '',
@@ -59,6 +45,15 @@ function toPerson(n: any) {
     stage_override: n.stage ?? n.stageOverride ?? null,
     duke_id: n.dukeId ?? null,
     job_code: n.jobCode ?? null,
+  };
+}
+
+function toPersonPrivilege(p: any) {
+  return {
+    id: p.id,
+    person_id: p.personId,
+    privilege: p.privilege,
+    unit_id: p.unitId ?? null,
   };
 }
 
@@ -101,7 +96,7 @@ function toObservation(o: any) {
     id: o.id,
     person_id: o.personId ?? o.nurseId,
     step_id: o.stepId, competency_id: o.competencyId,
-    preceptor_id: o.preceptorId,
+    observer_id: o.preceptorId ?? o.observerId,
     rating: o.outcome ?? o.rating,
     observed_at: o.observedAt,
     notes: o.note ?? o.notes ?? null,
@@ -113,7 +108,7 @@ function toAchievement(a: any) {
     id: a.id,
     person_id: a.personId ?? a.nurseId,
     competency_id: a.competencyId,
-    preceptor_id: a.preceptorId,
+    observer_id: a.preceptorId ?? a.observerId,
     achieved_at: a.achievedAt,
     notes: a.note ?? a.notes ?? null,
     earned_at_unit_id: a.earnedAtUnitId ?? null,
@@ -134,24 +129,71 @@ function toChangeRequest(cr: any) {
   };
 }
 
-function synthesizeLogins(admins: any[], preceptors: any[], persons: any[], units: any[]) {
+function synthesizeLogins(persons: any[], privileges: any[], units: any[]) {
   const logins: any[] = [];
-  for (const a of admins) {
-    const name = a.fullName ?? a.name ?? '';
-    logins.push({ id: a.id, display_name: `${name} (Administrator)`, system_role: 'Administrator', unit_id: null });
+
+  const unitNameMap = new Map(units.map((u: any) => [u.id, u.name]));
+
+  const adminPersonIds = new Set(
+    privileges.filter((p: any) => p.privilege === 'Administrator').map((p: any) => p.personId)
+  );
+
+  for (const personId of adminPersonIds) {
+    const person = persons.find((n: any) => n.id === personId);
+    if (!person) continue;
+    logins.push({
+      id: person.id,
+      display_name: `${person.fullName ?? person.name ?? ''} (Administrator)`,
+      system_role: 'Administrator',
+      unit_ids: null,
+    });
   }
-  for (const u of units) {
-    logins.push({ id: `ul-${u.id}`, display_name: `Unit Leader — ${u.name}`, system_role: 'UnitLeader', unit_id: u.id });
+
+  const ulMap = new Map<string, string[]>();
+  for (const p of privileges.filter((pp: any) => pp.privilege === 'UnitLeader')) {
+    if (!ulMap.has(p.personId)) ulMap.set(p.personId, []);
+    if (p.unitId) ulMap.get(p.personId)!.push(p.unitId);
   }
-  for (const p of preceptors) {
-    const name = p.fullName ?? p.name ?? '';
-    logins.push({ id: p.id, display_name: `${name} (Preceptor)`, system_role: 'Preceptor', unit_id: null });
+  for (const [personId, unitIds] of ulMap) {
+    const person = persons.find((n: any) => n.id === personId);
+    if (!person) continue;
+    const unitNames = unitIds.map((uid) => unitNameMap.get(uid) ?? uid).join(', ');
+    logins.push({
+      id: person.id,
+      display_name: `${person.fullName ?? person.name ?? ''} (Unit Leader — ${unitNames})`,
+      system_role: 'UnitLeader',
+      unit_ids: JSON.stringify(unitIds),
+    });
   }
-  if (persons.length > 0) {
-    const n = persons[0];
-    const name = n.fullName ?? n.name ?? '';
-    logins.push({ id: n.id, display_name: `${name} (Orientee)`, system_role: 'Person', unit_id: null });
+
+  const precMap = new Map<string, string[]>();
+  for (const p of privileges.filter((pp: any) => pp.privilege === 'Preceptor')) {
+    if (!precMap.has(p.personId)) precMap.set(p.personId, []);
+    if (p.unitId) precMap.get(p.personId)!.push(p.unitId);
   }
+  for (const [personId, unitIds] of precMap) {
+    const person = persons.find((n: any) => n.id === personId);
+    if (!person) continue;
+    logins.push({
+      id: person.id,
+      display_name: `${person.fullName ?? person.name ?? ''} (Preceptor)`,
+      system_role: 'Preceptor',
+      unit_ids: JSON.stringify(unitIds),
+    });
+  }
+
+  const orientee = persons.find(
+    (n: any) => !adminPersonIds.has(n.id) && !precMap.has(n.id) && !ulMap.has(n.id)
+  );
+  if (orientee) {
+    logins.push({
+      id: orientee.id,
+      display_name: `${orientee.fullName ?? orientee.name ?? ''} (Orientee)`,
+      system_role: 'Person',
+      unit_ids: null,
+    });
+  }
+
   return logins;
 }
 
@@ -182,17 +224,15 @@ async function seed() {
         competency_achievements, step_observations,
         competency_assignments, competency_steps,
         competencies, competency_groups,
-        logins, persons, administrators, preceptors,
+        logins, person_privileges, persons,
         person_roles, units
       RESTART IDENTITY CASCADE
     `);
 
-    // Reference data
     const units = raw.units ?? [];
     const personRoles = raw.personRoles ?? [];
-    const preceptors = raw.preceptors ?? [];
-    const administrators = raw.administrators ?? [];
     const persons = raw.persons ?? [];
+    const personPrivileges = raw.personPrivileges ?? [];
     const groups = raw.competencyGroups ?? [];
     const competencies = raw.competencies ?? [];
     const steps = raw.competencySteps ?? [];
@@ -200,7 +240,6 @@ async function seed() {
     const observations = raw.stepObservations ?? [];
     const achievements = raw.competencyAchievements ?? [];
     const changeRequests = raw.changeRequests ?? [];
-    const auditEvents = raw.auditEvents ?? [];
 
     await insertAll(client, 'units',
       ['id', 'name', 'description', 'cost_center', 'stage_days', 'created_at', 'updated_at'],
@@ -210,25 +249,18 @@ async function seed() {
       ['id', 'name'],
       personRoles.map(toPersonRole));
 
-    await insertAll(client, 'administrators',
-      ['id', 'name', 'email', 'title'],
-      administrators.map(toAdmin));
-
-    await insertAll(client, 'preceptors',
-      ['id', 'name', 'unit_id', 'email'],
-      preceptors.map(toPreceptor));
-
     await insertAll(client, 'persons',
       ['id', 'name', 'unit_id', 'role_id', 'primary_preceptor_id', 'start_date', 'stage_override', 'duke_id', 'job_code'],
       persons.map(toPerson));
 
-    // Synthesize logins (seed JSON may not have them)
-    const logins = (raw.logins && raw.logins.length > 0)
-      ? raw.logins.map((l: any) => ({ id: l.id, display_name: l.displayName ?? l.display_name, system_role: l.systemRole ?? l.system_role, unit_id: l.unitId ?? l.unit_id ?? null }))
-      : synthesizeLogins(administrators, preceptors, persons, units);
+    await insertAll(client, 'person_privileges',
+      ['id', 'person_id', 'privilege', 'unit_id'],
+      personPrivileges.map(toPersonPrivilege));
+
+    const logins = synthesizeLogins(persons, personPrivileges, units);
 
     await insertAll(client, 'logins',
-      ['id', 'display_name', 'system_role', 'unit_id'],
+      ['id', 'display_name', 'system_role', 'unit_ids'],
       logins);
 
     await insertAll(client, 'competency_groups',
@@ -248,27 +280,23 @@ async function seed() {
       assignments.map(toAssignment));
 
     await insertAll(client, 'step_observations',
-      ['id', 'person_id', 'step_id', 'competency_id', 'preceptor_id', 'rating', 'observed_at', 'notes'],
+      ['id', 'person_id', 'step_id', 'competency_id', 'observer_id', 'rating', 'observed_at', 'notes'],
       observations.map(toObservation));
 
     await insertAll(client, 'competency_achievements',
-      ['id', 'person_id', 'competency_id', 'preceptor_id', 'achieved_at', 'notes', 'earned_at_unit_id'],
+      ['id', 'person_id', 'competency_id', 'observer_id', 'achieved_at', 'notes', 'earned_at_unit_id'],
       achievements.map(toAchievement));
 
     await insertAll(client, 'change_requests',
       ['id', 'requester_id', 'requester_role', 'type', 'competency_id', 'rationale', 'status', 'submitted_at', 'admin_note'],
       changeRequests.map(toChangeRequest));
 
-    // Audit events are generated at runtime; skip seeding historical ones
-    // to avoid data quality issues (missing required fields in seed JSON).
-
     await client.query('COMMIT');
     console.log('Seed complete.');
     console.log(`  units: ${units.length}`);
     console.log(`  person_roles: ${personRoles.length}`);
-    console.log(`  administrators: ${administrators.length}`);
-    console.log(`  preceptors: ${preceptors.length}`);
     console.log(`  persons: ${persons.length}`);
+    console.log(`  person_privileges: ${personPrivileges.length}`);
     console.log(`  logins: ${logins.length}`);
     console.log(`  competency_groups: ${groups.length}`);
     console.log(`  competencies: ${competencies.length}`);
@@ -277,7 +305,6 @@ async function seed() {
     console.log(`  step_observations: ${observations.length}`);
     console.log(`  competency_achievements: ${achievements.length}`);
     console.log(`  change_requests: ${changeRequests.length}`);
-    console.log(`  audit_events: 0 (skipped — generated at runtime)`);
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('Seed failed, rolled back:', err);
