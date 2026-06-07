@@ -10,7 +10,8 @@
     "start": "node dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "db:setup": "ts-node src/db-setup.ts",
-    "db:reset": "ts-node src/db-setup.ts && ts-node src/seed.ts",
+    "db:drop": "ts-node src/db-drop.ts",
+    "db:reset": "ts-node src/db-drop.ts && ts-node src/db-setup.ts && ts-node src/seed.ts",
     "seed": "ts-node src/seed.ts"
   },
   "dependencies": {
