@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList, FileBarChart2,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
@@ -57,6 +57,7 @@ function getNavItems(role: SystemRole, isUnitLeader: boolean): { primary: NavIte
 export function Sidebar() {
   const { currentLogin, signOut } = useAuth();
   const { units } = useData();
+  const navigate = useNavigate();
   if (!currentLogin) return null;
 
   const isUnitLeader = currentLogin.systemRole === "UnitLeader";
@@ -106,7 +107,7 @@ export function Sidebar() {
         <div className="my-2 border-t border-sidebar-border" />
         <button
           type="button"
-          onClick={signOut}
+          onClick={() => { navigate("/"); signOut(); }}
           className="w-full text-left px-2 py-1.5 rounded-md text-sm hover:bg-sidebar-accent/60 inline-flex items-center gap-2 text-sidebar-foreground/85"
         >
           <LogOut className="h-4 w-4" />
