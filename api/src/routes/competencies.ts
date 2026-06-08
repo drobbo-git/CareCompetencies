@@ -78,6 +78,10 @@ router.get('/', requireAuth, async (_req, res, next) => {
       groupId: r.group_id ?? undefined,
       categoryId: r.category_id ?? undefined,
       unitIds: r.unit_ids as string[],
+      validationMethod: r.validation_method ?? undefined,
+      knowledgeSource: r.knowledge_source ?? undefined,
+      policySource: r.policy_source ?? undefined,
+      updateNote: r.update_note ?? undefined,
     })));
   } catch (err) { next(err); }
 });

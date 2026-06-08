@@ -98,6 +98,10 @@ export interface Competency {
   categoryId?: string;
   /** Many-to-many with Unit; normalized to dim.competency_unit_bridge in ETL. */
   unitIds: string[];
+  validationMethod?: string;
+  knowledgeSource?: string;
+  policySource?: string;
+  updateNote?: string;
 }
 
 export interface CompetencyStep {

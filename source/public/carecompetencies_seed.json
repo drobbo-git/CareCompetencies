@@ -655,7 +655,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Foundational airway and breathing assessment for adults, including recognition of distress, bag-valve-mask use, and BLS-level airway maintenance.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Basic Airway Management Word Document Updated 4/2017"
     },
     {
       "id": "c-airway-basic-amb",
@@ -663,7 +665,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Basic airway assessment and management adapted to the ambulatory setting, including pulse oximetry, oxygen delivery selection, and BLS response.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-airway-adv",
@@ -671,7 +674,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Advanced airway management for intubated and ventilated patients, including ABG interpretation, weaning, extubation criteria, and post-extubation monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Completion of AHA ACLS/PALS Provider and  Observation of Behavior",
+      "updateNote": "Advanced Airway Management Word Document Updated 4/2019"
     },
     {
       "id": "c-cpt",
@@ -679,7 +684,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Manual chest physiotherapy to mobilize secretions, including patient positioning, percussion technique, and evaluation of cough effectiveness.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Chest Physiotherapy Word Document updated 1/2020"
     },
     {
       "id": "c-cpt-vest",
@@ -687,7 +694,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Use of a high-frequency chest wall oscillation (VEST) system for airway clearance, including sizing, programming, coordination with nebulizer therapy, and between-patient cleaning.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Chest Physiotherapy - VEST Word Document Updated 3/2018"
     },
     {
       "id": "c-et-rsi",
@@ -695,7 +704,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Performs rapid sequence intubation in the adult patient, including airway assessment, RSI medication sequencing, tube placement confirmation, and post-intubation monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity, skills lab practice and Observation of Behavior",
+      "updateNote": "Endotracheal Intubation - Rapid Sequence Word Document Updated 9-2016"
     },
     {
       "id": "c-et-assists",
@@ -707,7 +718,9 @@
         "u-2b2c",
         "u-dn4100",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Completion of AHA Advanced Life Support Course and Observation of Behavior",
+      "updateNote": "Endotracheal Intubation - Assists Word Document Updated 5/2019"
     },
     {
       "id": "c-et-assists-icn",
@@ -715,7 +728,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Assists with neonatal endotracheal intubation in the ICN, including pre-oxygenation, premedication, placement confirmation, and securing the tube.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-rsi-assists",
@@ -723,7 +737,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Anticipates and assists the provider during rapid sequence intubation, including equipment preparation and working knowledge of RSI medications.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-et-tube-care",
@@ -731,7 +746,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Ongoing care of the intubated patient: airway patency, tube securement, oral care, in-line suctioning, and skin protection.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-king-lts",
@@ -739,7 +755,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Insertion of the King LTS-D supraglottic airway, including patient selection, sizing, cuff inflation, placement verification, and removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-mv-adult",
@@ -747,7 +764,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Care of the adult patient on mechanical ventilation, including mode and setting rationale, sedation scoring, alarm response, and collaboration with Respiratory Therapy.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Mechanical Ventilation - Adult Word Document Updated 11/2017"
     },
     {
       "id": "c-mv-home",
@@ -755,7 +774,10 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Care of the patient using a home mechanical ventilator, including settings, alarms, and ongoing respiratory assessment.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Airway%20Management%20-%20Mechanical%20Ventilation%20-%20Home%20Vent%207-2018.pdf",
+      "updateNote": "Mechanical Ventilation - Home Vent Word Document Updated 7-2018"
     },
     {
       "id": "c-mv-peds",
@@ -763,7 +785,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Care of the pediatric patient on mechanical ventilation (including Avea, oscillator, jet, and home vents), with RASS-based sedation evaluation and alarm response.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Mechanical Ventilation - Pediatrics Word Document Updated 3/2018"
     },
     {
       "id": "c-mv-icn",
@@ -771,7 +795,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Care of the neonate on mechanical ventilation (Drager, oscillator, jet, CPAP), including NPASS scoring, ABG evaluation, and alarm management.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-laryngectomy",
@@ -779,7 +804,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Routine care of the patient with a laryngectomy stoma, including site care, suctioning, oxygenation, and supporting alternative communication.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Laryngectomy Care Word Document Updated 10-2018"
     },
     {
       "id": "c-larytube",
@@ -787,7 +814,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Care of the laryngectomy patient with a Larytube and/or heat-moisture exchanger (HME), including stoma assessment, HME changes, and patient/family teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Larytube/HME Word Document Updated 4/2017"
     },
     {
       "id": "c-nasal-packing",
@@ -795,7 +824,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Safe removal of nasal packing per provider order, including patient positioning, monitoring for rebleeding, and recognition of reportable conditions.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Nasal Packing Removal Word Document Updated 6/2020"
     },
     {
       "id": "c-naso-ot-suction",
@@ -803,7 +834,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Naso-, oropharyngeal, and tracheal suctioning in the ED/Life Flight setting, including suction setup, pre-oxygenation, and post-suction reassessment.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cric-adult",
@@ -811,7 +843,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Emergency needle cricothyroidotomy in the adult patient who cannot be intubated or oxygenated, including landmark identification and post-procedure monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity, skills lab practice and Observation of Behavior",
+      "updateNote": "Needle Cricothyoidotomy � Adults Word Document Updated 9-2016"
     },
     {
       "id": "c-cric-peds",
@@ -819,7 +853,9 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Emergency needle cricothyroidotomy in pediatric patients ≥1 yr or ≥40 kg, including landmark identification, catheter placement, and ventilation.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity, skills lab practice and Observation of Behavior",
+      "updateNote": "Needle Cricothyoidotomy � Pediatrics Word Document Updated 9-16-2020"
     },
     {
       "id": "c-surg-cric-lf",
@@ -827,7 +863,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Surgical cricothyroidotomy in the adult Life Flight patient when other airway options fail, including landmark identification, incision technique, and post-procedure monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Surgical Cricothyroidotomy - Adult - LifeFlight Feb 2024"
     },
     {
       "id": "c-naso-op-suction",
@@ -837,7 +874,8 @@
       "description": "Routine naso- and oropharyngeal suctioning, including infection prevention, equipment setup, technique, and patient reassessment.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-op-suction",
@@ -845,7 +883,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Oropharyngeal suctioning to clear secretions, including infection control, equipment setup, technique, and patient reassessment.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Oropharyngeal Suctioning Word Document updated 4/2017"
     },
     {
       "id": "c-o2-safety-lf",
@@ -866,7 +905,9 @@
         "u-dn4100",
         "u-drhcathlab",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Suction Equipment Word Document Updated 2/2019"
     },
     {
       "id": "c-trach-care",
@@ -874,7 +915,10 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Routine tracheostomy care: stoma assessment, dressing and tie changes, inner cannula care, oral hygiene, and supporting patient communication.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "Video https://warpwire.duke.edu/w/Q6ECAA/",
+      "updateNote": "Tracheostomy Care Word Document Updated 4/2017"
     },
     {
       "id": "c-trach-care-icn",
@@ -882,7 +926,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Routine tracheostomy care in the ICN: stoma assessment, dressing/tie changes, inner cannula care, and supporting neonatal communication.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-trach-suction",
@@ -890,7 +935,10 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Sterile tracheal suctioning through a tracheostomy, including pre-oxygenation, regulator settings, technique, and oxygen-saturation monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "Video https://warpwire.duke.edu/w/Q6ECAA/",
+      "updateNote": "Tracheal Suctioning Word Document Updated 4/2017"
     },
     {
       "id": "c-trach-suction-icn",
@@ -898,7 +946,8 @@
       "groupId": "g-airway",
       "categoryId": "cat-airway",
       "description": "Sterile tracheal suctioning of the neonate via tracheostomy, including regulator settings, sterile technique, and oxygenation monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cardiac-mon",
@@ -910,7 +959,9 @@
         "u-2b2c",
         "u-dn4100",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Completion of EKG test and Observation of Behavior",
+      "updateNote": "Cardiac Monitor Word Document Updated 6/2019"
     },
     {
       "id": "c-iabp-maint",
@@ -918,7 +969,10 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Ongoing management of an intra-aortic balloon pump, including transducer leveling, timing checks, dressing and tubing changes, mobility restrictions, and alarm troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "policySource": "DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836",
+      "updateNote": "IABP Maintenance Word Document Updated 5/2018"
     },
     {
       "id": "c-iabp-assists",
@@ -926,7 +980,10 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Assists the provider with IABP insertion, including system setup, sterile barriers, time-out, vital sign monitoring, dressing, and bleeding precautions.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "policySource": "DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836",
+      "updateNote": "IABP - Assists with Insertion Word Document Updated 4/2019"
     },
     {
       "id": "c-iabp-ep",
@@ -934,7 +991,8 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Care of the IABP patient during EP-lab procedures, including assisting with insertion, hemodynamic monitoring, dressing changes, and alarm response.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-iabp-transport",
@@ -942,7 +1000,8 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Safe inter-facility or intra-hospital transport of the patient on IABP, including pump setup, helium tank verification, trigger selection, and complication monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-propaq",
@@ -950,7 +1009,8 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Use of the Propaq transport monitor, including cable identification, monitor functions, NIBP/IBP/SpO2/ETCO2 setup, alarms, patient mode, and trends.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-qtc",
@@ -958,7 +1018,9 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Accurate QTc interval measurement, recognition of QT-prolonging medications, monitoring frequency, and reportable conditions to notify the provider.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Successful Test Completion and Observation of Behavior",
+      "updateNote": "QTc Interval Measurement Word Document Updated 1-2020"
     },
     {
       "id": "c-iabp-cathlab",
@@ -966,7 +1028,9 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Care of the IABP patient in the Cath Lab, including setup, balloon timing, perfusion monitoring, dressing care, hemodynamic documentation, and weaning parameters.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity and Observation of Behavior",
+      "policySource": "DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836"
     },
     {
       "id": "c-zoll-propaq",
@@ -974,7 +1038,8 @@
       "groupId": "g-cardiac",
       "categoryId": "cat-cardiac",
       "description": "Use of the Zoll Propaq MD monitor/defibrillator, including dysrhythmia interpretation, transcutaneous pacing, 12-lead EKG, and invasive pressure monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-ct-site",
@@ -984,7 +1049,10 @@
       "description": "Routine care and management of chest tube drainage systems, including suction vs. water seal, securement, dressing changes, drainage assessment, and emergency response to dislodgement.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "JIT Videos and Resources: https://medvideos.duhs.duke.edu/",
+      "updateNote": "Chest Tube Site Care and Management Word Document Updated 4/2017"
     },
     {
       "id": "c-ct-smallbore",
@@ -994,7 +1062,9 @@
       "description": "Flushing the small-bore (pigtail) chest tube per provider order, including indications, sterile flush technique, troubleshooting, and documentation.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Policy Review and Observation of Behaviors",
+      "updateNote": "Chest Tube Small Bore Flush Word Document Updated 2-2020"
     },
     {
       "id": "c-needle-cook",
@@ -1002,7 +1072,9 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Insertion of a Cook catheter for tube thoracostomy, including indications, sterile setup, landmark identification, placement confirmation, and connection to a drainage device.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity, skills lab practice and Observation of Behavior",
+      "updateNote": "Needle Decompression via Cook Catheter Word Document Updated 9-2016"
     },
     {
       "id": "c-needle-perc",
@@ -1010,7 +1082,9 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Emergency percutaneous needle chest decompression for tension pneumothorax, including landmark identification, catheter placement, and post-procedure monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by completion of educational activity, skills lab practice and Observation of Behavior",
+      "updateNote": "Needle Chest Decompression - Percutaneous Word Document Updated 9-2016"
     },
     {
       "id": "c-pleurx",
@@ -1018,7 +1092,9 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Management of the PleurX pleural or peritoneal catheter, including drainage system setup, drainage limits, dressing changes, and recognition of complications.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Pleurx Catheter Word Document Updated 4/2017"
     },
     {
       "id": "c-drainage-tubes",
@@ -1029,7 +1105,10 @@
       "unitIds": [
         "u-2b2c",
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Drainage%20Tubes%204-2017.pdf",
+      "updateNote": "Drainage Tubes Word Document"
     },
     {
       "id": "c-drainage-tubes-or",
@@ -1037,7 +1116,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Intra-operative role with surgical drainage tubes, including assisting with insertion and maintaining drain suction per provider instructions.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-evd-adults",
@@ -1045,7 +1125,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Management of an external ventricular drain in the adult patient, including transducer leveling at the tragus, ICP monitoring, drain clamping during transport, and complication recognition.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "External Ventricular Drain - Adults updated 7/2024"
     },
     {
       "id": "c-evd-peds",
@@ -1053,7 +1134,10 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Management of an external ventricular drain in the pediatric patient, including transducer leveling, ICP monitoring, drainage system setup, and clamping during transport.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20External%20Ventricular%20Drain%202-2020.pdf",
+      "updateNote": "External Ventricular Drain - Peds Word Document Updated 2/2020"
     },
     {
       "id": "c-fim",
@@ -1063,7 +1147,10 @@
       "description": "Use of an indwelling fecal management system, including device selection per algorithm, skin care, troubleshooting leakage, and obtaining stool samples.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Fecal%20Incontinence%20Management%204-2017.pdf",
+      "updateNote": "Fecal Incontinence Management Word Document Updated 4/2017"
     },
     {
       "id": "c-lumbar-drain",
@@ -1071,7 +1158,10 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Care of the lumbar drain, including transducer leveling, prescribed drainage levels, neurological and cranial-nerve assessment, and recognition of intracranial air.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Lumbar%20Drain%203-2018.pdf",
+      "updateNote": "Lumbar Drain Care Word Document Updated 3/2018"
     },
     {
       "id": "c-ng-insert",
@@ -1081,7 +1171,10 @@
       "description": "Insertion of a nasogastric or orogastric tube, including measurement, lubrication, insertion technique, placement confirmation, and initial care.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated By Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Nasogastric%20Tube%20-%20Insertion%20and%20Removal%204-2017.pdf",
+      "updateNote": "Nasogastric Tube Insertion Updated 9/2024"
     },
     {
       "id": "c-ng-remove",
@@ -1091,7 +1184,8 @@
       "description": "Safe removal of a nasogastric or orogastric tube, including flushing, securement release, gentle withdrawal, post-removal monitoring, and documentation.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated By Observation of Behavior"
     },
     {
       "id": "c-ng-maint",
@@ -1101,7 +1195,8 @@
       "description": "Routine maintenance of the nasogastric or orogastric tube, including suction settings, skin protection, residual checks, irrigation, and instillation of solutions.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated By Observation of Behavior"
     },
     {
       "id": "c-ng-mr",
@@ -1109,7 +1204,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Combined maintenance and removal of the nasogastric or orogastric tube, including suction management, residual checks, irrigation, and atraumatic removal technique.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pericardial-drain",
@@ -1119,7 +1215,10 @@
       "description": "Care of an indwelling pericardial drain, including assisting with insertion, drainage system setup, catheter site care, fluid aspiration/flush, and recognition of reportable conditions.",
       "unitIds": [
         "u-drhcathlab"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Pericardial%20Drain%20Care%203-2019.pdf",
+      "updateNote": "Pericardial Drain Care Word Document Updated 5/ 2025"
     },
     {
       "id": "c-pericardial-flush",
@@ -1129,7 +1228,10 @@
       "description": "Performs pericardial catheter aspiration and flush per DUHS advanced-skill protocol, including infection control, manual vs. continuous drainage, and post-procedure monitoring.",
       "unitIds": [
         "u-drhcathlab"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Pericardial%20Catheter%20Aspriation%20and%20Flush%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%20-3-2019.pdf",
+      "policySource": "Policy: DUHS Pericardialcentesis Procedure and Protocol # 207492"
     },
     {
       "id": "c-rectal-tube",
@@ -1139,7 +1241,10 @@
       "description": "Insertion and management of an indwelling rectal tube, including patient preparation, skin barrier application, leakage troubleshooting, and removal indications.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Rectal%20Tube%20Insertion%20and%20Management%204-2017.pdf",
+      "updateNote": "Rectal Tube Insertion and Management Word Document  Updated 4/2017"
     },
     {
       "id": "c-repogle",
@@ -1147,7 +1252,9 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Insertion, maintenance, and removal of a Repogle (sump) tube, including measurement, placement confirmation, suction management, irrigation, and routine tube exchange every 7 days.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Repogle Insertion and Removal Word Document Updated 6-2018"
     },
     {
       "id": "c-suction-or",
@@ -1155,7 +1262,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Set-up of suction equipment and supplies in the OR, including pressure regulation, sterile technique, oxygen and emergency-airway readiness.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-surgical-drain-removal",
@@ -1163,7 +1271,10 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Removal of surgical drains per provider order, including infection control, patient positioning, drain-site assessment, drainage documentation, and suture removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": ":https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Surgical%20Drain%20Removal%207-2018.pdf",
+      "updateNote": "Surgical Drain Removal Word Document Updated 7-2018"
     },
     {
       "id": "c-uc-insert",
@@ -1174,7 +1285,10 @@
       "unitIds": [
         "u-dn4100",
         "u-drhcathlab"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%209-2018.pdf",
+      "updateNote": "Urinary Drainage Catheter Insertion Word Document"
     },
     {
       "id": "c-uc-maint",
@@ -1184,7 +1298,10 @@
       "description": "Routine maintenance of the indwelling urinary catheter, including CA-UTI bundle adherence, perineal/catheter care, daily necessity review, and aseptic specimen collection.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated By Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Maintenance%209-2018.pdf",
+      "updateNote": "Urinary Drainage Catheter Maintenance Word Document Updated 9/2019"
     },
     {
       "id": "c-uc-im",
@@ -1192,7 +1309,10 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Combined insertion and maintenance of urinary drainage devices, including CA-UTI bundle adherence, sterile insertion, perineal care, irrigation, and catheter removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%20and%20Maintenance%209-2018.pdf",
+      "updateNote": "Urinary Drainage Catheter Insertion And Maintenance Word Document Updated 9/2018"
     },
     {
       "id": "c-uc-im-clinic",
@@ -1202,7 +1322,9 @@
       "description": "Urinary catheter insertion and maintenance in the clinic setting, including CA-UTI bundle adherence, sterile technique, and patient education.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%20and%20Maintenance%209-2018.pdf"
     },
     {
       "id": "c-ud-ext",
@@ -1212,7 +1334,10 @@
       "description": "Application of an external urinary management device (PureWick or male equivalent), including suction setup, perineal care, device positioning, and skin protection.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Catheteter%20Insertion%20and%20Maintenance%20-%20Female%20External%20Urinary%20Catheter%20Device%209-2018doc.pdf",
+      "updateNote": "Urinary Drainage - Female External Urinary Management Device Word Document Updated 9-2018"
     },
     {
       "id": "c-ud-suprapubic",
@@ -1220,7 +1345,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Suprapubic catheter exchange per provider order, including patient assessment, sterile removal and reinsertion, balloon inflation, securement, and patient teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Urinary Drainage - Suprapubic Catheter Exchange Updated 1/2023"
     },
     {
       "id": "c-uc-maint-or",
@@ -1228,7 +1354,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Intra-operative urinary catheter insertion and maintenance, including sterile technique, troubleshooting drainage, specimen collection, and catheter removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-uc-maint-pacu",
@@ -1236,7 +1363,8 @@
       "groupId": "g-drainage-chest",
       "categoryId": "cat-drainage",
       "description": "Urinary catheter maintenance in the PACU, including CA-UTI bundle adherence, output monitoring, troubleshooting, aseptic specimen collection, and removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-self-cath",
@@ -1264,7 +1392,10 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Intra-operative blood salvage and reinfusion via SureTrans, including system assessment, reinfusion parameters, 40-micron filter use, and conversion to Solcovac.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Autotransfusion%20via%20SureTrans%20-%207-2018.pdf",
+      "updateNote": "Autotransfusion via SureTrans Word Document Updated 7/2018"
     },
     {
       "id": "c-bpa-rapid",
@@ -1274,7 +1405,10 @@
       "description": "Use of a rapid infusion device (Level One) for blood products and fluids, including disposable setup, priming, alarm response, and patient monitoring.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Administration%20-%20Level%20One%20Rapid%20Fluid%20Infuser%20-%20Warmer%20-%205-2018.pdf",
+      "updateNote": "Level One Rapid Fluid Infuser/Warmer Updated 4/2018"
     },
     {
       "id": "c-bpa-warmer",
@@ -1282,7 +1416,10 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Use of the Ranger blood/fluid warming system, including indications, equipment setup, air removal, infusion monitoring, and equipment cleaning.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Ranger%20Blood-Fluid%20Warming%20System%20-%203-2019.pdf",
+      "updateNote": "Ranger Blood/Fluid Warming System Updated 3/2019"
     },
     {
       "id": "c-bpa-symphony",
@@ -1290,7 +1427,8 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Preparation of platelet-rich plasma (PRP) using the Symphony blood concentrate system, including ACD-A handling, processing, APC activator preparation, and surgical-field delivery.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Blood Test Completion and Observation of Behavior"
     },
     {
       "id": "c-bpa-symphony-asc",
@@ -1298,7 +1436,8 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Preparation and use of the Symphony/Angel blood concentrate system in the ASC OR, including equipment readiness, product preparation per IFU, and surgical-field delivery.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Blood Test Completion and Observation of Behavior"
     },
     {
       "id": "c-bpa-granulocyte",
@@ -1314,7 +1453,10 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Reinfusion of stem cell or progenitor cell products per FACT protocol, including premedication, double verification, monitoring, and saline rinse.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Stem%20Cell%20-%20Progenitor%20Cell%20Reinfusion%204-2017.pdf",
+      "updateNote": "Stem Cell/Progenitor Cell Reinfusion Word Document Updated 4/2017"
     },
     {
       "id": "c-bpa-phlebotomy",
@@ -1322,7 +1464,10 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Therapeutic phlebotomy via peripheral IV, tunneled catheter, or implanted port, including pre-procedure assessment, replacement fluids, and complication monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Therapeutic%20Phlebotomy%204-2017.pdf",
+      "updateNote": "Therapeutic Phlebotomy Word Document Updated 4/2017"
     },
     {
       "id": "c-bpa-transfusion",
@@ -1333,7 +1478,10 @@
       "unitIds": [
         "u-dn4100",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Blood Test Completion and Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Transfusion%204-2017.pdf",
+      "updateNote": "Transfusion Word Document Updated 4/2017"
     },
     {
       "id": "c-bpa-transfusion-tx",
@@ -1341,7 +1489,8 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Transfusion of blood products during transport, including emergency release procedures, cooler packing, double verification, and reaction monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Blood Test Completion and Observation of Behavior"
     },
     {
       "id": "c-bpa-verify-or",
@@ -1349,7 +1498,8 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Intra-operative blood product verification, including double-verification with Anesthesia/CRNA using the patient armband, product ID, blood type, and expiration.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Blood Test Completion and Observation of Behavior"
     },
     {
       "id": "c-organ-verify",
@@ -1357,7 +1507,8 @@
       "groupId": "g-iv-blood",
       "categoryId": "cat-iv",
       "description": "Solid-organ transplant verification process, including donor vessel logbook, intra-op documentation of cadaveric and living donations, and Donor Net entries.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Blood Observation of Behavior"
     },
     {
       "id": "c-cl-declot",
@@ -1365,7 +1516,10 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Declotting a central line with tPA per DUHS advanced-skill protocol, including patency assessment, tPA dosing, push-pull technique, dwell time, and patency restoration.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior DUHS Advanced Skill",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-Declotting%20With%20tPA%20DUHS%20Advanced%20Skill%20Education%20Plan%204-2017.pdf",
+      "updateNote": "Declots Central Line with tPA Word Document Updated 4/2017"
     },
     {
       "id": "c-cl-port",
@@ -1377,7 +1531,11 @@
         "u-2b2c",
         "u-dn4100",
         "u-drahradonc"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Implanted%20Port%20Access%20and%20Care%203-17.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "Implanted Port Access and Care Word Document Updated 3/2017"
     },
     {
       "id": "c-cl-midline-rem",
@@ -1387,7 +1545,10 @@
       "description": "Removal of a midline catheter, including site preparation, slow withdrawal, hemostasis, catheter inspection, and emergency response to fracture or embolus.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Midline%20Removal%204-2017.pdf",
+      "updateNote": "Midline Removal Word Document Updated 4/2017"
     },
     {
       "id": "c-cl-rem-picc-adult",
@@ -1397,7 +1558,10 @@
       "description": "Removal of a PICC or non-tunneled central catheter in the adult, including Trendelenburg positioning, sterile technique, catheter inspection, and post-removal monitoring for air emboli.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management-%20Removal%20of%20central%20line%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%209-2017.pdf",
+      "updateNote": "Removal - PICC/Non-Tunneled Catheter - Adult Word Document Updated 1/2025"
     },
     {
       "id": "c-cl-rem-picc-peds",
@@ -1405,7 +1569,10 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Removal of a PICC or non-tunneled central catheter in the pediatric patient, including positioning, sterile technique, catheter inspection, and post-removal monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management-%20Removal%20of%20central%20line%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%209-2017.pdf",
+      "updateNote": "Removal - PICC/Non-Tunneled Catheter - Peds Word Document Updated 1/2025"
     },
     {
       "id": "c-cl-ethanol",
@@ -1421,7 +1588,11 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "External jugular venous cannulation in the adult per DUHS advanced-skill protocol, including indications, contraindications, positioning, aseptic technique, and documentation.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Policy review and Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20External%20Jugular%20Vein%20Cannulation-%20DUHS%20Advanced%20Skill%20Education%20Plan%2011-2019.pdf",
+      "policySource": "Policy Link #3514 https://dukeuniversity.policytech.com/dotNet/documents/?docid=3637",
+      "updateNote": "External Jugular Venous Cannulation - Adult Word Document Updated 11-2019"
     },
     {
       "id": "c-cl-femoral",
@@ -1429,7 +1600,11 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Femoral venous cannulation in the adult per DUHS advanced-skill protocol, including indications, contraindications, landmark identification, and response to inadvertent arterial puncture.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Policy review and Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20Femoral%20Vein%20Cannulation-%20DUHS%20Advanced%20Skill%20Education%20Plan%2011-2019.pdff",
+      "policySource": "Policy Link #3515 https://dukeuniversity.policytech.com/dotNet/documents/?docid=3638",
+      "updateNote": "Femoral Venous Cannulation - Adult Word Document Updated 11/2019"
     },
     {
       "id": "c-cl-hd",
@@ -1437,7 +1612,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the hemodialysis/pheresis catheter, including limited use indications, sterile access, blood draw, medication administration, heparin/alteplase locking, and dressing change.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Hemodialysis/Pheresis Catheter - Adult"
     },
     {
       "id": "c-cl-av",
@@ -1445,7 +1621,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Accessing and de-accessing AV grafts and primary fistulas, including site assessment, sterile cannulation technique, post-removal hemostasis, and documentation.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Accessing and De-Accessing AV Grafts or Primary Fistulas"
     },
     {
       "id": "c-cl-rem-sheath",
@@ -1453,7 +1630,10 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Removal of a venous sheath per DUHS advanced-skill protocol, including peripheral perfusion assessment, anatomical landmarks, pressure application, and post-removal monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Policy Review and Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Removal%20of%20a%20Central%20Line%20-%20Venous%20Sheath-%20DUHS%20Advanced%20Skill%20Education%20Plan%201-2020.pdf",
+      "updateNote": "Removal - Venous Sheath Word Document"
     },
     {
       "id": "c-cl-cvad-adult",
@@ -1463,7 +1643,11 @@
       "description": "Care of the temporary CVAD in the adult, including assisting with insertion, time-out, CXR confirmation, routine flushing, dressing and cap changes, and removal advocacy.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Temporary%20CVAD%20-%20Adults%203-17.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "Temporary CVAD - Adult Word Document Updated 3/2017"
     },
     {
       "id": "c-cl-cvad-adult-pacu",
@@ -1471,7 +1655,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Post-op PACU care of the adult temporary CVAD, including site assessment, routine flushing, dressing and cap changes, and complication monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-cvad-peds",
@@ -1479,7 +1664,10 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the temporary CVAD in the pediatric patient, including assisting with insertion, CXR confirmation, routine flushing, and dressing/cap changes.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Temporary%20CVAD%20-%20Pediatrics%203-18.pdf",
+      "updateNote": "Temporary CVAD - Pediatrics Word Document Updated 3/2018"
     },
     {
       "id": "c-cl-cvad-peds-pacu",
@@ -1487,7 +1675,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Post-op PACU care of the pediatric temporary CVAD, including site assessment, flushing, dressing and cap changes, and complication monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-cvad-icn",
@@ -1495,7 +1684,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the temporary CVAD in the ICN (UAC/UVC), including sterile barriers, CXR confirmation, routine flushing with CHG scrub, and cap/tubing changes.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-tun-adult",
@@ -1505,7 +1695,11 @@
       "description": "Care of the tunneled catheter in the adult, including post-placement care, routine flushing, dressing change frequency, cap changes, and patient/family teaching for home.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Tunneled%20Catheter%20-%20Adults%203-17.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "Tunneled Catheter - Adults Updated 3/2017"
     },
     {
       "id": "c-cl-tun-peds",
@@ -1513,7 +1707,10 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the tunneled catheter in the pediatric patient, including post-placement care, flushing, CHG dressing frequency, cap changes, and home-care teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Tunneled%20Catheter%20-%20Pediatrics%204-2018.pdf",
+      "updateNote": "Tunneled Catheter - Pediatrics Word Document Updated 4/2018"
     },
     {
       "id": "c-cl-tun-icn",
@@ -1521,7 +1718,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the Broviac or other tunneled catheter in the ICN, including aqueous CHG dressing technique, routine flushing, cap changes, and home-care teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-tun-lf",
@@ -1529,7 +1727,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Care of the tunneled catheter on Life Flight, including routine flushing, cap changes, and recognition of reportable conditions during transport.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-peds-lf",
@@ -1537,7 +1736,8 @@
       "groupId": "g-iv-central",
       "categoryId": "cat-iv",
       "description": "Central line catheter care for the pediatric patient on Life Flight, including routine flushing, alcohol scrub, syringe-size selection, and blood-return verification.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-cl-tun-peds-pacu",
@@ -1557,7 +1757,10 @@
         "u-2b2c",
         "u-dn4100",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validation By Observation Of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Alaris%20Medley%20%20Infusion%20Control%20Device%202-2018.pdf",
+      "updateNote": "Alaris Medley Infusion Control Device Updated 2/2018"
     },
     {
       "id": "c-pump-alaris-syringe",
@@ -1565,7 +1768,10 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the Alaris syringe module, including manual priming, infusion set loading, syringe size selection, deliver-all function, and pressure-sensing disc use.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Alaris%20Medley%20Syringe%20Module%203-2018.pdf",
+      "updateNote": "Alaris Syringe Module Word Document Updated 3/2018"
     },
     {
       "id": "c-pump-alaris-icn",
@@ -1573,7 +1779,8 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the Alaris Medley infusion control device and syringe pump in the ICN, including Guardrails library programming, titration, and alarm troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pump-lf",
@@ -1581,7 +1788,8 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the Life Flight IV infusion pump, including priming, tubing loading, device selection, dose-rate calculator, and troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validation By Observation Of Behavior"
     },
     {
       "id": "c-pump-curlin",
@@ -1589,7 +1797,10 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the Curlin ambulatory infusion pump, including battery management, tubing priming and loading, mode programming, lock levels, and occlusion alarm response.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Curlin%20Infusion%20Pump%204-2017.pdf",
+      "updateNote": "Curlin Infusion Pump Word Document Updated 4/2017"
     },
     {
       "id": "c-pump-lifeflow",
@@ -1597,7 +1808,10 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the LifeFlow rapid infusion device for fluid resuscitation, including setup, syringe technique (10 mL per trigger), aseptic bag exchange, and complication recognition.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/LifeFlow%20Infusion%20Device%204-2019.pdf",
+      "updateNote": "LifeFlow Infusion Device Word Document Update 4/2019"
     },
     {
       "id": "c-pump-smiths",
@@ -1605,7 +1819,8 @@
       "groupId": "g-iv-pump",
       "categoryId": "cat-iv",
       "description": "Use of the Smith’s Medical syringe pump, including PharmGuard library selection, syringe loading, infusion programming, and pole-clamp setup.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validation By Observation Of Behavior"
     },
     {
       "id": "c-piv-insert",
@@ -1618,7 +1833,11 @@
         "u-drahradonc",
         "u-drhcathlab",
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20IV%20Insertion%204-2017.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "Peripheral IV Insertion Word Document Updated 4/2017"
     },
     {
       "id": "c-piv-maint",
@@ -1630,7 +1849,11 @@
         "u-dn4100",
         "u-2b2c",
         "u-drahradonc"
-      ]
+      ],
+      "validationMethod": "Validation By Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20Maintenance%204-2017.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "Peripheral IV Maintenance Word Document Updated 4/2017"
     },
     {
       "id": "c-piv-maint-clinic",
@@ -1638,7 +1861,8 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "Peripheral IV maintenance in the clinic setting, including complication recognition, aseptic dressing change, patency troubleshooting, and removal.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-piv-maint-pacu",
@@ -1648,7 +1872,8 @@
       "description": "Peripheral IV maintenance in the PACU, including complication recognition, aseptic dressing change, scrub-the-hub, bag-change parameters, and conversion to a saline lock.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-piv-us",
@@ -1656,7 +1881,10 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "Ultrasound-guided peripheral IV insertion, including indications, sterile probe preparation, vein identification, longitudinal placement verification, and complication recognition.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20Ultrasound%20Guided%20Insertion%203-2017.pdf",
+      "updateNote": "Peripheral Vein Identification Using Ultrasound Device Word Document Updated 3-2017"
     },
     {
       "id": "c-picc-insert",
@@ -1664,7 +1892,10 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "Insertion of a PICC or midline catheter per DUHS advanced-skill protocol, including didactic and skills-lab prerequisites, sterile technique, CXR tip confirmation, and home-care teaching. Includes observed insertions for adult and pediatric patients.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Completion  of an Educational Activity and Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-Insertion%20of%20PICC-Midline%20Catheter%20DUHS%20Advanced%20Skill%20Education%20Plan-%205-2017.pdf",
+      "updateNote": "PICC Insertion - PICC/Midline Word Document Updated 5-2017"
     },
     {
       "id": "c-picc-maint",
@@ -1675,7 +1906,11 @@
       "unitIds": [
         "u-2b2c",
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20PICC%20Maintenance%204-2017.pdf",
+      "policySource": "DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560",
+      "updateNote": "PICC Maintenance Word Document   Updated 4/2017"
     },
     {
       "id": "c-picc-maint-icn",
@@ -1683,7 +1918,8 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "PICC and midline maintenance in the ICN, including saline and heparin flush indications, site assessment, cap changes, and occlusion or migration troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-picc-tip-cxr",
@@ -1691,7 +1927,10 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "PICC tip verification by chest x-ray per DUHS advanced-skill protocol, including didactic prerequisites, radiologist review, and 15 supervised verifications.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Completion  of an Educational Activity and Observation of Behavior",
+      "knowledgeSource": ": https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20PICC%20Tip%20Verification%20by%20CXR%20following%20Placement%20DUHS%20Advanced%20Skill%20Education%20Plan%20-%209-2017.pdf",
+      "updateNote": "PICC Tip Verification Word Document Updated 9-2017"
     },
     {
       "id": "c-tpn",
@@ -1701,7 +1940,10 @@
       "description": "Administration of total parenteral nutrition through a dedicated central line, including verification with a second RN, monitoring for adverse reactions, taper protocols, and glycemic monitoring.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "knowledgeSource": "https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20Total%20Parenteral%20Nutrition%204-2017.pdf",
+      "updateNote": "Total Parenteral Nutrition Word Document    Updated 4/2017"
     },
     {
       "id": "c-tpn-icn",
@@ -1709,7 +1951,8 @@
       "groupId": "g-iv-peripheral",
       "categoryId": "cat-iv",
       "description": "Administration of total parenteral nutrition in the ICN, including order verification, ongoing assessment, taper process, and glycemic monitoring.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-medsurg-asepsis",
@@ -1717,7 +1960,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Principles of medical/surgical asepsis in the OR, including sterile-field setup and maintenance, scrubbed and non-scrubbed roles, traffic patterns, and surgical conscience.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-medsurg-asepsis-proc",
@@ -1727,7 +1971,9 @@
       "description": "Procedural aseptic technique outside the OR, including sterile-field setup, scrubbed and non-scrubbed roles, fluid/drug verification, and correcting breaks in aseptic technique.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Medical Surgical Aseptic Technique - Procedural Word Document Updated 6/2019"
     },
     {
       "id": "c-colorectal",
@@ -1735,7 +1981,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Bowel-asepsis principles for colorectal cases, including surgical wound classification, dirty-basin use, and instrument separation to prevent contamination.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-esu",
@@ -1743,7 +1990,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Safe use of the electrosurgical unit, including monopolar/bipolar selection, grounding pad placement and skin assessment, fire prevention, and precautions for implanted devices.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Electrosurgical Unit with Grounding Pad Word Document Updated 3/2019"
     },
     {
       "id": "c-inst-clean",
@@ -1751,7 +2000,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Intra-operative instrument cleaning, including blood and bone removal from cannulated equipment, micro-instrument handling, and pre-cleaning before terminal processing.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-proc-tray",
@@ -1761,7 +2011,9 @@
       "description": "Set-up of procedure trays outside the OR, including tray selection per provider preference, package and sterilization indicator inspection, and sterile labeling of medications added to the field.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Non-PeriOp Areas with Procedures - Validated by Observation of Behavior",
+      "updateNote": "Procedure Tray Set Up Word Document Updated 1/2020"
     },
     {
       "id": "c-proc-safety",
@@ -1779,7 +2031,9 @@
       "description": "Pre-operative or pre-procedural hair clipping of the surgical site, including aseptic technique, collaboration with the provider on the site, clipper handling, and complication recognition.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Pre-Operative/Pre-Procedural Clipping of Surgical Site Word document update 1/2020"
     },
     {
       "id": "c-prevalon",
@@ -1787,7 +2041,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Use of the Prevalon AirTAP patient repositioning system for turning, boosting, and pressure-injury prevention, including inclusion criteria, sacral photo documentation, and discontinuation criteria.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Prevalon AirTap Patient Repositioning system Word document update 3/25/25"
     },
     {
       "id": "c-sterile-field-proc",
@@ -1795,7 +2050,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Procedural sterile-field setup and maintenance, including systematic table organization, pouring solutions, labeling sutures/medications/irrigation, assisting with gowning and gloving, and correcting breaks in technique.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Sterile Field Set Up and Maintenance - Procedural Word Documents Updated 1/2020"
     },
     {
       "id": "c-sterilization",
@@ -1803,7 +2060,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Selection and execution of sterilization methods, including chemical and biological indicators, item preparation, autoclave operation, sterility verification, and response to sterilizer failure.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-sterilization-flash",
@@ -1811,7 +2069,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Immediate-use (flash) sterilization, including appropriate indications, device location, indicator use, and verification of temperature parameters.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-sterilization-steris",
@@ -1819,7 +2078,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Processing endoscopic equipment in the Steris system, including identifying which instruments require Steris, loading, and tubing connections.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-surg-counts",
@@ -1827,7 +2087,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Performing surgical counts per OR policy, including preliminary, closing, relief, and final counts; sponge, instrument, and sharp/small counts; and response to a count discrepancy.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Surgical Counts Word Document"
     },
     {
       "id": "c-surg-draping",
@@ -1835,7 +2097,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Surgical draping, including drape assembly per procedure, sterile-technique maintenance, drape securement, and corrective action for breaks in aseptic technique.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Surgical Draping Word Document Updated 6/2018"
     },
     {
       "id": "c-surg-scrub",
@@ -1843,7 +2107,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Surgical hand scrub, including proper surgical attire, cuticle and skin inspection, 5-minute scrub technique, waterless hand scrub option, and corrective action for breaks in technique.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Surgical Hand Scrub Word Document Updated 6/2019"
     },
     {
       "id": "c-surg-gown",
@@ -1851,7 +2117,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Surgical gowning and gloving, including unassisted and assisted methods, closed-glove technique, contaminated glove change, and removal of gown and gloves.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Surgical Gowning And Gloving Word Document Updated 6/2019"
     },
     {
       "id": "c-surg-skin",
@@ -1859,7 +2127,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Surgical skin prep, including allergy verification, hair removal, ChloraPrep application technique, fire-risk awareness, and documentation.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-surg-sterile-basic",
@@ -1867,7 +2136,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Basic surgical sterile-field setup, including opening linen and custom packs, organizing the back table and Mayo stand, and corrective action for breaks in aseptic technique.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-surg-sterile-complex",
@@ -1875,7 +2145,8 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Complex surgical sterile-field management, including efficient table organization by surgical service routine, anticipating surgeon needs, and body mechanics during setup.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-surg-technique",
@@ -1883,7 +2154,9 @@
       "groupId": "g-skin-aseptic",
       "categoryId": "cat-skin",
       "description": "Basic surgical technique, including surgical terminology, instrument identification and safe handling, sterile-field organization, surgical counts, and instrument decontamination.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Surgical Technique - Basic Word Document Updated 6-2019"
     },
     {
       "id": "c-pos-arm",
@@ -1891,7 +2164,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application of arm immobilizers, including sizing, application technique, and ongoing skin and circulation assessment during use.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-casting-or",
@@ -1899,7 +2173,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Preparation and setup of casting equipment in the OR, including pediatric spica table, plaster and fiberglass splints, cast saw, and spreader.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-cast-apply",
@@ -1907,7 +2182,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application of fiberglass or plaster casts, including didactic training, supply preparation, patient positioning, casting technique, and post-application teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Cast Application Word Document Updated July 2024"
     },
     {
       "id": "c-pos-cast-remove",
@@ -1915,7 +2191,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Cast removal, including didactic training, identification of cast type, pain control, safe cast-saw technique, and post-removal teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "updateNote": "Cast Removal Word Document Updated July 2024"
     },
     {
       "id": "c-pos-infant",
@@ -1947,7 +2224,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "OB patient positioning for L&D surgical procedures, including aseptic technique, safe anatomical positioning, padding, and managing potential positioning-related complications.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-or",
@@ -1955,7 +2233,9 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Safe surgical positioning of the patient (supine, lithotomy, lateral, prone, jackknife, etc.), including padding, alignment, safety straps, and prevention of skin, nerve, and circulatory injury.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "OR Positioning Word Document Updated 6-2019"
     },
     {
       "id": "c-pos-allen",
@@ -1963,7 +2243,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Patient positioning in Allen/Yellowfin stirrups, including stirrup-holder setup, simultaneous leg placement, padding to protect nerves, and equal height/flexion.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-candy",
@@ -1971,7 +2252,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Patient positioning in candy-cane stirrups, including stirrup-holder and strap setup, simultaneous leg placement, and equal height/flexion after pelvis lift.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-ortho",
@@ -1979,7 +2261,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Patient positioning for orthopedic procedures, including ProFx table use, traction, padding of pressure points, ESU grounding pad placement, and steri-drape application.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-hare",
@@ -1987,7 +2270,9 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application of Hare traction for femur injuries, including pre- and post-application neurovascular assessment, splint sizing, ankle strap and hitch application, and hourly reassessment.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Hare Traction Word Document Updated 4/2019"
     },
     {
       "id": "c-pos-pasg",
@@ -1995,7 +2280,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application and controlled deflation of the pneumatic anti-shock garment (PASG), including indications, sequential inflation of lower compartments, and VS-guided abdominal compartment deflation.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-traction",
@@ -2003,7 +2289,9 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application and management of skeletal or skin traction, including pre/post neurovascular assessment, weight selection, alignment, and safe equipment setup.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Traction Word Document Updated 9-2018"
     },
     {
       "id": "c-pos-traction-lf",
@@ -2011,7 +2299,8 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application of traction on Life Flight, including neurovascular assessment, splint sizing, ankle strap and padding application, and hourly reassessment.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-pos-cpm",
@@ -2019,7 +2308,9 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Use of the continuous passive motion (CPM) device, including pain assessment, Physical Therapy collaboration, alignment, settings, and reportable conditions.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Continuous Passive Motion Word Document Updated 9-2018"
     },
     {
       "id": "c-pos-knee",
@@ -2029,7 +2320,9 @@
       "description": "Application of the knee immobilizer, including patient population, pain assessment, Physical Therapy collaboration, alignment, settings, and reportable conditions.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Knee Immobilizer Word Document Updated 9-2018"
     },
     {
       "id": "c-pos-lateral",
@@ -2040,7 +2333,9 @@
       "unitIds": [
         "u-drhcathlab",
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Lateral Transfer Word Document Updated 9/2017"
     },
     {
       "id": "c-pos-crutches",
@@ -2050,7 +2345,9 @@
       "description": "Crutch fitting and ambulation teaching, including measurement, fit verification with 2-finger axillary gap, and crutch stance and gait demonstration.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Crutches - Fitting and Walking Word Document Updated"
     },
     {
       "id": "c-pos-splint",
@@ -2058,7 +2355,9 @@
       "groupId": "g-skin-pos",
       "categoryId": "cat-skin",
       "description": "Application of splints, including indications, limb assessment, alignment, splint type selection, skin-breakdown prevention, post-application assessment, and patient teaching.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Splinting Word Document"
     },
     {
       "id": "c-pos-walker",
@@ -2068,7 +2367,9 @@
       "description": "Walker and crutch ambulation teaching, including weight-bearing status, bed-to-stand, stand-to-seated, ambulation, car transfer, and fall-prevention safety techniques.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Walker/Crutches Word Document Updated 9-2018"
     },
     {
       "id": "c-skin-diaper-icn",
@@ -2076,7 +2377,8 @@
       "groupId": "g-skin-skin",
       "categoryId": "cat-skin",
       "description": "Developmentally supportive diapering in the ICN, including cue-based timing, swaddled containment, and gentle technique to minimize stress.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-skin-isolette",
@@ -2102,7 +2404,9 @@
       "description": "Ostomy care, including stoma type identification, peristomal skin assessment, pouching system application, skin-breakdown prevention, and WOC nurse consultation for new ostomies.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Ostomy Care Word Document Updated 4/2017"
     },
     {
       "id": "c-duke-boot",
@@ -2126,7 +2430,9 @@
       "groupId": "g-skin-wound",
       "categoryId": "cat-skin",
       "description": "Medicinal leech therapy for venous congestion, including leech maintenance, site preparation, application, emergency removal, and documentation.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Leech Therapy Word Document Updated 4/2017"
     },
     {
       "id": "c-incision-amb",
@@ -2134,7 +2440,9 @@
       "groupId": "g-skin-wound",
       "categoryId": "cat-skin",
       "description": "Ambulatory incision care, including wound type identification, closure inspection, clean or sterile dressing changes, drainage management, and consultation with wound resources.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Incision Care - Ambulatory Word Document Updated 3-2020"
     },
     {
       "id": "c-npwt",
@@ -2145,7 +2453,9 @@
       "unitIds": [
         "u-2b2c",
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Negative Pressure Wound Therapy (NPWT) Word Document Updated 4/2017"
     },
     {
       "id": "c-npwt-or",
@@ -2153,7 +2463,8 @@
       "groupId": "g-skin-wound",
       "categoryId": "cat-skin",
       "description": "Initiating NPWT in the OR, including patient contraindications, machine operation, dressing seal maintenance, and alarm troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-npwt-or-asc",
@@ -2161,7 +2472,8 @@
       "groupId": "g-skin-wound",
       "categoryId": "cat-skin",
       "description": "Initiating NPWT in the OR at the ASC, including verifying patient-supplied equipment, ASC backup availability, device setup, and alarm troubleshooting.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-npwt-pacu",
@@ -2171,7 +2483,8 @@
       "description": "NPWT management in the PACU, including indications, contraindications, machine programming, alarm troubleshooting, and documentation.",
       "unitIds": [
         "u-ascpacu"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-npwt-dressing",
@@ -2181,7 +2494,9 @@
       "description": "NPWT dressing change, including parameters for nurse vs. provider performance, sterile technique, wound documentation, and reportable conditions.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "NPWT-Dressing Change Word Document Updated 1-2020"
     },
     {
       "id": "c-wound-care",
@@ -2191,7 +2506,9 @@
       "description": "General wound care, including assessment, measurement, clean or sterile dressing changes, wound irrigation, drainage management, and consultation with wound resources.",
       "unitIds": [
         "u-dn4100"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Wound Care Word Document Updated 4/2017"
     },
     {
       "id": "c-wound-care-amb",
@@ -2201,7 +2518,8 @@
       "description": "Ambulatory wound care, including skin/wound assessment, clean or sterile dressing changes, output measurement, suction maintenance, and patency flushing.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior"
     },
     {
       "id": "c-wound-device",
@@ -2209,7 +2527,9 @@
       "groupId": "g-skin-wound",
       "categoryId": "cat-skin",
       "description": "Use of a wound management device, including indications, appropriate procedure selection, drainage management, output measurement, and consultation with wound resources.",
-      "unitIds": []
+      "unitIds": [],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Wound Management Device Word Document Updated 4/2017"
     },
     {
       "id": "c-staple-rem",
@@ -2219,7 +2539,9 @@
       "description": "Removal of surgical staples, including order verification, incision inspection, CHG skin prep, staple-remover technique, steri-strip application, and patient teaching.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Staple Removal Word Document Upfated 4/2017"
     },
     {
       "id": "c-suture-rem",
@@ -2229,7 +2551,9 @@
       "description": "Removal of surgical sutures (intermittent and continuous), including order verification, incision inspection, CHG skin prep, atraumatic removal technique, and patient teaching.",
       "unitIds": [
         "u-2b2c"
-      ]
+      ],
+      "validationMethod": "Validated by Observation of Behavior",
+      "updateNote": "Suture Removal Word Document"
     }
   ],
   "competencySteps": [

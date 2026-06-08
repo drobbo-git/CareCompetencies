@@ -45,13 +45,23 @@ CREATE TABLE IF NOT EXISTS competency_groups (
 );
 
 CREATE TABLE IF NOT EXISTS competencies (
-  id          TEXT PRIMARY KEY,
-  name        TEXT NOT NULL,
-  description TEXT,
-  group_id    TEXT REFERENCES competency_groups(id),
-  category_id TEXT,
-  unit_ids    JSONB NOT NULL DEFAULT '[]'
+  id                TEXT PRIMARY KEY,
+  name              TEXT NOT NULL,
+  description       TEXT,
+  group_id          TEXT REFERENCES competency_groups(id),
+  category_id       TEXT,
+  unit_ids          JSONB NOT NULL DEFAULT '[]',
+  validation_method TEXT,
+  knowledge_source  TEXT,
+  policy_source     TEXT,
+  update_note       TEXT
 );
+
+-- Additive migration: add new columns if upgrading an existing database
+ALTER TABLE competencies ADD COLUMN IF NOT EXISTS validation_method TEXT;
+ALTER TABLE competencies ADD COLUMN IF NOT EXISTS knowledge_source  TEXT;
+ALTER TABLE competencies ADD COLUMN IF NOT EXISTS policy_source     TEXT;
+ALTER TABLE competencies ADD COLUMN IF NOT EXISTS update_note       TEXT;
 
 CREATE TABLE IF NOT EXISTS competency_steps (
   id             TEXT PRIMARY KEY,

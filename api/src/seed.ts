@@ -75,6 +75,10 @@ function toCompetency(c: any) {
     group_id: c.groupId ?? null,
     category_id: c.categoryId ?? null,
     unit_ids: JSON.stringify(Array.isArray(c.unitIds) ? c.unitIds : []),
+    validation_method: c.validationMethod ?? null,
+    knowledge_source: c.knowledgeSource ?? null,
+    policy_source: c.policySource ?? null,
+    update_note: c.updateNote ?? null,
   };
 }
 
@@ -196,7 +200,8 @@ async function seed() {
       groups.map(toGroup));
 
     await insertAll(client, 'competencies',
-      ['id', 'name', 'description', 'group_id', 'category_id', 'unit_ids'],
+      ['id', 'name', 'description', 'group_id', 'category_id', 'unit_ids',
+       'validation_method', 'knowledge_source', 'policy_source', 'update_note'],
       competencies.map(toCompetency));
 
     await insertAll(client, 'competency_steps',
