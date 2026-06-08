@@ -508,7 +508,7 @@ export default function UnitLeaderDashboardPage() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height={140}>
-              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={28}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                 <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
@@ -526,7 +526,7 @@ export default function UnitLeaderDashboardPage() {
               <p className="text-[10px] text-muted-foreground">Sign-offs per week</p>
             </div>
             <ResponsiveContainer width="100%" height={140}>
-              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={28}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                 <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
@@ -550,7 +550,7 @@ export default function UnitLeaderDashboardPage() {
               </div>
             </div>
             <ResponsiveContainer width="100%" height={140}>
-              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={28}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
                 <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
