@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList, FileBarChart2,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
-  Grid3x3, Sparkles, LogOut, UserCircle2,
+  Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard,
 } from "lucide-react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -21,7 +21,8 @@ interface NavItem {
 function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
   const items: NavItem[] = [
     { to: "/",                  label: "Home",               icon: Home,          roles: ["Administrator", "Person"] },
-    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,   roles: ["Preceptor", "UnitLeader"] },
+    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,      roles: ["Preceptor", "UnitLeader"] },
+    { to: "/dashboard",         label: "Dashboard",          icon: LayoutDashboard,  roles: ["UnitLeader"] },
     { to: "/my-orientees",      label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
     { to: "/observe",           label: "Observe Steps",      icon: Stethoscope,   roles: ["Preceptor", "UnitLeader"] },
     { to: "/sign-off",          label: "Sign Off",           icon: ClipboardCheck,roles: ["Preceptor", "UnitLeader"] },

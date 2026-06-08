@@ -1,290 +1,660 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
-import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { StageBadge, STAGE_HEX } from "@/components/common/StageBadge";
-import { StageProgressRow } from "@/components/common/StageProgressRow";
-import { UnitProgressTrend, type ProgressPoint } from "@/components/dashboard/UnitProgressTrend";
-import { STAGES, type Stage, type StageOrFully } from "@/data/types";
-import { Users, Grid3x3, Stethoscope, ClipboardCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { StageBadge } from "@/components/common/StageBadge";
+import { getStageDays, STAGES, type Stage, type StageOrFully } from "@/data/types";
+import {
+  AlertTriangle, ArrowRight, CalendarClock, GitPullRequestArrow,
+  Sparkles, Users, TrendingUp, ClipboardList, TimerOff,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
-/**
- * Unit Leader landing page. Three layers of information density:
- *   1. Headline KPIs (orientees by stage, unit readiness %)
- *   2. Per-stage progress roll-up across the active orientees
- *   3. Trend chart (achievements cumulative) + watchlist of orientees flagged
- *      for outstanding prior-stage items
- */
+// ---------------------------------------------------------------------------
+// Chart colors — indigo/amber for observations, blue for achievements,
+// stage-matched for completions
+// ---------------------------------------------------------------------------
+const OBS_SAT   = "#6366f1";   // indigo
+const OBS_UNSAT = "#f59e0b";   // amber
+const ACH_COLOR = "#3b82f6";   // blue
+const STAGE_CHART_COLOR: Record<Stage, string> = {
+  Core:        "#dc2626",
+  Orientation: "#b45309",
+  Education:   "#3b82f6",
+};
+
+// ---------------------------------------------------------------------------
+// Week helpers
+// ---------------------------------------------------------------------------
+function mondayOf(dateStr: string): string {
+  const d = new Date(dateStr);
+  const day = d.getUTCDay();
+  const diff = (day === 0 ? -6 : 1 - day);
+  d.setUTCDate(d.getUTCDate() + diff);
+  return d.toISOString().slice(0, 10);
+}
+
+function lastNWeekStarts(n: number): string[] {
+  const today = new Date();
+  const thisMonday = mondayOf(today.toISOString());
+  const weeks: string[] = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(thisMonday);
+    d.setUTCDate(d.getUTCDate() - i * 7);
+    weeks.push(d.toISOString().slice(0, 10));
+  }
+  return weeks;
+}
+
+function shortDate(iso: string): string {
+  const [, m, d] = iso.split("-");
+  return `${parseInt(m)}/${parseInt(d)}`;
+}
+
+function addDays(dateStr: string, days: number): Date {
+  const d = new Date(dateStr + "T12:00:00");
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function daysBetween(a: Date, b: Date): number {
+  return Math.floor((b.getTime() - a.getTime()) / 86400000);
+}
+
+const TODAY = new Date(new Date().toDateString()); // midnight local
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
 export default function UnitLeaderDashboardPage() {
+  const navigate = useNavigate();
   const { currentLogin } = useAuth();
   const {
-    units, persons, assignments, achievements, observations, competencies,
-    getPersonStage,
+    units, persons, personRoles, privileges, assignments,
+    observations, achievements, getPersonStage, getDaysSinceStart,
   } = useData();
 
   const unit = useMemo(
-    () => (currentLogin?.unitId ? units.find((u) => u.id === currentLogin.unitId) : undefined),
+    () => currentLogin?.unitIds?.[0] ? units.find((u) => u.id === currentLogin.unitIds![0]) : undefined,
     [units, currentLogin],
   );
 
-  // Active orientees on this unit (not Fully Oriented).
-  const orientees = useMemo(() => {
-    if (!unit) return [];
-    return persons
-      .filter((n) => n.unitId === unit.id && getPersonStage(n.id) !== "FullyOriented")
-      .map((n) => ({ person: n, stage: getPersonStage(n.id) as Stage }));
-  }, [persons, unit, getPersonStage]);
+  const stageDays = useMemo(() => getStageDays(unit), [unit]);
 
-  // KPIs
-  const orienteeCounts = useMemo(() => {
+  // All persons on this unit
+  const unitPersons = useMemo(
+    () => (unit ? persons.filter((p) => p.unitId === unit.id) : []),
+    [persons, unit],
+  );
+
+  // Active orientees (not FullyOriented / Nonclinical)
+  const orientees = useMemo(
+    () => unitPersons.filter((p) => {
+      const s = getPersonStage(p.id);
+      return s !== "FullyOriented" && s !== "Nonclinical";
+    }),
+    [unitPersons, getPersonStage],
+  );
+
+  // ── Staff profile ──────────────────────────────────────────────────────────
+  const staffProfile = useMemo(() => {
     const counts: Record<StageOrFully, number> = {
       Core: 0, Orientation: 0, Education: 0, FullyOriented: 0, Nonclinical: 0,
     };
-    for (const o of orientees) counts[o.stage] += 1;
+    for (const p of unitPersons) counts[getPersonStage(p.id)]++;
     return counts;
-  }, [orientees]);
+  }, [unitPersons, getPersonStage]);
 
-  // Unit readiness: across all orientees, what % of their assigned competencies are achieved.
-  const readiness = useMemo(() => {
-    if (!unit || orientees.length === 0) return { achieved: 0, total: 0, pct: 0 };
-    let total = 0;
-    let achieved = 0;
-    for (const o of orientees) {
-      const roleId = o.person.roleId ?? "r-rn";
-      const compIds = assignments
-        .filter((a) => a.unitId === unit.id && a.roleId === roleId)
-        .map((a) => a.competencyId);
-      total += compIds.length;
-      achieved += compIds.filter((cid) =>
-        achievements.some((ach) => ach.personId === o.person.id && ach.competencyId === cid),
-      ).length;
-    }
-    return { achieved, total, pct: total === 0 ? 0 : Math.round((achieved / total) * 100) };
-  }, [unit, orientees, assignments, achievements]);
-
-  // Per-stage roll-up across the unit
-  const perStage = useMemo(() => {
+  // ── Health check (overdue) ─────────────────────────────────────────────────
+  const healthFlags = useMemo(() => {
     if (!unit) return [];
-    return STAGES.map((s) => {
-      let total = 0;
-      let achieved = 0;
-      for (const o of orientees) {
-        const roleId = o.person.roleId ?? "r-rn";
+    const cumDays: Record<Stage, number> = {
+      Core:        stageDays.Core,
+      Orientation: stageDays.Core + stageDays.Orientation,
+      Education:   stageDays.Core + stageDays.Orientation + stageDays.Education,
+    };
+    return orientees.flatMap((p) => {
+      const stage = getPersonStage(p.id) as Stage;
+      const stageEndDate = addDays(p.startDate, cumDays[stage]);
+      const daysOverdue = daysBetween(stageEndDate, TODAY);
+      if (daysOverdue <= 0) return [];
+      const roleId = p.roleId ?? "r-rn";
+      const stageCompIds = assignments
+        .filter((a) => a.unitId === unit.id && a.roleId === roleId && a.stage === stage)
+        .map((a) => a.competencyId);
+      const achieved = stageCompIds.filter((cid) =>
+        achievements.some((a) => a.personId === p.id && a.competencyId === cid),
+      ).length;
+      const unachieved = stageCompIds.length - achieved;
+      if (unachieved === 0) return [];
+      const role = personRoles.find((r) => r.id === roleId);
+      return [{
+        person: p,
+        roleName: role?.name ?? "",
+        stage,
+        stageEndDate,
+        daysOverdue,
+        unachieved,
+        total: stageCompIds.length,
+      }];
+    }).sort((a, b) => b.daysOverdue - a.daysOverdue);
+  }, [unit, orientees, stageDays, assignments, achievements, getPersonStage, personRoles]);
+
+  // ── Planner (path to independence) ────────────────────────────────────────
+  const plannerBuckets = useMemo(() => {
+    const totalDays = stageDays.Core + stageDays.Orientation + stageDays.Education;
+    const items = orientees.map((p) => {
+      const projected = addDays(p.startDate, totalDays);
+      const daysUntil = daysBetween(TODAY, projected);
+      const stage = getPersonStage(p.id) as Stage;
+      return { person: p, stage, projected, daysUntil };
+    }).sort((a, b) => a.daysUntil - b.daysUntil);
+
+    const buckets = [
+      { key: "behind",  label: "Behind",    sub: "projected past today", max: 0,  min: -Infinity, items: [] as typeof items },
+      { key: "2w",      label: "≤ 2 weeks", sub: "due soon",             max: 14, min: 1,         items: [] as typeof items },
+      { key: "4w",      label: "≤ 4 weeks", sub: "4w window",            max: 28, min: 15,        items: [] as typeof items },
+      { key: "8w",      label: "≤ 8 weeks", sub: "2 months out",         max: 56, min: 29,        items: [] as typeof items },
+      { key: "3mo",     label: "≤ 3 months",sub: "q-out",                max: 91, min: 57,        items: [] as typeof items },
+      { key: "later",   label: "Later",     sub: "longer",               max: Infinity, min: 92,  items: [] as typeof items },
+    ];
+    for (const item of items) {
+      const bucket = buckets.find((b) => item.daysUntil >= b.min && item.daysUntil <= b.max)
+        ?? (item.daysUntil < 0 ? buckets[0] : buckets[buckets.length - 1]);
+      bucket.items.push(item);
+    }
+    return buckets;
+  }, [orientees, stageDays, getPersonStage]);
+
+  // ── Unit Progress Trend (last 12 weeks) ───────────────────────────────────
+  const trendData = useMemo(() => {
+    if (!unit) return [];
+    const weeks = lastNWeekStarts(12);
+    const weekSet = new Set(weeks);
+
+    const obsByWeek = new Map<string, { sat: number; unsat: number }>();
+    const achByWeek = new Map<string, number>();
+    const stageCompByWeek = new Map<string, Record<Stage, number>>();
+
+    for (const w of weeks) {
+      obsByWeek.set(w, { sat: 0, unsat: 0 });
+      achByWeek.set(w, 0);
+      stageCompByWeek.set(w, { Core: 0, Orientation: 0, Education: 0 });
+    }
+
+    // Step observations for unit orientees
+    const unitPersonIds = new Set(unitPersons.map((p) => p.id));
+    for (const o of observations) {
+      if (!unitPersonIds.has(o.personId)) continue;
+      const w = mondayOf(o.observedAt);
+      if (!weekSet.has(w)) continue;
+      const bucket = obsByWeek.get(w)!;
+      if (o.rating === "Satisfactory") bucket.sat++;
+      else if (o.rating === "Unsatisfactory") bucket.unsat++;
+    }
+
+    // Achievements
+    for (const a of achievements) {
+      if (!unitPersonIds.has(a.personId)) continue;
+      const w = mondayOf(a.achievedAt);
+      if (!weekSet.has(w)) continue;
+      achByWeek.set(w, (achByWeek.get(w) ?? 0) + 1);
+    }
+
+    // Stage completions — week the LAST competency for a stage was achieved
+    for (const p of unitPersons) {
+      const roleId = p.roleId ?? "r-rn";
+      for (const s of STAGES) {
         const compIds = assignments
           .filter((a) => a.unitId === unit.id && a.roleId === roleId && a.stage === s)
           .map((a) => a.competencyId);
-        total += compIds.length;
-        achieved += compIds.filter((cid) =>
-          achievements.some((ach) => ach.personId === o.person.id && ach.competencyId === cid),
-        ).length;
+        if (compIds.length === 0) continue;
+        const achDates = compIds.map((cid) =>
+          achievements.find((a) => a.personId === p.id && a.competencyId === cid)?.achievedAt,
+        );
+        if (achDates.some((d) => !d)) continue; // not all achieved
+        const last = achDates.reduce((max, d) => (d! > max! ? d : max))!;
+        const w = mondayOf(last);
+        if (!weekSet.has(w)) continue;
+        const bucket = stageCompByWeek.get(w)!;
+        bucket[s]++;
       }
-      return { stage: s, total, achieved };
-    });
-  }, [unit, orientees, assignments, achievements]);
+    }
 
-  // Trend: cumulative achievement count by date.
-  const trend: ProgressPoint[] = useMemo(() => {
+    return weeks.map((w) => ({
+      week: shortDate(w),
+      satisfactory: obsByWeek.get(w)!.sat,
+      unsatisfactory: obsByWeek.get(w)!.unsat,
+      achievements: achByWeek.get(w) ?? 0,
+      Core:        stageCompByWeek.get(w)!.Core,
+      Orientation: stageCompByWeek.get(w)!.Orientation,
+      Education:   stageCompByWeek.get(w)!.Education,
+    }));
+  }, [unit, unitPersons, observations, achievements, assignments]);
+
+  // ── Preceptor load ─────────────────────────────────────────────────────────
+  const preceptorLoad = useMemo(() => {
     if (!unit) return [];
-    const inScope = achievements.filter((ach) =>
-      orientees.some((o) => o.person.id === ach.personId),
+    const priv30Ago = new Date(TODAY);
+    priv30Ago.setDate(priv30Ago.getDate() - 30);
+
+    const preceptorPrivs = privileges.filter(
+      (pr) => pr.privilege === "Preceptor" && pr.unitId === unit.id,
     );
-    const byDate = new Map<string, number>();
-    for (const a of inScope) {
-      const d = a.achievedAt.slice(0, 10);
-      byDate.set(d, (byDate.get(d) ?? 0) + 1);
-    }
-    const totalPossible = perStage.reduce((acc, p) => acc + p.total, 0) || 1;
-    let cum = 0;
-    return Array.from(byDate.entries())
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([date, count]) => {
-        cum += count;
-        return { date, achieved: cum, total: totalPossible };
-      });
-  }, [unit, achievements, orientees, perStage]);
+    return preceptorPrivs.map((pr) => {
+      const p = persons.find((x) => x.id === pr.personId);
+      if (!p) return null;
+      const roleId = p.roleId ?? "r-rn";
+      const role = personRoles.find((r) => r.id === roleId);
+      const myOrientees = orientees.filter((o) => o.primaryPreceptorId === p.id);
+      const avgDays = myOrientees.length
+        ? Math.round(myOrientees.reduce((s, o) => s + getDaysSinceStart(o.id), 0) / myOrientees.length)
+        : 0;
+      const signOffs30d = achievements.filter(
+        (a) => a.observerId === p.id && new Date(a.achievedAt) >= priv30Ago,
+      ).length;
+      return {
+        id: p.id,
+        name: p.name,
+        roleName: role?.name ?? "",
+        activeOrientees: myOrientees.length,
+        avgDays,
+        signOffs30d,
+      };
+    }).filter(Boolean).sort((a, b) => b!.activeOrientees - a!.activeOrientees) as NonNullable<ReturnType<typeof preceptorLoad[0]>>[];
+  }, [unit, privileges, persons, personRoles, orientees, achievements, getDaysSinceStart]);
 
-  // Watchlist: orientees with outstanding prior-stage requirements.
-  const watchlist = useMemo(() => {
+  // ── Stalled orientees ─────────────────────────────────────────────────────
+  const stalledOrientees = useMemo(() => {
     if (!unit) return [];
-    const STAGE_RANK: Record<Stage, number> = { Core: 0, Orientation: 1, Education: 2 };
-    return orientees
-      .map((o) => {
-        const roleId = o.person.roleId ?? "r-rn";
-        const currentIdx = STAGE_RANK[o.stage];
-        const priorStages = STAGES.filter((s) => STAGE_RANK[s] < currentIdx);
-        let outstanding = 0;
-        for (const s of priorStages) {
-          const required = assignments
-            .filter((a) => a.unitId === unit.id && a.roleId === roleId && a.stage === s)
-            .map((a) => a.competencyId);
-          outstanding += required.filter((cid) =>
-            !achievements.some((ach) => ach.personId === o.person.id && ach.competencyId === cid),
-          ).length;
-        }
-        return { person: o.person, stage: o.stage, outstanding };
-      })
-      .filter((row) => row.outstanding > 0)
-      .sort((a, b) => b.outstanding - a.outstanding)
-      .slice(0, 6);
-  }, [unit, orientees, assignments, achievements]);
+    const cutoff = new Date(TODAY);
+    cutoff.setDate(cutoff.getDate() - 14);
+    return orientees.filter((p) => {
+      const lastObs = observations
+        .filter((o) => o.personId === p.id)
+        .reduce<string | null>((max, o) => (!max || o.observedAt > max ? o.observedAt : max), null);
+      const lastAch = achievements
+        .filter((a) => a.personId === p.id)
+        .reduce<string | null>((max, a) => (!max || a.achievedAt > max ? a.achievedAt : max), null);
+      const lastActivity = [lastObs, lastAch].filter(Boolean).reduce<string | null>(
+        (max, d) => (!max || d! > max ? d! : max), null,
+      );
+      return !lastActivity || new Date(lastActivity) < cutoff;
+    });
+  }, [unit, orientees, observations, achievements]);
 
-  // Recent activity (last 8 events on this unit)
-  const recentActivity = useMemo(() => {
-    if (!unit) return [];
-    const events: { ts: string; label: string; kind: "achievement" | "observation" }[] = [];
-    for (const ach of achievements) {
-      const n = persons.find((x) => x.id === ach.personId);
-      if (!n || n.unitId !== unit.id) continue;
-      const c = competencies.find((x) => x.id === ach.competencyId);
-      events.push({
-        ts: ach.achievedAt,
-        label: `${n.name} signed off on ${c?.name ?? "—"}`,
-        kind: "achievement",
-      });
-    }
-    for (const o of observations) {
-      const n = persons.find((x) => x.id === o.personId);
-      if (!n || n.unitId !== unit.id) continue;
-      const c = competencies.find((x) => x.id === o.competencyId);
-      events.push({
-        ts: o.observedAt,
-        label: `Step observed (${o.rating}) on ${c?.name ?? "—"} for ${n.name}`,
-        kind: "observation",
-      });
-    }
-    return events.sort((a, b) => b.ts.localeCompare(a.ts)).slice(0, 8);
-  }, [unit, persons, achievements, observations, competencies]);
-
+  // ── Guard ─────────────────────────────────────────────────────────────────
   if (!currentLogin) return null;
   if (!unit) {
     return (
-      <>
-        <PageHeader title="Unit Dashboard" />
-        <p className="text-sm text-muted-foreground">
-          Your Unit Leader login isn't associated with a unit. Ask your administrator to fix this.
-        </p>
-      </>
+      <p className="text-sm text-muted-foreground mt-6">
+        Your login isn't associated with a unit. Ask your administrator to fix this.
+      </p>
     );
   }
 
+  const firstName = currentLogin.displayName.split(/[\s,]/)[0];
+  const cumDaysLabel = [
+    `Core ${stageDays.Core}d`,
+    `Orient. ${stageDays.Core + stageDays.Orientation}d`,
+    `Educ. ${stageDays.Core + stageDays.Orientation + stageDays.Education}d`,
+  ].join(" · ");
+
   return (
-    <>
-      <PageHeader
-        title={`${unit.name} — Dashboard`}
-        description={`${orientees.length} active orientee${orientees.length === 1 ? "" : "s"} · ${readiness.pct}% unit readiness`}
-        actions={
-          <div className="flex items-center gap-2">
-            <Link to="/persons" className="text-xs text-primary hover:underline inline-flex items-center gap-1">
-              <Users className="h-3.5 w-3.5" /> Roster
-            </Link>
-            <Link to="/competency-matrix" className="text-xs text-primary hover:underline inline-flex items-center gap-1">
-              <Grid3x3 className="h-3.5 w-3.5" /> Matrix
-            </Link>
-          </div>
-        }
-      />
+    <div className="space-y-5">
 
-      {/* KPI row */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-        <Card>
-          <CardContent className="pt-4">
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Unit readiness</div>
-            <div className="text-2xl font-semibold tabular-nums mt-0.5">{readiness.pct}%</div>
-            <div className="text-xs text-muted-foreground">{readiness.achieved} / {readiness.total} signed off</div>
-          </CardContent>
-        </Card>
-        {STAGES.map((s) => (
-          <Card key={s}>
-            <CardContent className="pt-4">
-              <div className="text-[10px] uppercase tracking-wider" style={{ color: STAGE_HEX[s] }}>
-                {s}
+      {/* ── Header ─────────────────────────────────────────────────────── */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome, {firstName}</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {unit.name} · {orientees.length} active orientee{orientees.length !== 1 ? "s" : ""} · stage targets: {cumDaysLabel}
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 shrink-0">
+          <Button variant="outline" size="sm" onClick={() => navigate("/assignments")}>
+            <GitPullRequestArrow className="h-3.5 w-3.5 mr-1.5" />
+            Manage assignments
+          </Button>
+          <Button size="sm" onClick={() => navigate("/my-orientees")}>
+            <Users className="h-3.5 w-3.5 mr-1.5" />
+            My orientees
+          </Button>
+        </div>
+      </div>
+
+      {/* ── Row 1: Health check + Staff profile ────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+        {/* Health check */}
+        <Card className="lg:col-span-2">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <TimerOff className="h-4 w-4 text-primary" />
+                Health check
+              </CardTitle>
+              {healthFlags.length > 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-medium">
+                  {healthFlags.length} flag{healthFlags.length !== 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Active orientees past their current stage's target end date with unachieved competencies.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {healthFlags.length === 0 ? (
+              <div className="flex items-center gap-2 text-sm text-green-700 py-2">
+                <Sparkles className="h-4 w-4" />
+                All orientees are on track.
               </div>
-              <div className="text-2xl font-semibold tabular-nums mt-0.5">{orienteeCounts[s] ?? 0}</div>
-              <div className="text-xs text-muted-foreground">orientees</div>
-            </CardContent>
-          </Card>
-        ))}
-        <Card>
-          <CardContent className="pt-4">
-            <div className="text-[10px] uppercase tracking-wider text-green-700">Fully Oriented</div>
-            <div className="text-2xl font-semibold tabular-nums mt-0.5">{orienteeCounts.FullyOriented ?? 0}</div>
-            <div className="text-xs text-muted-foreground">excluded from active scope</div>
+            ) : (
+              healthFlags.map((f) => (
+                <Link
+                  key={f.person.id}
+                  to={`/persons/${f.person.id}`}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 transition-colors"
+                >
+                  <AlertTriangle className="h-4 w-4 text-red-500 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">{f.person.name}{f.roleName ? `, ${f.roleName}` : ""}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {f.stage} stage ended {f.stageEndDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · {f.unachieved} of {f.total} unachieved
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-sm font-semibold text-red-600">{f.daysOverdue}d overdue</span>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </Link>
+              ))
+            )}
           </CardContent>
         </Card>
-      </div>
 
-      {/* Progress by stage + trend chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-6">
+        {/* Staff profile */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Progress by stage</CardTitle></CardHeader>
-          <CardContent className="space-y-2.5">
-            {perStage.map((p) => (
-              <StageProgressRow key={p.stage} stage={p.stage} achieved={p.achieved} total={p.total} />
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Achievement trend</CardTitle></CardHeader>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Users className="h-4 w-4 text-primary" />
+              Staff profile
+            </CardTitle>
+            <p className="text-xs text-muted-foreground">All clinical staff on your unit, by current stage.</p>
+          </CardHeader>
           <CardContent>
-            <UnitProgressTrend data={trend} />
+            <ul className="space-y-2">
+              {(["Core", "Orientation", "Education"] as Stage[]).map((s) => (
+                <li key={s} className="flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ background: STAGE_CHART_COLOR[s] }} />
+                    {s}
+                  </span>
+                  <span className="font-medium tabular-nums">{staffProfile[s]}</span>
+                </li>
+              ))}
+              <li className="flex items-center justify-between text-sm">
+                <span className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-green-600" />
+                  Complete
+                </span>
+                <span className="font-medium tabular-nums">{staffProfile.FullyOriented}</span>
+              </li>
+              <li className="flex items-center justify-between text-sm border-t pt-2 mt-1">
+                <span className="text-muted-foreground">Total</span>
+                <span className="font-medium tabular-nums">{unitPersons.length}</span>
+              </li>
+            </ul>
           </CardContent>
         </Card>
       </div>
 
-      {/* Watchlist + recent activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      {/* ── Planner ────────────────────────────────────────────────────── */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <CalendarClock className="h-4 w-4 text-primary" />
+              Planner — path to independence
+            </CardTitle>
+            <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">
+              {orientees.length} active orientee{orientees.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Projected end of orientation (when each orientee can work independently). Buckets are relative to today.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+            {plannerBuckets.map((bucket) => (
+              <div
+                key={bucket.key}
+                className={cn(
+                  "rounded-lg border p-3 min-h-[120px]",
+                  bucket.key === "behind" && bucket.items.length > 0 && "border-red-200 bg-red-50",
+                  bucket.key === "2w" && bucket.items.length > 0 && "border-amber-200 bg-amber-50",
+                )}
+              >
+                <div className="flex items-start justify-between gap-1 mb-1">
+                  <div>
+                    <p className={cn(
+                      "text-xs font-semibold",
+                      bucket.key === "behind" && bucket.items.length > 0 ? "text-red-600" : "",
+                    )}>
+                      {bucket.label}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">{bucket.sub}</p>
+                  </div>
+                  <span className="text-xs font-medium tabular-nums text-muted-foreground">{bucket.items.length}</span>
+                </div>
+                <div className="space-y-1.5 mt-2">
+                  {bucket.items.length === 0 ? (
+                    <p className="text-xs text-muted-foreground">—</p>
+                  ) : (
+                    bucket.items.map((item) => (
+                      <Link
+                        key={item.person.id}
+                        to={`/persons/${item.person.id}`}
+                        className="block hover:opacity-80"
+                      >
+                        <p className="text-xs font-medium truncate">{item.person.name.split(",")[0]}</p>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <StageBadge stage={item.stage} size="sm" />
+                          <span className="text-[10px] text-muted-foreground">
+                            · {item.projected.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                          </span>
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ── Unit Progress Trend ─────────────────────────────────────────── */}
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              Unit Progress Trend
+            </CardTitle>
+            <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">last 12 weeks</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Weekly activity on {unit.name}. Targets: {cumDaysLabel}.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-1">
+
+          {/* Step Observations */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-medium">Step Observations</p>
+              <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: OBS_SAT }} />Satisfactory</span>
+                <span className="flex items-center gap-1"><span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: OBS_UNSAT }} />Unsatisfactory</span>
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ fontSize: 11 }} />
+                <Bar dataKey="satisfactory" stackId="obs" fill={OBS_SAT} name="Satisfactory" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="unsatisfactory" stackId="obs" fill={OBS_UNSAT} name="Unsatisfactory" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Competency Achievements */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-medium">Competency Achievements</p>
+              <p className="text-[10px] text-muted-foreground">Sign-offs per week</p>
+            </div>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ fontSize: 11 }} />
+                <Bar dataKey="achievements" fill={ACH_COLOR} name="Achievements" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Stage Completions */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-xs font-medium">Stage Completions</p>
+              <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                {STAGES.map((s) => (
+                  <span key={s} className="flex items-center gap-1">
+                    <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: STAGE_CHART_COLOR[s] }} />
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart data={trendData} margin={{ top: 2, right: 4, bottom: 0, left: -24 }} barSize={14}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                <XAxis dataKey="week" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <Tooltip contentStyle={{ fontSize: 11 }} />
+                {STAGES.map((s, i) => (
+                  <Bar key={s} dataKey={s} stackId="stage" fill={STAGE_CHART_COLOR[s]}
+                    name={s} radius={i === STAGES.length - 1 ? [3, 3, 0, 0] : [0, 0, 0, 0]} />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* ── Row 4: Preceptor load + Stalled ────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        {/* Preceptor load */}
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Watchlist</CardTitle>
-            <p className="text-xs text-muted-foreground">Orientees with outstanding prior-stage requirements.</p>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <ClipboardList className="h-4 w-4 text-primary" />
+                Preceptor load
+              </CardTitle>
+              <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">
+                {preceptorLoad.length} preceptor{preceptorLoad.length !== 1 ? "s" : ""}
+              </span>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
-            {watchlist.length === 0 && (
-              <div className="px-4 py-6 text-sm text-muted-foreground">Everyone's caught up.</div>
+            {preceptorLoad.length === 0 ? (
+              <p className="px-5 py-4 text-sm text-muted-foreground">No preceptors assigned to this unit.</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead className="border-b">
+                  <tr className="text-xs text-muted-foreground">
+                    <th className="px-5 py-2 text-left font-medium">Preceptor</th>
+                    <th className="px-3 py-2 text-right font-medium">Active<br />orientees</th>
+                    <th className="px-3 py-2 text-right font-medium">Avg<br />days</th>
+                    <th className="px-3 py-2 text-right font-medium">Sign-offs<br />/ 30d</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {preceptorLoad.map((p, i) => (
+                    <tr key={p.id} className={cn("border-b last:border-0", i % 2 === 0 ? "" : "bg-muted/20")}>
+                      <td className="px-5 py-3 font-medium">{p.name}{p.roleName ? `, ${p.roleName.replace("Registered ", "")}` : ""}</td>
+                      <td className="px-3 py-3 text-right tabular-nums">{p.activeOrientees}</td>
+                      <td className={cn("px-3 py-3 text-right tabular-nums", p.avgDays > 180 ? "text-amber-600 font-medium" : "")}>
+                        {p.avgDays > 0 ? `${p.avgDays}d` : "—"}
+                      </td>
+                      <td className="px-3 py-3 text-right tabular-nums">{p.signOffs30d}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
-            <ul className="divide-y">
-              {watchlist.map((w) => (
-                <li key={w.person.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
-                  <Link to={`/persons/${w.person.id}`} className="text-sm font-medium hover:underline truncate">
-                    {w.person.name}
-                  </Link>
-                  <div className="flex items-center gap-2">
-                    <StageBadge stage={w.stage} size="sm" />
-                    <Badge variant="outline" className="text-[10px]">{w.outstanding} prior-stage open</Badge>
-                  </div>
-                </li>
-              ))}
-            </ul>
           </CardContent>
         </Card>
 
+        {/* Stalled orientees */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Recent activity</CardTitle></CardHeader>
-          <CardContent className="p-0">
-            {recentActivity.length === 0 && (
-              <div className="px-4 py-6 text-sm text-muted-foreground">No recent activity.</div>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <TimerOff className="h-4 w-4 text-primary" />
+                Stalled orientees
+              </CardTitle>
+              <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">
+                no activity 14d+
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Active orientees with no observation or sign-off in the last 14 days. Different from "overdue" — these might be on schedule but inactive.
+            </p>
+          </CardHeader>
+          <CardContent>
+            {stalledOrientees.length === 0 ? (
+              <div className="flex items-center gap-2 text-sm text-green-700 py-1">
+                <Sparkles className="h-4 w-4" />
+                Everyone is active.
+              </div>
+            ) : (
+              <ul className="space-y-2">
+                {stalledOrientees.map((p) => (
+                  <li key={p.id}>
+                    <Link
+                      to={`/persons/${p.id}`}
+                      className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg border hover:bg-muted/30 transition-colors"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{p.name}</p>
+                        <StageBadge stage={getPersonStage(p.id) as Stage} size="sm" />
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
-            <ul className="divide-y">
-              {recentActivity.map((e, i) => (
-                <li key={i} className="px-4 py-2 flex items-start justify-between gap-3 text-sm">
-                  <div className="flex items-start gap-2 min-w-0">
-                    {e.kind === "achievement"
-                      ? <ClipboardCheck className="h-3.5 w-3.5 text-green-700 flex-shrink-0 mt-0.5" />
-                      : <Stethoscope className="h-3.5 w-3.5 text-blue-700 flex-shrink-0 mt-0.5" />}
-                    <span className="truncate">{e.label}</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">
-                    {new Date(e.ts).toLocaleDateString()}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </CardContent>
         </Card>
       </div>
-    </>
+
+    </div>
   );
 }

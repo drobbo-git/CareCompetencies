@@ -23,6 +23,7 @@ import PeoplePage from "./pages/people";
 import NotFoundPage from "./pages/not-found";
 import AssignmentsPage from "./pages/assignments";
 import CompetencyMatrixPage from "./pages/competency-matrix";
+import UnitLeaderDashboardPage from "./pages/unit-leader-dashboard";
 import { AppErrorBoundary } from "./components/system/AppErrorBoundary";
 
 // Determine the router basename from the URL.
@@ -51,6 +52,7 @@ function App() {
                     <Route path="my-competencies" element={<MyCompetenciesPage />} />
                     <Route path="competencies" element={<CompetenciesPage />} />
                     <Route path="competencies/:id" element={<CompetencyDetailPage />} />
+                    <Route path="dashboard" element={<UnitLeaderDashboardPage />} />
                     <Route path="persons" element={<PersonsPage />} />
                     <Route path="persons/:id" element={<PersonDetailPage />} />
                     <Route path="observe" element={<ObservePage />} />
