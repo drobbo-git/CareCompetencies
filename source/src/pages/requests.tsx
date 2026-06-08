@@ -43,13 +43,21 @@ export default function RequestsPage() {
 
   const isAdmin = currentLogin?.systemRole === "Administrator";
 
-  // Show all requests (unit-level view); admins see all, others see all too since unit is shared
+  // Admins see all; Preceptors/UnitLeaders see only requests from people on their unit(s)
   const visible = useMemo(() => {
     if (!currentLogin) return [];
-    return [...changeRequests].sort(
+    let rows = changeRequests;
+    if (!isAdmin && currentLogin.unitIds?.length) {
+      const myUnits = new Set(currentLogin.unitIds);
+      rows = rows.filter((cr) => {
+        const requester = persons.find((p) => p.id === cr.requesterId);
+        return requester ? myUnits.has(requester.unitId) : false;
+      });
+    }
+    return [...rows].sort(
       (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime(),
     );
-  }, [changeRequests, currentLogin]);
+  }, [changeRequests, currentLogin, isAdmin, persons]);
 
   // Count per status (for filter pills)
   const countByStatus = useMemo(() => {
