@@ -121,15 +121,24 @@ function toAchievement(a: any) {
   };
 }
 
+const STATUS_NORMALIZE: Record<string, string> = {
+  Open: 'Pending', Declined: 'Rejected',
+};
+const TYPE_NORMALIZE: Record<string, string> = {
+  'Change Steps': 'ChangeSteps', 'Re-associate': 'Edit',
+};
+
 function toChangeRequest(cr: any) {
+  const rawStatus = cr.status ?? 'Pending';
+  const rawType = cr.requestType ?? cr.type ?? 'Edit';
   return {
     id: cr.id,
     requester_id: cr.requesterId,
     requester_role: cr.requesterRole ?? 'Preceptor',
-    type: cr.requestType ?? cr.type ?? 'Edit',
+    type: TYPE_NORMALIZE[rawType] ?? rawType,
     competency_id: cr.targetId ?? cr.competencyId ?? null,
     rationale: cr.payload?.rationale ?? cr.rationale ?? cr.note ?? '',
-    status: cr.status ?? 'Pending',
+    status: STATUS_NORMALIZE[rawStatus] ?? rawStatus,
     submitted_at: cr.createdAt ?? cr.submittedAt ?? new Date().toISOString(),
     admin_note: cr.payload?.adminNote ?? cr.adminNote ?? null,
   };

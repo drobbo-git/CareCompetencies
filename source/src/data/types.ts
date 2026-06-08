@@ -149,9 +149,26 @@ export interface CompetencyAchievement {
 // -----------------------------------------------------------------------------
 // Workflow
 // -----------------------------------------------------------------------------
-export type ChangeRequestStatus = "Pending" | "Approved" | "Rejected";
-export type ChangeRequestType = "Add" | "Edit" | "Remove";
+export type ChangeRequestStatus = "Pending" | "UnderReview" | "Approved" | "Rejected";
+export type ChangeRequestType = "Add" | "Edit" | "Remove" | "Stage" | "ChangeSteps";
 export type RequesterRole = "Preceptor" | "UnitLeader";
+
+/** Display label for change request status. "Pending"→"Open", "Rejected"→"Declined". */
+export const CR_STATUS_LABEL: Record<ChangeRequestStatus, string> = {
+  Pending: "Open",
+  UnderReview: "Under Review",
+  Approved: "Approved",
+  Rejected: "Declined",
+};
+
+/** Display label for change request type. */
+export const CR_TYPE_LABEL: Record<ChangeRequestType, string> = {
+  Add: "Add",
+  Edit: "Edit",
+  Remove: "Remove",
+  Stage: "Stage",
+  ChangeSteps: "Change Steps",
+};
 
 export interface ChangeRequest {
   id: string;

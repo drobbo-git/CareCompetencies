@@ -131,7 +131,7 @@ export default function CompetencyDetailPage() {
           <div className="flex items-center justify-between gap-4">
             <CardTitle className="text-sm flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-primary" />
-              {homeUnit ? `Required at ${homeUnit.name}` : "Unit Requirements"}
+              {homeUnit ? `Requirements for ${homeUnit.name}` : "Unit Requirements"}
             </CardTitle>
             <button
               type="button"
@@ -148,7 +148,7 @@ export default function CompetencyDetailPage() {
             <p className="text-sm text-muted-foreground">Sign in with a unit-linked account to see unit-specific requirements.</p>
           ) : homeUnitAssignments.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              This competency is not currently required at <span className="font-medium">{homeUnit.name}</span>.
+              No roles on <span className="font-medium">{homeUnit.name}</span> require this competency.
             </p>
           ) : (
             <ul className="space-y-2">

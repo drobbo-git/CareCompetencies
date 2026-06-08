@@ -16345,12 +16345,12 @@
       "requesterRole": "Preceptor",
       "targetType": "Competency",
       "targetId": "c-cardiac-mon",
-      "requestType": "Change Steps",
+      "requestType": "ChangeSteps",
       "payload": {
         "rationale": "Add explicit step covering secondary alarm notification phone sign-in for the unit's smartphone workflow.",
         "adminNote": null
       },
-      "status": "Open",
+      "status": "Pending",
       "decidedBy": null,
       "decidedAt": null,
       "createdAt": "2026-05-27T14:15:00.000Z",
@@ -16384,7 +16384,7 @@
         "rationale": "On 2B/2C Clinic, PIV insertion should be Core not Orientation — it's a same-day expectation for ambulatory.",
         "adminNote": null
       },
-      "status": "Open",
+      "status": "Pending",
       "decidedBy": null,
       "decidedAt": null,
       "createdAt": "2026-05-29T14:15:00.000Z",
@@ -16401,7 +16401,7 @@
         "rationale": "Clarify timing-check frequency under bradycardia in the maintenance steps.",
         "adminNote": "Existing step text already covers this; reinforce in unit education instead."
       },
-      "status": "Declined",
+      "status": "Rejected",
       "decidedBy": null,
       "decidedAt": null,
       "createdAt": "2026-04-30T14:15:00.000Z",
@@ -16413,12 +16413,12 @@
       "requesterRole": "UnitLeader",
       "targetType": "Competency",
       "targetId": "c-cl-port",
-      "requestType": "Re-associate",
+      "requestType": "Stage",
       "payload": {
         "rationale": "DRAH DCC Cary - Radiation Oncology should require port access at Core (not Education). All orientees access ports day-1.",
         "adminNote": null
       },
-      "status": "Open",
+      "status": "Pending",
       "decidedBy": null,
       "decidedAt": null,
       "createdAt": "2026-05-26T14:15:00.000Z",

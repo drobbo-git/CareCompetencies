@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter,
   DialogHeader, DialogTitle,
@@ -11,94 +11,110 @@ import {
 } from "@/components/ui/select";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
-import type {
-  ChangeRequestType, RequesterRole, Competency,
-} from "@/data/types";
+import { CR_TYPE_LABEL } from "@/data/types";
+import type { ChangeRequestType, RequesterRole } from "@/data/types";
 
 interface ChangeRequestDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   /** Pre-fill the competency the request is about. Optional. */
-  competency?: Competency;
-  /** Pre-fill the request type. Defaults to "Edit". */
-  defaultType?: ChangeRequestType;
+  prefilledCompetencyId?: string;
 }
 
-/**
- * Dialog used by Preceptors and Unit Leaders to submit a change request
- * against the catalog. Administrators triage these on /requests.
- */
 export function ChangeRequestDialog({
-  open, onOpenChange, competency, defaultType = "Edit",
+  open, onOpenChange, prefilledCompetencyId,
 }: ChangeRequestDialogProps) {
   const { currentLogin } = useAuth();
-  const { submitChangeRequest, logAudit } = useData();
+  const { competencies, submitChangeRequest, logAudit } = useData();
 
-  const [type, setType] = useState<ChangeRequestType>(defaultType);
+  const [type, setType] = useState<ChangeRequestType>("Add");
+  const [competencyId, setCompetencyId] = useState<string>(prefilledCompetencyId ?? "__none__");
   const [rationale, setRationale] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Sync pre-fill when prop changes or dialog reopens
+  useEffect(() => {
+    setCompetencyId(prefilledCompetencyId ?? "__none__");
+  }, [prefilledCompetencyId, open]);
+
+  function handleClose() {
+    setRationale("");
+    setType("Add");
+    setCompetencyId(prefilledCompetencyId ?? "__none__");
+    onOpenChange(false);
+  }
 
   const canSubmit =
     !!currentLogin &&
     (currentLogin.systemRole === "Preceptor" || currentLogin.systemRole === "UnitLeader") &&
     rationale.trim().length > 0;
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!currentLogin || !canSubmit) return;
     setSubmitting(true);
     try {
       const requesterRole: RequesterRole =
         currentLogin.systemRole === "UnitLeader" ? "UnitLeader" : "Preceptor";
-      const cr = submitChangeRequest({
+      const resolvedCompId = competencyId === "__none__" ? undefined : competencyId;
+      const comp = competencies.find((c) => c.id === resolvedCompId);
+      const cr = await submitChangeRequest({
         requesterId: currentLogin.id,
         requesterRole,
         type,
-        competencyId: competency?.id,
+        competencyId: resolvedCompId,
         rationale: rationale.trim(),
       });
       logAudit({
         actor: currentLogin.id,
         actorRole: currentLogin.systemRole,
         type: "ChangeRequestSubmitted",
-        summary: `${type} request submitted${competency ? ` for ${competency.name}` : ""}`,
-        targetLabel: competency?.name ?? cr.id,
+        summary: `${type} request submitted${comp ? ` for ${comp.name}` : ""}`,
+        targetLabel: comp?.name ?? cr.id,
       });
-      setRationale("");
-      onOpenChange(false);
+      handleClose();
     } finally {
       setSubmitting(false);
     }
   }
 
+  const sortedCompetencies = [...competencies].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Request catalog change</DialogTitle>
+          <DialogTitle>Request a library change</DialogTitle>
           <DialogDescription>
-            Administrators review change requests. You'll see the decision back here in the
-            Change Requests inbox.
+            Administrators will review your request. The library itself is not modified until approved.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
-          {competency && (
-            <div className="rounded-md border bg-muted/50 px-3 py-2 text-sm">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Competency</div>
-              <div className="font-medium">{competency.name}</div>
-            </div>
-          )}
-
           <div className="space-y-1.5">
-            <Label htmlFor="cr-type">Request type</Label>
+            <Label htmlFor="cr-type">Type of change</Label>
             <Select value={type} onValueChange={(v) => setType(v as ChangeRequestType)}>
               <SelectTrigger id="cr-type">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Add">Add a competency</SelectItem>
-                <SelectItem value="Edit">Edit this competency</SelectItem>
-                <SelectItem value="Remove">Remove this competency</SelectItem>
+                {(Object.keys(CR_TYPE_LABEL) as ChangeRequestType[]).map((t) => (
+                  <SelectItem key={t} value={t}>{CR_TYPE_LABEL[t]}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="cr-comp">Related competency (optional)</Label>
+            <Select value={competencyId} onValueChange={setCompetencyId}>
+              <SelectTrigger id="cr-comp">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">— None / new competency —</SelectItem>
+                {sortedCompetencies.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -107,19 +123,16 @@ export function ChangeRequestDialog({
             <Label htmlFor="cr-rationale">Rationale</Label>
             <Textarea
               id="cr-rationale"
-              placeholder="Why is this change needed? What's the clinical or operational driver?"
+              placeholder="Explain what change you propose and why it matters."
               rows={5}
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
             />
-            <p className="text-xs text-muted-foreground">
-              Include enough detail that an administrator can decide without follow-up.
-            </p>
           </div>
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={submitting}>
+          <Button variant="outline" onClick={handleClose} disabled={submitting}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!canSubmit || submitting}>
