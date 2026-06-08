@@ -43,12 +43,12 @@ export default function PersonsPage() {
   const [sortKey, setSortKey] = useState<SortKey>("progress");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
-  const homeUnit = currentLogin?.unitId ? units.find((u) => u.id === currentLogin.unitId) : undefined;
+  const homeUnit = currentLogin?.unitIds?.[0] ? units.find((u) => u.id === currentLogin.unitIds![0]) : undefined;
 
   const rows: RosterRow[] = useMemo(() => {
     if (!currentLogin) return [];
-    const scoped = currentLogin.unitId
-      ? persons.filter((n) => n.unitId === currentLogin.unitId)
+    const scoped = currentLogin.unitIds?.length
+      ? persons.filter((n) => currentLogin.unitIds!.includes(n.unitId))
       : persons;
     return scoped.map((n) => {
       const roleId = n.roleId ?? "r-rn";
@@ -104,7 +104,7 @@ export default function PersonsPage() {
   return (
     <>
       <PageHeader
-        title="Person Roster"
+        title="Unit Roster"
         description={homeUnit ? `${homeUnit.name} · ${rows.length} persons` : `${rows.length} persons`}
       />
 

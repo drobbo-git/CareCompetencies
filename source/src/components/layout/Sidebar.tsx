@@ -21,11 +21,11 @@ interface NavItem {
 function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
   const items: NavItem[] = [
     { to: "/",                  label: "Home",               icon: Home,          roles: ["Administrator", "Person"] },
-    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,   roles: ["Preceptor"] },
+    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,   roles: ["Preceptor", "UnitLeader"] },
     { to: "/my-orientees",      label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
     { to: "/observe",           label: "Observe Steps",      icon: Stethoscope,   roles: ["Preceptor", "UnitLeader"] },
     { to: "/sign-off",          label: "Sign Off",           icon: ClipboardCheck,roles: ["Preceptor", "UnitLeader"] },
-    { to: "/persons",           label: "Person Roster",      icon: Users,         roles: ["UnitLeader"] },
+    { to: "/persons",           label: "Unit Roster",        icon: Users,         roles: ["UnitLeader"] },
     { to: "/competency-matrix", label: "Competency Matrix",  icon: Grid3x3,       roles: ["UnitLeader"] },
     { to: "/competencies",      label: "Search Competencies",icon: BookOpen,      roles: ["Administrator", "UnitLeader", "Preceptor", "Person"], dividerBefore: ["Preceptor", "UnitLeader"] },
     { to: "/groups",            label: "Manage Groups",      icon: Layers,        roles: ["Administrator"] },
@@ -47,7 +47,7 @@ export function Sidebar() {
 
   const isUnitLeader = currentLogin.systemRole === "UnitLeader";
   const navItems = getNavItems(currentLogin.systemRole, isUnitLeader);
-  const homeUnit = currentLogin.unitId ? units.find((u) => u.id === currentLogin.unitId) : undefined;
+  const homeUnit = currentLogin.unitIds?.[0] ? units.find((u) => u.id === currentLogin.unitIds![0]) : undefined;
 
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border min-h-screen">
