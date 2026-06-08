@@ -230,9 +230,9 @@ export default function ObservePage() {
         <CardContent className="pt-5 pb-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* Orientee combobox */}
+            {/* Learner combobox */}
             <div className="space-y-1.5">
-              <Label>Orientee</Label>
+              <Label>Learner</Label>
               <Popover open={orienteeOpen} onOpenChange={setOrienteeOpen}>
                 <PopoverTrigger asChild>
                   <button
@@ -293,7 +293,7 @@ export default function ObservePage() {
                   disabled={!person}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={person ? "Select a category…" : "Select an orientee first"} />
+                    <SelectValue placeholder={person ? "Select a category…" : "Select a learner first"} />
                   </SelectTrigger>
                   <SelectContent>
                     {groupTree.map(({ root, children, directComps }) =>

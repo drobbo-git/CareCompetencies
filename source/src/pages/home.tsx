@@ -69,10 +69,10 @@ export default function Home() {
     <>
       <PageHeader
         title={`Welcome, ${displayFirstName(currentLogin.displayName)}`}
-        description={`You have ${myOrientees.length} paired orientee${myOrientees.length === 1 ? "" : "s"}.`}
+        description={`You have ${myOrientees.length} paired learner${myOrientees.length === 1 ? "" : "s"}.`}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <QuickLink to="/my-orientees" icon={UserCircle2}    title="My Orientees" desc="Your paired orientees and their progress." />
+        <QuickLink to="/my-orientees" icon={UserCircle2}    title="My Learners" desc="Your paired learners and their progress." />
         <QuickLink to="/observe"      icon={Stethoscope}    title="Observe"      desc="Record a step observation." />
         <QuickLink to="/sign-off"     icon={ClipboardCheck} title="Sign off"     desc="Mark a competency as achieved." />
         <QuickLink to="/competencies" icon={BookOpen}       title="Catalog"      desc="Look up any competency." />

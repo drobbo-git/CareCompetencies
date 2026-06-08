@@ -117,7 +117,7 @@ export default function MyOrienteesPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">
-          {isUnitLeader ? "Unit Orientees" : "My Orientees"}
+          {isUnitLeader ? "Unit Learners" : "My Learners"}
         </h1>
       </div>
 
@@ -125,8 +125,8 @@ export default function MyOrienteesPage() {
       {rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           {isUnitLeader
-            ? "All orientees on this unit are fully oriented."
-            : "No orientees are paired with you."}
+            ? "All learners on this unit are fully oriented."
+            : "No learners are paired with you."}
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -206,8 +206,8 @@ export default function MyOrienteesPage() {
 
       {/* Footer */}
       <p className="text-xs text-muted-foreground">
-        <span className="font-medium">{rows.length} orientee{rows.length !== 1 ? "s" : ""}</span>
-        {" · "}Sorted by last name. Click a card to open the orientee workspace.
+        <span className="font-medium">{rows.length} learner{rows.length !== 1 ? "s" : ""}</span>
+        {" · "}Sorted by last name. Click a card to open the learner workspace.
       </p>
     </div>
   );

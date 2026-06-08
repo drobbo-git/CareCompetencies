@@ -93,7 +93,7 @@ export default function UnitLeaderDashboardPage() {
     [persons, unit],
   );
 
-  // Active orientees (not FullyOriented / Nonclinical)
+  // Active learners (not FullyOriented / Nonclinical)
   const orientees = useMemo(
     () => unitPersons.filter((p) => {
       const s = getPersonStage(p.id);
@@ -314,7 +314,7 @@ export default function UnitLeaderDashboardPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Welcome, {firstName}</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {unit.name} · {orientees.length} active orientee{orientees.length !== 1 ? "s" : ""} · stage targets: {cumDaysLabel}
+            {unit.name} · {orientees.length} active learner{orientees.length !== 1 ? "s" : ""} · stage targets: {cumDaysLabel}
           </p>
         </div>
         <div className="flex flex-col gap-2 shrink-0">
@@ -324,7 +324,7 @@ export default function UnitLeaderDashboardPage() {
           </Button>
           <Button size="sm" onClick={() => navigate("/my-orientees")}>
             <Users className="h-3.5 w-3.5 mr-1.5" />
-            My orientees
+            My learners
           </Button>
         </div>
       </div>
@@ -347,14 +347,14 @@ export default function UnitLeaderDashboardPage() {
               )}
             </div>
             <p className="text-xs text-muted-foreground">
-              Active orientees past their current stage's target end date with unachieved competencies.
+              Active learners past their current stage's target end date with unachieved competencies.
             </p>
           </CardHeader>
           <CardContent className="space-y-2">
             {healthFlags.length === 0 ? (
               <div className="flex items-center gap-2 text-sm text-green-700 py-2">
                 <Sparkles className="h-4 w-4" />
-                All orientees are on track.
+                All learners are on track.
               </div>
             ) : (
               healthFlags.map((f) => (
@@ -425,11 +425,11 @@ export default function UnitLeaderDashboardPage() {
               Planner — path to independence
             </CardTitle>
             <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">
-              {orientees.length} active orientee{orientees.length !== 1 ? "s" : ""}
+              {orientees.length} active learner{orientees.length !== 1 ? "s" : ""}
             </span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Projected end of orientation (when each orientee can work independently). Buckets are relative to today.
+            Projected end of orientation (when each learner can work independently). Buckets are relative to today.
           </p>
         </CardHeader>
         <CardContent>
@@ -589,7 +589,7 @@ export default function UnitLeaderDashboardPage() {
                 <thead className="border-b">
                   <tr className="text-xs text-muted-foreground">
                     <th className="px-5 py-2 text-left font-medium">Preceptor</th>
-                    <th className="px-3 py-2 text-right font-medium">Active<br />orientees</th>
+                    <th className="px-3 py-2 text-right font-medium">Active<br />learners</th>
                     <th className="px-3 py-2 text-right font-medium">Avg<br />days</th>
                     <th className="px-3 py-2 text-right font-medium">Sign-offs<br />/ 30d</th>
                   </tr>
@@ -617,14 +617,14 @@ export default function UnitLeaderDashboardPage() {
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm flex items-center gap-2">
                 <TimerOff className="h-4 w-4 text-primary" />
-                Stalled orientees
+                Stalled learners
               </CardTitle>
               <span className="text-xs px-2.5 py-1 rounded-full border text-muted-foreground">
                 no activity 14d+
               </span>
             </div>
             <p className="text-xs text-muted-foreground">
-              Active orientees with no observation or sign-off in the last 14 days. Different from "overdue" — these might be on schedule but inactive.
+              Active learners with no observation or sign-off in the last 14 days. Different from "overdue" — they might be on schedule but inactive.
             </p>
           </CardHeader>
           <CardContent>

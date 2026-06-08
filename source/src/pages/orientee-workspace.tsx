@@ -218,7 +218,7 @@ export default function OrienteeWorkspacePage() {
 
   if (!currentLogin) return null;
   if (!person) {
-    return <p className="text-sm text-muted-foreground">Orientee not found.</p>;
+    return <p className="text-sm text-muted-foreground">Learner not found.</p>;
   }
 
   return (
@@ -231,11 +231,11 @@ export default function OrienteeWorkspacePage() {
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-3"
         >
           <ArrowLeft className="h-3 w-3" />
-          My Orientees
+          My Learners
         </Link>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Orientee: {person.name}</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Learner: {person.name}</h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               {unit?.name ?? "—"}
               {primaryPreceptor && <> · Primary preceptor: {primaryPreceptor.name}</>}

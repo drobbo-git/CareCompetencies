@@ -23,7 +23,7 @@ function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
     { to: "/",                  label: "Home",               icon: Home,          roles: ["Administrator", "Person"] },
     { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,      roles: ["Preceptor", "UnitLeader"] },
     { to: "/dashboard",         label: "Dashboard",          icon: LayoutDashboard,  roles: ["UnitLeader"] },
-    { to: "/my-orientees",      label: isUnitLeader ? "Unit Orientees" : "My Orientees", icon: Users, roles: ["Preceptor", "UnitLeader"] },
+    { to: "/my-orientees",      label: isUnitLeader ? "Unit Learners" : "My Learners", icon: Users, roles: ["Preceptor", "UnitLeader"] },
     { to: "/observe",           label: "Observe Steps",      icon: Stethoscope,   roles: ["Preceptor", "UnitLeader"] },
     { to: "/sign-off",          label: "Sign Off",           icon: ClipboardCheck,roles: ["Preceptor", "UnitLeader"] },
     { to: "/persons",           label: "Unit Roster",        icon: Users,         roles: ["UnitLeader"] },
