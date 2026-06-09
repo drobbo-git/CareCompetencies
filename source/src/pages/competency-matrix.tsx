@@ -2,28 +2,56 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
-import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Stage, StageOrFully } from "@/data/types";
-import { STAGES } from "@/data/types";
+import { Check } from "lucide-react";
+import { STAGES, type Stage, type StageOrFully } from "@/data/types";
 
-/**
- * Transposed Competency Matrix for Unit Leaders.
- *
- *   - Rows: competencies, grouped by stage band (Core → Orientation → Education)
- *     and by group label within each band.
- *   - Columns: nurses on the unit, sorted by stage then name. Column headers
- *     are rotated 90° (writing-mode: vertical-rl) to keep columns narrow.
- *   - A second sticky top row spans the nurses-in-each-stage as a colored
- *     "stage grouper" — matching the symmetry of the row stage band.
- *   - Cell semantics:
- *       ✓     — Achieved
- *       •     — In progress (one or more observations recorded)
- *       blank — Not started
- *       —     — Not required (no assignment for this person's role/unit at this competency)
- *   - All sticky <th>s render on opaque `bg-card` so scrolled rows don't
- *     bleed through.
- */
+// ---------------------------------------------------------------------------
+// Cell icon components
+// ---------------------------------------------------------------------------
+function CellAchieved() {
+  return (
+    <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center mx-auto">
+      <Check className="h-3 w-3 text-white stroke-[3]" />
+    </div>
+  );
+}
+
+function CellInProgress() {
+  return (
+    <div className="w-5 h-5 rounded-full border-2 border-amber-400 bg-amber-50 mx-auto" />
+  );
+}
+
+function CellNotStarted() {
+  return (
+    <div className="w-5 h-5 rounded-full mx-auto"
+      style={{ border: "2px dashed #cbd5e1" }} />
+  );
+}
+
+function CellNotRequired() {
+  return <span className="text-muted-foreground/40 text-xs">—</span>;
+}
+
+// ---------------------------------------------------------------------------
+// Stage styling
+// ---------------------------------------------------------------------------
+const STAGE_HEADER_BG: Record<StageOrFully, string> = {
+  Core:          "bg-red-50 text-red-800 border-red-200",
+  Orientation:   "bg-amber-50 text-amber-900 border-amber-200",
+  Education:     "bg-blue-50 text-blue-800 border-blue-200",
+  FullyOriented: "bg-green-50 text-green-800 border-green-200",
+  Nonclinical:   "bg-zinc-50 text-zinc-700 border-zinc-200",
+};
+
+const STAGE_RANK: Record<StageOrFully, number> = {
+  Core: 0, Orientation: 1, Education: 2, FullyOriented: 3, Nonclinical: 4,
+};
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
 export default function CompetencyMatrixPage() {
   const { currentLogin } = useAuth();
   const {
@@ -31,16 +59,10 @@ export default function CompetencyMatrixPage() {
     getPersonStage,
   } = useData();
 
-  const unitId = currentLogin?.unitId;
+  const unitId = currentLogin?.unitIds?.[0];
   const unit = unitId ? units.find((u) => u.id === unitId) : undefined;
 
-  // ---------------------------------------------------------------------
-  // Build column list (nurses on this unit, sorted by stage then name).
-  // ---------------------------------------------------------------------
-  const STAGE_RANK: Record<StageOrFully, number> = {
-    Core: 0, Orientation: 1, Education: 2, FullyOriented: 3, Nonclinical: 4,
-  };
-
+  // ── Columns (all persons on unit, sorted by stage then name) ─────────────
   const columns = useMemo(() => {
     if (!unitId) return [];
     return persons
@@ -52,7 +74,7 @@ export default function CompetencyMatrixPage() {
       });
   }, [persons, unitId, getPersonStage]);
 
-  // Group consecutive columns by stage for the top sticky band.
+  // Group consecutive columns by stage for the top header band
   const columnStageGroups = useMemo(() => {
     const out: { stage: StageOrFully; span: number }[] = [];
     for (const c of columns) {
@@ -63,9 +85,7 @@ export default function CompetencyMatrixPage() {
     return out;
   }, [columns]);
 
-  // ---------------------------------------------------------------------
-  // Build row list (competencies grouped by stage band and group label).
-  // ---------------------------------------------------------------------
+  // ── Row bands (competencies grouped by stage band then group label) ───────
   const groupName = useMemo(() => {
     const m = new Map<string, string>();
     groups.forEach((g) => m.set(g.id, g.name));
@@ -80,10 +100,7 @@ export default function CompetencyMatrixPage() {
 
   const rowBands: RowBand[] = useMemo(() => {
     if (!unitId) return [];
-    // Build assignments for this unit (any role; matrix shows the union).
     const unitAssignments = assignments.filter((a) => a.unitId === unitId);
-
-    // Map competencyId -> earliest stage that assigns it on this unit
     const compStage = new Map<string, Stage>();
     for (const a of unitAssignments) {
       const cur = compStage.get(a.competencyId);
@@ -91,14 +108,12 @@ export default function CompetencyMatrixPage() {
         compStage.set(a.competencyId, a.stage);
       }
     }
-
     return STAGES.map((stage) => {
       const compIds = competencies
         .filter((c) => compStage.get(c.id) === stage)
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((c) => c.id);
 
-      // Group by groupName for the second sticky col
       const grouped = new Map<string, string[]>();
       for (const cid of compIds) {
         const c = competencies.find((x) => x.id === cid)!;
@@ -111,14 +126,11 @@ export default function CompetencyMatrixPage() {
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([label, ids]) => ({ label, competencyIds: ids }));
 
-      const flatCount = groupedSorted.reduce((acc, g) => acc + g.competencyIds.length, 0);
-      return { stage, groups: groupedSorted, flatCount };
+      return { stage, groups: groupedSorted, flatCount: groupedSorted.reduce((s, g) => s + g.competencyIds.length, 0) };
     }).filter((b) => b.flatCount > 0);
   }, [unitId, assignments, competencies, groupName]);
 
-  // ---------------------------------------------------------------------
-  // Cell status lookup
-  // ---------------------------------------------------------------------
+  // ── Cell status sets ──────────────────────────────────────────────────────
   const achievedSet = useMemo(() => {
     const s = new Set<string>();
     achievements.forEach((a) => s.add(`${a.personId}|${a.competencyId}`));
@@ -131,7 +143,6 @@ export default function CompetencyMatrixPage() {
     return s;
   }, [observations]);
 
-  // assignmentByPersonComp: which (person, competency) pairs are required?
   const requiredSet = useMemo(() => {
     const s = new Set<string>();
     const personRole = new Map<string, string>();
@@ -147,44 +158,121 @@ export default function CompetencyMatrixPage() {
     return s;
   }, [assignments, persons, columns, unitId]);
 
+  // ── KPI calculations ──────────────────────────────────────────────────────
+  const kpi = useMemo(() => {
+    const unitCompIds = new Set(
+      assignments.filter((a) => a.unitId === unitId).map((a) => a.competencyId),
+    );
+    const totalSlots = requiredSet.size;
+    const achievedSlots = [...requiredSet].filter((k) => achievedSet.has(k)).length;
+    const pct = totalSlots === 0 ? 0 : Math.round((achievedSlots / totalSlots) * 100);
+
+    const stageCounts: Record<Stage, number> = { Core: 0, Orientation: 0, Education: 0 };
+    for (const c of columns) {
+      if (c.stage === "Core" || c.stage === "Orientation" || c.stage === "Education") {
+        stageCounts[c.stage as Stage]++;
+      }
+    }
+    return { nurses: columns.length, competencies: unitCompIds.size, pct, stageCounts };
+  }, [columns, assignments, unitId, requiredSet, achievedSet]);
+
+  // ── Guard ─────────────────────────────────────────────────────────────────
   if (currentLogin?.systemRole !== "UnitLeader") {
     return <p className="text-sm text-muted-foreground">Unit Leader access required.</p>;
   }
 
-  function cellContent(personId: string, competencyId: string): { glyph: string; cls: string; title: string } {
+  function cellNode(personId: string, competencyId: string) {
     const k = `${personId}|${competencyId}`;
-    if (!requiredSet.has(k)) return { glyph: "—", cls: "text-muted-foreground/50", title: "Not required" };
-    if (achievedSet.has(k)) return { glyph: "✓", cls: "text-green-700 font-semibold", title: "Achieved" };
-    if (inProgressSet.has(k)) return { glyph: "•", cls: "text-blue-700 font-semibold", title: "In progress" };
-    return { glyph: "", cls: "", title: "Not started" };
+    if (!requiredSet.has(k)) return <CellNotRequired />;
+    if (achievedSet.has(k))  return <CellAchieved />;
+    if (inProgressSet.has(k)) return <CellInProgress />;
+    return <CellNotStarted />;
   }
 
-  const STAGE_HEADER_BG: Record<StageOrFully, string> = {
-    Core: "bg-red-50 text-red-800 border-red-200",
-    Orientation: "bg-amber-50 text-amber-900 border-amber-200",
-    Education: "bg-blue-50 text-blue-800 border-blue-200",
-    FullyOriented: "bg-green-50 text-green-800 border-green-200",
-    Nonclinical: "bg-zinc-50 text-zinc-700 border-zinc-200",
-  };
-
   return (
-    <>
-      <PageHeader
-        title="Competency Matrix"
-        description={unit ? `${unit.name} · ${competencies.length} competencies × ${columns.length} persons` : undefined}
-      />
+    <div className="space-y-4">
 
+      {/* ── Header ───────────────────────────────────────────────────── */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Competency Matrix</h1>
+          <p className="text-sm text-muted-foreground mt-0.5 max-w-2xl">
+            Competency achievement across all clinical staff on {unit?.name ?? "your unit"}. Rows are unit-required competencies grouped by stage; columns are staff grouped by stage.
+          </p>
+        </div>
+        {unit && (
+          <span className="shrink-0 text-xs px-3 py-1.5 rounded-full border font-medium text-muted-foreground">
+            {unit.name}
+          </span>
+        )}
+      </div>
+
+      {/* ── KPI row ──────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Card>
+          <CardContent className="pt-4 pb-3">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Nurses</p>
+            <p className="text-3xl font-semibold tabular-nums mt-0.5">{kpi.nurses}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4 pb-3">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Competencies</p>
+            <p className="text-3xl font-semibold tabular-nums mt-0.5">{kpi.competencies}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4 pb-3">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">% Achieved</p>
+            <p className="text-3xl font-semibold tabular-nums mt-0.5">{kpi.pct}%</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">across required slots</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4 pb-3">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Active Learners</p>
+            <div className="mt-1 space-y-0.5">
+              {STAGES.map((s) => (
+                <div key={s} className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">{s}</span>
+                  <span className="font-medium tabular-nums">{kpi.stageCounts[s]}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ── Legend ───────────────────────────────────────────────────── */}
+      <div className="flex items-center gap-5 text-xs text-muted-foreground flex-wrap">
+        <span className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+            <Check className="h-2.5 w-2.5 text-white stroke-[3]" />
+          </div>
+          Achieved
+        </span>
+        <span className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-full border-2 border-amber-400 bg-amber-50 shrink-0" />
+          In progress
+        </span>
+        <span className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-full shrink-0" style={{ border: "2px dashed #cbd5e1" }} />
+          Not started
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="text-muted-foreground/40 font-medium">—</span>
+          Not required for role
+        </span>
+      </div>
+
+      {/* ── Matrix table ─────────────────────────────────────────────── */}
       <Card>
-        <CardContent className="p-0 overflow-auto max-h-[80vh]">
+        <CardContent className="p-0 overflow-auto max-h-[72vh]">
           <table className="text-xs border-collapse">
             <thead>
-              {/* Top sticky row: stage band groupers across the nurses */}
+              {/* Stage band grouper row */}
               <tr>
-                <th
-                  className="sticky top-0 left-0 z-30 bg-card border-r border-b"
-                  colSpan={3}
-                  style={{ minWidth: 360 }}
-                />
+                <th className="sticky top-0 left-0 z-30 bg-card border-r border-b" colSpan={3} style={{ minWidth: 360 }} />
                 {columnStageGroups.map((g, i) => (
                   <th
                     key={i}
@@ -195,20 +283,11 @@ export default function CompetencyMatrixPage() {
                   </th>
                 ))}
               </tr>
-              {/* Second sticky row: rotated person names */}
+              {/* Rotated person name row */}
               <tr>
-                <th
-                  className="sticky left-0 z-20 bg-card border-r border-b"
-                  style={{ top: 26, minWidth: 48 }}
-                />
-                <th
-                  className="sticky z-20 bg-card border-r border-b"
-                  style={{ top: 26, minWidth: 140 }}
-                />
-                <th
-                  className="sticky z-20 bg-card border-r border-b"
-                  style={{ top: 26, minWidth: 220 }}
-                >
+                <th className="sticky left-0 z-20 bg-card border-r border-b" style={{ top: 26, minWidth: 48 }} />
+                <th className="sticky z-20 bg-card border-r border-b" style={{ top: 26, minWidth: 140 }} />
+                <th className="sticky z-20 bg-card border-r border-b" style={{ top: 26, minWidth: 220 }}>
                   <div className="text-left px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground">
                     Competency
                   </div>
@@ -222,11 +301,7 @@ export default function CompetencyMatrixPage() {
                   >
                     <div
                       className="px-1 py-2 text-left text-[11px] font-medium"
-                      style={{
-                        writingMode: "vertical-rl",
-                        transform: "rotate(180deg)",
-                        height: 140,
-                      }}
+                      style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", height: 140 }}
                     >
                       {c.person.name}
                     </div>
@@ -236,7 +311,6 @@ export default function CompetencyMatrixPage() {
             </thead>
             <tbody>
               {rowBands.flatMap((band) => {
-                // For each band, we need to render rows; the stage cell uses rowSpan=band.flatCount.
                 let firstRowOfBand = true;
                 const stageBg = STAGE_HEADER_BG[band.stage];
                 return band.groups.flatMap((grp) => {
@@ -244,7 +318,7 @@ export default function CompetencyMatrixPage() {
                   return grp.competencyIds.map((cid) => {
                     const c = competencies.find((x) => x.id === cid)!;
                     const tr = (
-                      <tr key={cid} className="border-b">
+                      <tr key={cid} className="border-b hover:bg-muted/20">
                         {firstRowOfBand && (
                           <td
                             rowSpan={band.flatCount}
@@ -273,19 +347,16 @@ export default function CompetencyMatrixPage() {
                             {c.name}
                           </Link>
                         </td>
-                        {columns.map((col) => {
-                          const cell = cellContent(col.person.id, c.id);
-                          return (
-                            <td
-                              key={col.person.id}
-                              className={`border-r text-center align-middle ${cell.cls}`}
-                              style={{ width: 44 }}
-                              title={`${col.person.name} · ${c.name} · ${cell.title}`}
-                            >
-                              {cell.glyph}
-                            </td>
-                          );
-                        })}
+                        {columns.map((col) => (
+                          <td
+                            key={col.person.id}
+                            className="border-r text-center align-middle py-1"
+                            style={{ width: 44 }}
+                            title={`${col.person.name} · ${c.name}`}
+                          >
+                            {cellNode(col.person.id, c.id)}
+                          </td>
+                        ))}
                       </tr>
                     );
                     firstRowOfBand = false;
@@ -305,13 +376,6 @@ export default function CompetencyMatrixPage() {
           </table>
         </CardContent>
       </Card>
-
-      <div className="mt-3 text-xs text-muted-foreground flex items-center gap-4 flex-wrap">
-        <span className="inline-flex items-center gap-1"><span className="text-green-700 font-semibold">✓</span> Achieved</span>
-        <span className="inline-flex items-center gap-1"><span className="text-blue-700 font-semibold">•</span> In progress</span>
-        <span className="inline-flex items-center gap-1"><span className="text-muted-foreground">blank</span> Not started</span>
-        <span className="inline-flex items-center gap-1"><span className="text-muted-foreground/50">—</span> Not required</span>
-      </div>
-    </>
+    </div>
   );
 }
