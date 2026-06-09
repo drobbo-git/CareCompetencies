@@ -56,6 +56,8 @@ interface DataCtx {
     achievedAt?: string;
   }) => Promise<CompetencyAchievement>;
 
+  reassignPreceptor: (personId: string, newPreceptorId: string | null) => Promise<void>;
+
   upsertCompetency: (c: Competency) => Promise<void>;
   upsertSteps: (competencyId: string, newSteps: CompetencyStep[]) => Promise<void>;
   upsertGroup: (g: CompetencyGroup) => Promise<void>;
@@ -186,6 +188,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }, [queryClient]);
 
   // -------------------------------------------------------------------------
+  // Mutations — persons
+  // -------------------------------------------------------------------------
+  const reassignPreceptor = useCallback(async (
+    personId: string,
+    newPreceptorId: string | null,
+  ): Promise<void> => {
+    await api.patchPerson(personId, { primaryPreceptorId: newPreceptorId });
+    await queryClient.invalidateQueries({ queryKey: ['persons'] });
+  }, [queryClient]);
+
+  // -------------------------------------------------------------------------
   // Mutations — catalog
   // -------------------------------------------------------------------------
   const upsertCompetency = useCallback(async (c: Competency): Promise<void> => {
@@ -280,6 +293,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     changeRequests, auditEvents,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
     recordObservation, recordAchievement,
+    reassignPreceptor,
     upsertCompetency, upsertSteps,
     upsertGroup, removeGroup,
     upsertAssignment, removeAssignment,

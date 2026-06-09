@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  Home, Users, Stethoscope, ClipboardList, FileBarChart2,
+  Home, Users, Stethoscope, ClipboardList,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
   Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard,
 } from "lucide-react";
@@ -10,31 +10,43 @@ import { useData } from "@/data/store";
 import type { SystemRole } from "@/data/types";
 
 interface NavItem {
+  id: string;
   to: string;
   label: string;
   icon: typeof Home;
   roles: SystemRole[];
-  /** Render a divider before this item for these roles. */
-  dividerBefore?: SystemRole[];
+  /** Render a divider after this item for these roles. */
+  dividerAfter?: SystemRole[];
 }
 
 function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
   const items: NavItem[] = [
-    { to: "/",                  label: "Home",               icon: Home,          roles: ["Administrator", "Person"] },
-    { to: "/my-competencies",   label: "My Competencies",    icon: UserCircle2,      roles: ["Preceptor", "UnitLeader"] },
-    { to: "/dashboard",         label: "Dashboard",          icon: LayoutDashboard,  roles: ["UnitLeader"] },
-    { to: "/my-orientees",      label: isUnitLeader ? "Unit Learners" : "My Learners", icon: Users, roles: ["Preceptor", "UnitLeader"] },
-    { to: "/observe",           label: "Observe Steps",      icon: Stethoscope,   roles: ["Preceptor", "UnitLeader"] },
-    { to: "/sign-off",          label: "Sign Off",           icon: ClipboardCheck,roles: ["Preceptor", "UnitLeader"] },
-    { to: "/persons",           label: "Unit Roster",        icon: Users,         roles: ["UnitLeader"] },
-    { to: "/competency-matrix", label: "Competency Matrix",  icon: Grid3x3,       roles: ["UnitLeader"] },
-    { to: "/competencies",      label: "Search Competencies",icon: BookOpen,      roles: ["Administrator", "UnitLeader", "Preceptor", "Person"], dividerBefore: ["Preceptor", "UnitLeader"] },
-    { to: "/groups",            label: "Manage Groups",      icon: Layers,        roles: ["Administrator"] },
-    { to: "/assignments",       label: "Assignments",        icon: ClipboardList, roles: ["Administrator"] },
-    { to: "/people",            label: "People",             icon: Users,         roles: ["Administrator"] },
-    { to: "/requests",          label: "Change Requests",    icon: MailQuestion,  roles: ["Administrator", "Preceptor", "UnitLeader"] },
-    { to: "/reports",           label: "Reports",            icon: FileBarChart2, roles: ["Administrator", "UnitLeader"] },
-    { to: "/audit",             label: "Audit Log",          icon: ShieldCheck,   roles: ["Administrator"] },
+    // ── Person / base ────────────────────────────────────────────────────────
+    { id: "home",           to: "/",                  label: "Home",                icon: Home,           roles: ["Administrator", "Person"] },
+
+    // ── Preceptor + UnitLeader ────────────────────────────────────────────────
+    { id: "my-comps",       to: "/my-competencies",   label: "My Competencies",     icon: UserCircle2,    roles: ["Preceptor", "UnitLeader"], dividerAfter: ["Preceptor", "UnitLeader"] },
+
+    // UnitLeader management section
+    { id: "dashboard",      to: "/dashboard",         label: "Dashboard",           icon: LayoutDashboard,roles: ["UnitLeader"] },
+    { id: "roster",         to: "/persons",           label: "Unit Roster",         icon: Users,          roles: ["UnitLeader"] },
+    { id: "matrix",         to: "/competency-matrix", label: "Competency Matrix",   icon: Grid3x3,        roles: ["UnitLeader"] },
+    { id: "ul-assignments", to: "/unit-assignments",  label: "Assignments",         icon: ClipboardList,  roles: ["UnitLeader"], dividerAfter: ["UnitLeader"] },
+
+    // Learner workflow
+    { id: "learners",       to: "/my-orientees",      label: isUnitLeader ? "Unit Learners" : "My Learners", icon: Users, roles: ["Preceptor", "UnitLeader"] },
+    { id: "observe",        to: "/observe",           label: "Observe Steps",       icon: Stethoscope,    roles: ["Preceptor", "UnitLeader"] },
+    { id: "signoff",        to: "/sign-off",          label: "Sign Off",            icon: ClipboardCheck, roles: ["Preceptor", "UnitLeader"], dividerAfter: ["Preceptor", "UnitLeader"] },
+
+    // Library / reference
+    { id: "competencies",   to: "/competencies",      label: "Search Competencies", icon: BookOpen,       roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
+    { id: "requests",       to: "/requests",          label: "Change Requests",     icon: MailQuestion,   roles: ["Administrator", "Preceptor", "UnitLeader"] },
+
+    // ── Administrator ─────────────────────────────────────────────────────────
+    { id: "groups",         to: "/groups",            label: "Manage Groups",       icon: Layers,         roles: ["Administrator"] },
+    { id: "assignments",    to: "/assignments",       label: "Assignments",         icon: ClipboardList,  roles: ["Administrator"] },
+    { id: "people",         to: "/people",            label: "People",              icon: Users,          roles: ["Administrator"] },
+    { id: "audit",          to: "/audit",             label: "Audit Log",           icon: ShieldCheck,    roles: ["Administrator"] },
   ];
 
   return items.filter((i) => i.roles.includes(role));
@@ -80,11 +92,11 @@ export function Sidebar() {
       {/* Nav */}
       <nav className="flex-1 px-2 space-y-0.5">
         {navItems.map((item) => (
-          <Fragment key={item.to}>
-            {item.dividerBefore?.includes(currentLogin.systemRole) && (
+          <Fragment key={item.id}>
+            <NavItemLink item={item} />
+            {item.dividerAfter?.includes(currentLogin.systemRole) && (
               <div className="my-2 border-t border-sidebar-border" />
             )}
-            <NavItemLink item={item} />
           </Fragment>
         ))}
         <div className="my-2 border-t border-sidebar-border" />

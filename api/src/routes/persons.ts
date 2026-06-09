@@ -19,6 +19,18 @@ router.get('/:id', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+router.patch('/:id', requireAuth, async (req, res, next) => {
+  try {
+    const { primaryPreceptorId } = req.body as { primaryPreceptorId?: string | null };
+    const { rows } = await pool.query(
+      'UPDATE persons SET primary_preceptor_id = $1 WHERE id = $2 RETURNING *',
+      [primaryPreceptorId ?? null, req.params.id],
+    );
+    if (rows.length === 0) { res.status(404).json({ error: 'Person not found' }); return; }
+    res.json(toPerson(rows[0]));
+  } catch (err) { next(err); }
+});
+
 function toPerson(r: Record<string, unknown>) {
   return {
     id: r.id,

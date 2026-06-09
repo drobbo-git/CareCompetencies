@@ -33,6 +33,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 const get = <T>(path: string) => request<T>('GET', path);
 const post = <T>(path: string, body: unknown) => request<T>('POST', path, body);
 const put = <T>(path: string, body: unknown) => request<T>('PUT', path, body);
+const patch = <T>(path: string, body: unknown) => request<T>('PATCH', path, body);
 const del = (path: string) => request<void>('DELETE', path);
 
 export const api = {
@@ -46,6 +47,7 @@ export const api = {
 
   // persons
   getPersons: () => get<Person[]>('/persons'),
+  patchPerson: (id: string, data: { primaryPreceptorId?: string | null }) => patch<Person>(`/persons/${id}`, data),
 
   // groups
   getGroups:    () => get<CompetencyGroup[]>('/competencies/groups'),
