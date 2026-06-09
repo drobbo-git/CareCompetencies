@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { STAGES, type Stage, type StageOrFully } from "@/data/types";
 
 // ---------------------------------------------------------------------------
@@ -56,23 +57,40 @@ export default function CompetencyMatrixPage() {
   const { currentLogin } = useAuth();
   const {
     persons, units, competencies, groups, assignments, achievements, observations,
-    getPersonStage,
+    getPersonStage, personRoles,
   } = useData();
 
   const unitId = currentLogin?.unitIds?.[0];
   const unit = unitId ? units.find((u) => u.id === unitId) : undefined;
 
-  // ── Columns (all persons on unit, sorted by stage then name) ─────────────
-  const columns = useMemo(() => {
+  // ── Role selector ─────────────────────────────────────────────────────────
+  const availableRoles = useMemo(() => {
     if (!unitId) return [];
+    const rolesWithPersons = new Set(
+      persons.filter((p) => p.unitId === unitId).map((p) => p.roleId ?? "r-rn"),
+    );
+    const rolesWithAssignments = new Set(
+      assignments.filter((a) => a.unitId === unitId).map((a) => a.roleId),
+    );
+    return personRoles.filter(
+      (r) => rolesWithPersons.has(r.id) && rolesWithAssignments.has(r.id),
+    );
+  }, [unitId, persons, assignments, personRoles]);
+
+  const [roleFilter, setRoleFilter] = useState("");
+  const activeRole = roleFilter || availableRoles[0]?.id || "";
+
+  // ── Columns (persons on unit with active role, sorted by stage then name) ─
+  const columns = useMemo(() => {
+    if (!unitId || !activeRole) return [];
     return persons
-      .filter((n) => n.unitId === unitId)
+      .filter((n) => n.unitId === unitId && n.roleId === activeRole)
       .map((n) => ({ person: n, stage: getPersonStage(n.id) }))
       .sort((a, b) => {
         const r = STAGE_RANK[a.stage] - STAGE_RANK[b.stage];
         return r !== 0 ? r : a.person.name.localeCompare(b.person.name);
       });
-  }, [persons, unitId, getPersonStage]);
+  }, [persons, unitId, getPersonStage, activeRole]);
 
   // Group consecutive columns by stage for the top header band
   const columnStageGroups = useMemo(() => {
@@ -85,7 +103,7 @@ export default function CompetencyMatrixPage() {
     return out;
   }, [columns]);
 
-  // ── Row bands (competencies grouped by stage band then group label) ───────
+  // ── Row bands (competencies for active role, grouped by stage then group) ─
   const groupName = useMemo(() => {
     const m = new Map<string, string>();
     groups.forEach((g) => m.set(g.id, g.name));
@@ -99,8 +117,10 @@ export default function CompetencyMatrixPage() {
   }
 
   const rowBands: RowBand[] = useMemo(() => {
-    if (!unitId) return [];
-    const unitAssignments = assignments.filter((a) => a.unitId === unitId);
+    if (!unitId || !activeRole) return [];
+    const unitAssignments = assignments.filter(
+      (a) => a.unitId === unitId && a.roleId === activeRole,
+    );
     const compStage = new Map<string, Stage>();
     for (const a of unitAssignments) {
       const cur = compStage.get(a.competencyId);
@@ -128,7 +148,7 @@ export default function CompetencyMatrixPage() {
 
       return { stage, groups: groupedSorted, flatCount: groupedSorted.reduce((s, g) => s + g.competencyIds.length, 0) };
     }).filter((b) => b.flatCount > 0);
-  }, [unitId, assignments, competencies, groupName]);
+  }, [unitId, assignments, competencies, groupName, activeRole]);
 
   // ── Cell status sets ──────────────────────────────────────────────────────
   const achievedSet = useMemo(() => {
@@ -161,7 +181,7 @@ export default function CompetencyMatrixPage() {
   // ── KPI calculations ──────────────────────────────────────────────────────
   const kpi = useMemo(() => {
     const unitCompIds = new Set(
-      assignments.filter((a) => a.unitId === unitId).map((a) => a.competencyId),
+      assignments.filter((a) => a.unitId === unitId && a.roleId === activeRole).map((a) => a.competencyId),
     );
     const totalSlots = requiredSet.size;
     const achievedSlots = [...requiredSet].filter((k) => achievedSet.has(k)).length;
@@ -173,8 +193,8 @@ export default function CompetencyMatrixPage() {
         stageCounts[c.stage as Stage]++;
       }
     }
-    return { nurses: columns.length, competencies: unitCompIds.size, pct, stageCounts };
-  }, [columns, assignments, unitId, requiredSet, achievedSet]);
+    return { staffCount: columns.length, competencies: unitCompIds.size, pct, stageCounts };
+  }, [columns, assignments, unitId, activeRole, requiredSet, achievedSet]);
 
   // ── Guard ─────────────────────────────────────────────────────────────────
   if (currentLogin?.systemRole !== "UnitLeader") {
@@ -189,6 +209,8 @@ export default function CompetencyMatrixPage() {
     return <CellNotStarted />;
   }
 
+  const activeRoleName = availableRoles.find((r) => r.id === activeRole)?.name ?? "Staff";
+
   return (
     <div className="space-y-4">
 
@@ -197,7 +219,7 @@ export default function CompetencyMatrixPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Competency Matrix</h1>
           <p className="text-sm text-muted-foreground mt-0.5 max-w-2xl">
-            Competency achievement across all clinical staff on {unit?.name ?? "your unit"}. Rows are unit-required competencies grouped by stage; columns are staff grouped by stage.
+            Competency achievement across clinical staff on {unit?.name ?? "your unit"}. Rows are unit-required competencies grouped by stage; columns are staff grouped by stage.
           </p>
         </div>
         {unit && (
@@ -207,12 +229,33 @@ export default function CompetencyMatrixPage() {
         )}
       </div>
 
+      {/* ── Role selector ────────────────────────────────────────────── */}
+      {availableRoles.length > 0 && (
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-muted-foreground font-medium">Role:</span>
+          {availableRoles.map((r) => (
+            <button
+              key={r.id}
+              onClick={() => setRoleFilter(r.id)}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
+                activeRole === r.id
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-border hover:border-primary/40 hover:bg-muted/50",
+              )}
+            >
+              {r.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* ── KPI row ──────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <Card>
           <CardContent className="pt-4 pb-3">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Nurses</p>
-            <p className="text-3xl font-semibold tabular-nums mt-0.5">{kpi.nurses}</p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{activeRoleName}</p>
+            <p className="text-3xl font-semibold tabular-nums mt-0.5">{kpi.staffCount}</p>
           </CardContent>
         </Card>
         <Card>
@@ -272,14 +315,15 @@ export default function CompetencyMatrixPage() {
             <thead>
               {/* Stage band grouper row */}
               <tr>
-                <th className="sticky top-0 left-0 z-30 bg-card border-r border-b" colSpan={3} style={{ minWidth: 360 }} />
+                <th className="sticky top-0 left-0 z-30 bg-card border-r border-b" colSpan={3} style={{ minWidth: 360, height: 26 }} />
                 {columnStageGroups.map((g, i) => (
                   <th
                     key={i}
                     colSpan={g.span}
                     className={`sticky top-0 z-20 bg-card border-b border-r text-center font-semibold uppercase tracking-wider text-[10px] py-1 ${STAGE_HEADER_BG[g.stage]}`}
+                    style={{ height: 26 }}
                   >
-                    {g.stage === "FullyOriented" ? "Fully Oriented" : g.stage}
+                    {g.stage === "FullyOriented" ? "Continuous Learning" : g.stage}
                   </th>
                 ))}
               </tr>
@@ -296,11 +340,11 @@ export default function CompetencyMatrixPage() {
                   <th
                     key={c.person.id}
                     className="sticky z-10 bg-card border-r border-b"
-                    style={{ top: 26, width: 44, minWidth: 44 }}
+                    style={{ top: 26, width: 52, minWidth: 52 }}
                     title={c.person.name}
                   >
                     <div
-                      className="px-1 py-2 text-left text-[11px] font-medium"
+                      className="px-2 py-2 text-left text-[11px] font-medium"
                       style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", height: 140 }}
                     >
                       {c.person.name}
@@ -322,7 +366,7 @@ export default function CompetencyMatrixPage() {
                         {firstRowOfBand && (
                           <td
                             rowSpan={band.flatCount}
-                            className={`sticky left-0 z-10 border-r ${stageBg} text-center font-semibold uppercase tracking-wider text-[10px] align-top`}
+                            className={`sticky left-0 z-10 border-r ${stageBg} text-center font-semibold uppercase tracking-wider text-[10px] align-middle`}
                             style={{ minWidth: 48 }}
                           >
                             <div className="py-2 px-1" style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
@@ -351,7 +395,7 @@ export default function CompetencyMatrixPage() {
                           <td
                             key={col.person.id}
                             className="border-r text-center align-middle py-1"
-                            style={{ width: 44 }}
+                            style={{ width: 52 }}
                             title={`${col.person.name} · ${c.name}`}
                           >
                             {cellNode(col.person.id, c.id)}
