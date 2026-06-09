@@ -72,7 +72,7 @@ export default function MyOrienteesPage() {
     if (!currentLogin) return [];
 
     const orientees = isUnitLeader
-      ? persons.filter((n) => n.unitId === currentLogin.unitId)
+      ? persons.filter((n) => n.unitId === currentLogin.unitIds?.[0])
       : persons.filter((n) => n.primaryPreceptorId === currentLogin.id);
 
     return orientees

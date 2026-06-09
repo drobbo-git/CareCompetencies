@@ -25,4 +25,5 @@ dist-ssr
 
 # Build artifacts
 .tsbuildinfo
-*.tsbuildinfo
+*.tsbuildinfoplaywright-report/
+test-results/
