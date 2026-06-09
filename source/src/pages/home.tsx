@@ -13,7 +13,7 @@ import {
 /**
  * Role-aware home page. Each role sees a different welcome layout:
  *   - Administrator → quick links to catalog, requests, audit, reports
- *   - UnitLeader   → redirect to /unit-leader-dashboard (their real home)
+ *   - UnitLeader   → redirect to /dashboard (their real home)
  *   - Preceptor    → quick links to orientees, observe, sign-off
  *   - Person       → redirect to /my-competencies
  */
@@ -29,7 +29,7 @@ export default function Home() {
   if (!currentLogin) return null;
 
   if (currentLogin.systemRole === "UnitLeader") {
-    return <Navigate to="/unit-leader-dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
   if (currentLogin.systemRole === "Preceptor") {
     return <Navigate to="/my-orientees" replace />;
