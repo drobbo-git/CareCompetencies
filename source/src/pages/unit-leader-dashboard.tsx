@@ -403,7 +403,7 @@ export default function UnitLeaderDashboardPage() {
               <li className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full bg-green-600" />
-                  Complete
+                  Continuous Learning
                 </span>
                 <span className="font-medium tabular-nums">{staffProfile.FullyOriented}</span>
               </li>

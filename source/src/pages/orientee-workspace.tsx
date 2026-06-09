@@ -495,7 +495,7 @@ export default function OrienteeWorkspacePage() {
           <CardContent className="p-0">
             {upNext.length === 0 ? (
               <p className="px-4 pb-4 text-sm text-muted-foreground">
-                {stage === "FullyOriented" ? "All competencies achieved — fully oriented!" : "All current-stage competencies achieved."}
+                {stage === "FullyOriented" ? "All competencies achieved — in continuous learning!" : "All current-stage competencies achieved."}
               </p>
             ) : (
               <ul className="divide-y">

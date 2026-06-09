@@ -125,7 +125,7 @@ export default function MyOrienteesPage() {
       {rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           {isUnitLeader
-            ? "All learners on this unit are fully oriented."
+            ? "All learners on this unit are in continuous learning."
             : "No learners are paired with you."}
         </p>
       ) : (

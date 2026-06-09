@@ -19,7 +19,7 @@ const STAGE_LABEL: Record<StageOrFully, string> = {
   Core: "Core",
   Orientation: "Orientation",
   Education: "Education",
-  FullyOriented: "Fully Oriented",
+  FullyOriented: "Continuous Learning",
   Nonclinical: "Nonclinical",
 };
 

@@ -481,7 +481,7 @@ function identityField(label: string, value: string): string {
 
 function renderStageBadge(stage: StageOrFully): string {
   if (stage === "FullyOriented") {
-    return `<span class="stage-badge fully"><span class="dot"></span>Fully Oriented \u00B7 Year 1 Complete</span>`;
+    return `<span class="stage-badge fully"><span class="dot"></span>Continuous Learning</span>`;
   }
   if (stage === "Nonclinical") {
     return `<span class="stage-badge nonclinical"><span class="dot"></span>Nonclinical</span>`;
