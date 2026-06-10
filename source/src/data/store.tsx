@@ -95,7 +95,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: api.getObservations,   enabled, staleTime: 10_000 });
   const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: api.getAchievements,   enabled, staleTime: 10_000 });
   const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
-  const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled, staleTime: 10_000 });
+  const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled: enabled && currentLogin?.systemRole === 'Administrator', staleTime: 10_000 });
 
   const units       = unitsQ.data       ?? [];
   const personRoles = personRolesQ.data ?? [];
