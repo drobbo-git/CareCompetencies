@@ -10,10 +10,11 @@ const sqlConfig: sql.config = {
     encrypt:                process.env.DB_SERVER !== 'localhost',
     trustServerCertificate: process.env.DB_SERVER === 'localhost',
   },
+  connectionTimeout: process.env.DB_SERVER !== 'localhost' ? 60_000 : 15_000,
   pool: {
     max:                10,
     idleTimeoutMillis:  30_000,
-    acquireTimeoutMillis: 5_000,
+    acquireTimeoutMillis: process.env.DB_SERVER !== 'localhost' ? 60_000 : 5_000,
   },
 };
 
