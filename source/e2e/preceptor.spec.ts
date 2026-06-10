@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { loginAs, navTo } from './helpers';
 
-test.describe('Preceptor role (simmonsm)', () => {
+test.describe('Preceptor role (ms41)', () => {
   test('login redirects to My Learners', async ({ page }) => {
     await loginAs(page, 'preceptor');
     await expect(page.locator('h1')).toContainText('My Learners');

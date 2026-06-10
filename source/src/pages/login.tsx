@@ -47,7 +47,7 @@ export default function LoginPage() {
               <Input
                 id="username"
                 autoComplete="username"
-                placeholder="simmonsm"
+                placeholder="ms41"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={signingIn}

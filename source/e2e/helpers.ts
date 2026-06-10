@@ -1,10 +1,10 @@
 import type { Page } from '@playwright/test';
 
 export const CREDS = {
-  person:     { username: 'hesters',  password: 'duke24', displayName: 'Stacy Hester, RN' },
-  preceptor:  { username: 'simmonsm', password: 'duke24', displayName: 'Michele Simmons, RN' },
-  unitLeader: { username: 'vankirkw', password: 'duke24', displayName: 'Wendy Van Kirk, RN' },
-  admin:      { username: 'hickst',   password: 'duke24', displayName: 'Tammi Hicks, RN' },
+  person:     { username: 'sh27', password: 'duke24', displayName: 'Sara Hayes, RN' },
+  preceptor:  { username: 'ms41', password: 'duke24', displayName: 'Morgan Sullivan, RN' },
+  unitLeader: { username: 'wv38', password: 'duke24', displayName: 'Wendy Vale, RN' },
+  admin:      { username: 'th55', password: 'duke24', displayName: 'Tammy Hill, RN' },
 } as const;
 
 /**
