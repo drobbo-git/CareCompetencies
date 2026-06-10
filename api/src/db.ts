@@ -22,7 +22,7 @@ let _pool: sql.ConnectionPool | undefined;
 async function getPool(): Promise<sql.ConnectionPool> {
   if (!_pool || !_pool.connected) {
     _pool = await sql.connect(sqlConfig);
-    _pool.on('error', (err) => console.error('SQL Server pool error:', err));
+    _pool.on('error', (err: Error) => console.error('SQL Server pool error:', err));
   }
   return _pool;
 }
