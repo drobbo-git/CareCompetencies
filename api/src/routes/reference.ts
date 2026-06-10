@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
+import { parsePagination } from '../lib/scopeFilter';
 
 const router = Router();
 
@@ -25,15 +26,28 @@ router.get('/person-roles', requireAuth, async (_req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.get('/person-privileges', requireAuth, async (_req, res, next) => {
+router.get('/person-privileges', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM person_privileges ORDER BY person_id');
-    res.json(rows.map((r) => ({
-      id: r.id,
-      personId: r.person_id,
-      privilege: r.privilege,
-      unitId: r.unit_id ?? null,
-    })));
+    if (req.auth!.systemRole !== 'Administrator') {
+      res.status(403).json({ error: 'Only administrators can view person privileges' });
+      return;
+    }
+    const pg = parsePagination(req.query as Record<string, unknown>);
+    const { rows } = await pool.query(
+      `SELECT * FROM person_privileges ORDER BY person_id
+       OFFSET ${pg.offsetParam} ROWS FETCH NEXT ${pg.fetchParam} ROWS ONLY`,
+      pg.params,
+    );
+    res.json({
+      page: pg.page,
+      pageSize: pg.pageSize,
+      data: rows.map((r) => ({
+        id: r.id,
+        personId: r.person_id,
+        privilege: r.privilege,
+        unitId: r.unit_id ?? null,
+      })),
+    });
   } catch (err) { next(err); }
 });
 

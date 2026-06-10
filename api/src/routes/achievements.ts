@@ -1,13 +1,18 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
+import { personScopeFilter } from '../lib/scopeFilter';
 import crypto from 'crypto';
 
 const router = Router();
 
-router.get('/', requireAuth, async (_req, res, next) => {
+router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM competency_achievements ORDER BY achieved_at DESC');
+    const { where, params } = personScopeFilter(req.auth!, 'person_id');
+    const { rows } = await pool.query(
+      `SELECT * FROM competency_achievements ${where} ORDER BY achieved_at DESC`,
+      params,
+    );
     res.json(rows.map(toAch));
   } catch (err) { next(err); }
 });

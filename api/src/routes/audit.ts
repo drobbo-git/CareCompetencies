@@ -1,14 +1,24 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
+import { parsePagination } from '../lib/scopeFilter';
 import crypto from 'crypto';
 
 const router = Router();
 
-router.get('/', requireAuth, async (_req, res, next) => {
+router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM audit_events ORDER BY timestamp DESC LIMIT 500');
-    res.json(rows.map(toEvent));
+    if (req.auth!.systemRole !== 'Administrator') {
+      res.status(403).json({ error: 'Only administrators can view audit events' });
+      return;
+    }
+    const pg = parsePagination(req.query as Record<string, unknown>);
+    const { rows } = await pool.query(
+      `SELECT * FROM audit_events ORDER BY timestamp DESC
+       OFFSET ${pg.offsetParam} ROWS FETCH NEXT ${pg.fetchParam} ROWS ONLY`,
+      pg.params,
+    );
+    res.json({ page: pg.page, pageSize: pg.pageSize, data: rows.map(toEvent) });
   } catch (err) { next(err); }
 });
 

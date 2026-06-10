@@ -1,13 +1,18 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
+import { personScopeFilter } from '../lib/scopeFilter';
 import crypto from 'crypto';
 
 const router = Router();
 
-router.get('/', requireAuth, async (_req, res, next) => {
+router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM change_requests ORDER BY submitted_at DESC');
+    const { where, params } = personScopeFilter(req.auth!, 'requester_id');
+    const { rows } = await pool.query(
+      `SELECT * FROM change_requests ${where} ORDER BY submitted_at DESC`,
+      params,
+    );
     res.json(rows.map(toCR));
   } catch (err) { next(err); }
 });
@@ -29,9 +34,12 @@ router.post('/', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// PUT /change-requests/:id/decision  { decision: "Approved"|"Rejected", adminNote?: string }
 router.put('/:id/decision', requireAuth, async (req, res, next) => {
   try {
+    if (req.auth!.systemRole !== 'Administrator') {
+      res.status(403).json({ error: 'Only administrators can approve or reject change requests' });
+      return;
+    }
     const { decision, adminNote } = req.body as { decision: 'Approved' | 'Rejected'; adminNote?: string };
     if (decision !== 'Approved' && decision !== 'Rejected') {
       res.status(400).json({ error: 'decision must be Approved or Rejected' });
