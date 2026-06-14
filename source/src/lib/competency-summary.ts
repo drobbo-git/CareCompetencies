@@ -426,7 +426,7 @@ export function buildCompetencySummaryHtml(input: CompetencySummaryInput): strin
 
     <div class="identity">
       ${identityField("Name", personDisplayName)}
-      ${identityField("Duke ID", person.dukeId ?? "\u2014")}
+      ${identityField("Duke NetID", person.dukeNetid ?? "\u2014")}
       ${identityField("Job Code", person.jobCode ?? "\u2014")}
       ${identityField("Clinical Role", role?.name ?? "\u2014")}
       ${identityField("Home Unit", unit?.name ?? "\u2014")}

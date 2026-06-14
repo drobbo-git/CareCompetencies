@@ -34,6 +34,33 @@ router.post('/', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+router.patch('/:id', requireAuth, async (req, res, next) => {
+  try {
+    if (req.auth!.systemRole !== 'Administrator') {
+      res.status(403).json({ error: 'Administrator access required' });
+      return;
+    }
+    const { status, adminNote } = req.body as { status?: string; adminNote?: string };
+    const validStatuses = ['Pending', 'UnderReview', 'Approved', 'Rejected'];
+    if (status !== undefined && !validStatuses.includes(status)) {
+      res.status(400).json({ error: 'Invalid status' });
+      return;
+    }
+    const sets: string[] = [];
+    const vals: unknown[] = [];
+    if (status    !== undefined) { sets.push(`status=$${vals.push(status)}`); }
+    if (adminNote !== undefined) { sets.push(`admin_note=$${vals.push(adminNote || null)}`); }
+    if (sets.length === 0) { res.status(400).json({ error: 'Nothing to update' }); return; }
+    vals.push(req.params.id);
+    const { rowCount } = await pool.query(
+      `UPDATE change_requests SET ${sets.join(', ')} WHERE id=$${vals.length}`,
+      vals,
+    );
+    if (!rowCount) { res.status(404).json({ error: 'Change request not found' }); return; }
+    res.json({ id: req.params.id, status, adminNote });
+  } catch (err) { next(err); }
+});
+
 router.put('/:id/decision', requireAuth, async (req, res, next) => {
   try {
     if (req.auth!.systemRole !== 'Administrator') {

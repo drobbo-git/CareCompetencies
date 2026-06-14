@@ -5,9 +5,10 @@ import { useData } from "@/data/store";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StageBadge } from "@/components/common/StageBadge";
 import { STAGES, type Stage } from "@/data/types";
+import { Button } from "@/components/ui/button";
 import {
   ArrowLeft, BookOpen, ExternalLink, FileText,
-  FlaskConical, ShieldCheck, MailQuestion, ListChecks,
+  FlaskConical, ShieldCheck, MailQuestion, ListChecks, Pencil,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -69,6 +70,7 @@ export default function CompetencyDetailPage() {
   const { currentLogin } = useAuth();
   const { competencies, steps, assignments, units, personRoles } = useData();
   const navigate = useNavigate();
+  const isAdmin = currentLogin?.systemRole === "Administrator";
 
   const comp = competencies.find((c) => c.id === id);
 
@@ -116,12 +118,19 @@ export default function CompetencyDetailPage() {
       </Link>
 
       {/* ── Title + description ──────────────────────────────────────── */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">{comp.name}</h1>
-        {comp.description && (
-          <p className="text-sm text-muted-foreground mt-2 max-w-3xl leading-relaxed">
-            {comp.description}
-          </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">{comp.name}</h1>
+          {comp.description && (
+            <p className="text-sm text-muted-foreground mt-2 max-w-3xl leading-relaxed">
+              {comp.description}
+            </p>
+          )}
+        </div>
+        {isAdmin && (
+          <Button variant="outline" size="sm" onClick={() => navigate(`/competencies/${comp.id}/edit`)} className="shrink-0">
+            <Pencil className="h-3.5 w-3.5 mr-1.5" /> Edit
+          </Button>
         )}
       </div>
 

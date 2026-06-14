@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
-  Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard,
+  Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard, Terminal,
 } from "lucide-react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -22,7 +22,16 @@ interface NavItem {
 function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
   const items: NavItem[] = [
     // ── Person / base ────────────────────────────────────────────────────────
-    { id: "home",           to: "/",                  label: "Home",                icon: Home,           roles: ["Administrator", "Person"] },
+    { id: "home",           to: "/",                  label: "Home",                icon: Home,           roles: ["Person"] },
+
+    // ── Administrator ─────────────────────────────────────────────────────────
+    { id: "admin",          to: "/admin",             label: "Admin Console",       icon: LayoutDashboard,roles: ["Administrator"] },
+    { id: "competencies",   to: "/competencies",      label: "Competency Library",  icon: BookOpen,       roles: ["Administrator"] },
+    { id: "requests",       to: "/requests",          label: "Change Requests",     icon: MailQuestion,   roles: ["Administrator"] },
+    { id: "groups",         to: "/groups",            label: "Manage Groups",       icon: Layers,         roles: ["Administrator"] },
+    { id: "people",         to: "/people",            label: "People",              icon: Users,          roles: ["Administrator"] },
+    { id: "audit",          to: "/audit",             label: "Audit Log",           icon: ShieldCheck,    roles: ["Administrator"] },
+    { id: "api-explorer",   to: "/api-explorer",      label: "API Explorer",        icon: Terminal,       roles: ["Administrator"] },
 
     // ── Preceptor + UnitLeader ────────────────────────────────────────────────
     { id: "my-comps",       to: "/my-competencies",   label: "My Competencies",     icon: UserCircle2,    roles: ["Preceptor", "UnitLeader"], dividerAfter: ["Preceptor", "UnitLeader"] },
@@ -38,15 +47,9 @@ function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
     { id: "observe",        to: "/observe",           label: "Observe Steps",       icon: Stethoscope,    roles: ["Preceptor", "UnitLeader"] },
     { id: "signoff",        to: "/sign-off",          label: "Sign Off",            icon: ClipboardCheck, roles: ["Preceptor", "UnitLeader"], dividerAfter: ["Preceptor", "UnitLeader"] },
 
-    // Library / reference
-    { id: "competencies",   to: "/competencies",      label: "Search Competencies", icon: BookOpen,       roles: ["Administrator", "UnitLeader", "Preceptor", "Person"] },
-    { id: "requests",       to: "/requests",          label: "Change Requests",     icon: MailQuestion,   roles: ["Administrator", "Preceptor", "UnitLeader"] },
-
-    // ── Administrator ─────────────────────────────────────────────────────────
-    { id: "groups",         to: "/groups",            label: "Manage Groups",       icon: Layers,         roles: ["Administrator"] },
-    { id: "assignments",    to: "/assignments",       label: "Assignments",         icon: ClipboardList,  roles: ["Administrator"] },
-    { id: "people",         to: "/people",            label: "People",              icon: Users,          roles: ["Administrator"] },
-    { id: "audit",          to: "/audit",             label: "Audit Log",           icon: ShieldCheck,    roles: ["Administrator"] },
+    // Library / reference (non-admin)
+    { id: "comp-lib",       to: "/competencies",      label: "Competency Library",  icon: BookOpen,       roles: ["UnitLeader", "Preceptor", "Person"] },
+    { id: "req-nonAdmin",   to: "/requests",          label: "Change Requests",     icon: MailQuestion,   roles: ["Preceptor", "UnitLeader"] },
   ];
 
   return items.filter((i) => i.roles.includes(role));

@@ -25,7 +25,7 @@ export default function AuditLogPage() {
     <>
       <PageHeader
         title="Audit Log"
-        description="Catalog edits, sign-offs, and governance decisions. Newest first."
+        description="Competency library edits, sign-offs, and governance decisions. Newest first."
       />
 
       <div className="mb-4 max-w-md">

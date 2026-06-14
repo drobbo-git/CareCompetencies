@@ -86,8 +86,29 @@ export const api = {
     post<ChangeRequest>('/change-requests', cr),
   decideChangeRequest:  (id: string, decision: 'Approved' | 'Rejected', adminNote?: string) =>
     put<{ id: string; status: string; adminNote?: string }>(`/change-requests/${id}/decision`, { decision, adminNote }),
+  patchChangeRequest:   (id: string, body: { status?: string; adminNote?: string }) =>
+    patch<{ id: string }>(`/change-requests/${id}`, body),
 
   // audit
-  getAuditEvents:   () => get<AuditEvent[]>('/audit-events'),
+  getAuditEvents:   () => get<{ data: AuditEvent[] }>('/audit-events').then((r) => r.data),
   createAuditEvent: (e: Omit<AuditEvent, 'id' | 'timestamp'>) => post<AuditEvent>('/audit-events', e),
+
+  // integration (admin only — direct API calls, not TanStack-cached)
+  integrationGetPersonCompetencies: (netid: string, includeInProgress: boolean) =>
+    get<Record<string, unknown>>(
+      `/integration/persons/${encodeURIComponent(netid)}/competencies${includeInProgress ? '?include_in_progress=true' : ''}`,
+    ),
+  integrationGetCompetencyPersons: (competencyId: string, unitIds: string[], excludeUnitIds: string[]) => {
+    const qs = new URLSearchParams();
+    if (unitIds.length) qs.set('unit_ids', unitIds.join(','));
+    else if (excludeUnitIds.length) qs.set('exclude_unit_ids', excludeUnitIds.join(','));
+    const q = qs.toString();
+    return get<Record<string, unknown>>(
+      `/integration/competencies/${encodeURIComponent(competencyId)}/persons${q ? `?${q}` : ''}`,
+    );
+  },
+  integrationUpsertPerson: (netid: string, body: {
+    name: string; unitId: string; roleId?: string;
+    startDate: string; jobCode?: string; stageOverride?: string;
+  }) => put<Record<string, unknown>>(`/integration/persons/${encodeURIComponent(netid)}`, body),
 };

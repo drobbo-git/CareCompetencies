@@ -4,7 +4,7 @@ import { loginAs } from './helpers';
 test.describe('Person role (hesters)', () => {
   test('login lands on My Competencies (Welcome heading)', async ({ page }) => {
     await loginAs(page, 'person');
-    await expect(page.locator('h1')).toContainText('Welcome, Stacy');
+    await expect(page.locator('h1')).toContainText('Welcome, Sara');
   });
 
   test('stage badge visible', async ({ page }) => {

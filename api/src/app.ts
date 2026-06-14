@@ -9,6 +9,7 @@ import observationsRouter from './routes/observations';
 import achievementsRouter from './routes/achievements';
 import changeRequestsRouter from './routes/change-requests';
 import auditRouter from './routes/audit';
+import integrationRouter from './routes/integration';
 
 export function createApp() {
   const app = express();
@@ -31,6 +32,7 @@ export function createApp() {
   app.use('/competency-achievements', achievementsRouter);
   app.use('/change-requests', changeRequestsRouter);
   app.use('/audit-events', auditRouter);
+  app.use('/integration', integrationRouter);
 
   // Global error handler
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

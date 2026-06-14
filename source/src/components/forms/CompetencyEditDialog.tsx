@@ -107,7 +107,7 @@ export function CompetencyEditDialog({
         <DialogHeader>
           <DialogTitle>Edit competency</DialogTitle>
           <DialogDescription>
-            Catalog edits are audited. Step changes overwrite the existing step list.
+            Library edits are audited. Step changes overwrite the existing step list.
           </DialogDescription>
         </DialogHeader>
 

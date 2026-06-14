@@ -12,7 +12,7 @@ import { StageBadge } from "@/components/common/StageBadge";
 import { CompetencyAddDialog } from "@/components/forms/CompetencyAddDialog";
 import { STAGES, type Stage } from "@/data/types";
 import type { CompetencyGroup } from "@/data/types";
-import { Plus, ChevronRight } from "lucide-react";
+import { Plus, ChevronRight, Pencil } from "lucide-react";
 
 export default function CompetenciesPage() {
   const { currentLogin } = useAuth();
@@ -77,7 +77,7 @@ export default function CompetenciesPage() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4 mb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Search Competencies</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Competency Library</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
             {rows.length} of {competencies.length} competencies
           </p>
@@ -160,7 +160,18 @@ export default function CompetenciesPage() {
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
                       {uniqueStages.map((s) => <StageBadge key={s} stage={s} size="sm" />)}
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      {isAdmin ? (
+                        <Link
+                          to={`/competencies/${c.id}/edit`}
+                          className="p-1 rounded text-muted-foreground hover:text-primary transition-colors"
+                          title="Edit"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Link>
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      )}
                     </div>
                   </li>
                 );

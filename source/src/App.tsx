@@ -8,6 +8,7 @@ import { AuthGate } from "@/components/system/AuthGate";
 import Home from "./pages/home";
 import CompetenciesPage from "./pages/competencies";
 import CompetencyDetailPage from "./pages/competency-detail";
+import CompetencyEditPage from "./pages/competency-edit";
 import PersonsPage from "./pages/persons";
 import PersonDetailPage from "./pages/person-detail";
 import ObservePage from "./pages/observe";
@@ -20,6 +21,8 @@ import MyCompetenciesPage from "./pages/my-competencies";
 import GroupsPage from "./pages/groups";
 import AuditLogPage from "./pages/audit";
 import PeoplePage from "./pages/people";
+import AdminConsolePage from "./pages/admin-console";
+import ApiExplorerPage from "./pages/api-explorer";
 import NotFoundPage from "./pages/not-found";
 import AssignmentsPage from "./pages/assignments";
 import CompetencyMatrixPage from "./pages/competency-matrix";
@@ -53,6 +56,7 @@ function App() {
                     <Route path="my-competencies" element={<MyCompetenciesPage />} />
                     <Route path="competencies" element={<CompetenciesPage />} />
                     <Route path="competencies/:id" element={<CompetencyDetailPage />} />
+                    <Route path="competencies/:id/edit" element={<CompetencyEditPage />} />
                     <Route path="dashboard" element={<UnitLeaderDashboardPage />} />
                     <Route path="persons" element={<PersonsPage />} />
                     <Route path="persons/:id" element={<PersonDetailPage />} />
@@ -66,6 +70,8 @@ function App() {
                     <Route path="competency-matrix" element={<CompetencyMatrixPage />} />
                     <Route path="unit-assignments" element={<UnitAssignmentsPage />} />
                     <Route path="people" element={<PeoplePage />} />
+                    <Route path="admin" element={<AdminConsolePage />} />
+                    <Route path="api-explorer" element={<ApiExplorerPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Route>
                 </Routes>

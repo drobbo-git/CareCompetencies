@@ -24,8 +24,19 @@ router.post('/', requireAuth, async (req, res, next) => {
       id?: string; competencyId: string; unitId: string; roleId: string; stage: string;
     };
     const id = clientId ?? `as-${crypto.randomUUID().slice(0, 8)}`;
+    // SQL Server MERGE replaces PostgreSQL ON CONFLICT DO UPDATE.
+    // Each $N appears exactly once in the USING clause; the rest reference src.col.
     await pool.query(
-      'INSERT INTO competency_assignments (id, competency_id, unit_id, role_id, stage) VALUES ($1,$2,$3,$4,$5) ON CONFLICT (id) DO UPDATE SET competency_id=$2, unit_id=$3, role_id=$4, stage=$5',
+      `MERGE INTO competency_assignments AS tgt
+       USING (VALUES ($1,$2,$3,$4,$5))
+         AS src(id, competency_id, unit_id, role_id, stage)
+       ON tgt.id = src.id
+       WHEN MATCHED THEN
+         UPDATE SET competency_id = src.competency_id, unit_id = src.unit_id,
+                    role_id = src.role_id, stage = src.stage
+       WHEN NOT MATCHED THEN
+         INSERT (id, competency_id, unit_id, role_id, stage)
+         VALUES (src.id, src.competency_id, src.unit_id, src.role_id, src.stage);`,
       [id, competencyId, unitId, roleId, stage],
     );
     res.status(201).json({ id, competencyId, unitId, roleId, stage });

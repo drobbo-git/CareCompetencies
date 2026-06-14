@@ -1,0 +1,185 @@
+Competency	Level1	Level2	ValidationMethod	KnowledgeSource	PolicySource	UpdateNote
+Basic Airway Management	Airway Management		Validated by Observation of Behavior			Basic Airway Management Word Document Updated 4/2017
+Basic Airway Management - Ambulatory	Airway Management		Validated by Observation of Behavior			
+Advanced Airway Management	Airway Management		Validated by Completion of AHA ACLS/PALS Provider and  Observation of Behavior			Advanced Airway Management Word Document Updated 4/2019
+Chest Physiotherapy	Airway Management		Validated by Observation of Behavior			Chest Physiotherapy Word Document updated 1/2020
+Chest Physiotherapy - VEST Airway Clearance System	Airway Management		Validated by Observation of Behavior			Chest Physiotherapy - VEST Word Document Updated 3/2018
+Endotracheal Intubation - Rapid Sequence	Airway Management		"Validated by completion of educational activity, skills lab practice and Observation of Behavior"			Endotracheal Intubation - Rapid Sequence Word Document Updated 9-2016
+Endotracheal Intubation - Assists	Airway Management		Validated by Completion of AHA Advanced Life Support Course and Observation of Behavior			Endotracheal Intubation - Assists Word Document Updated 5/2019
+Endotracheal Intubation - Assists - ICN	Airway Management		Validated by Observation of Behavior			
+Rapid Sequence Intubation - Assists	Airway Management		Validated by Observation of Behavior			
+Endotracheal Tube Care	Airway Management		Validated by Observation of Behavior			
+King LTS-D Insertion	Airway Management		Validated by Observation of Behavior			
+Mechanical Ventilation - Adult	Airway Management		Validated by Observation of Behavior			Mechanical Ventilation - Adult Word Document Updated 11/2017
+Mechanical Ventilation - Home Vent	Airway Management		Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Airway%20Management%20-%20Mechanical%20Ventilation%20-%20Home%20Vent%207-2018.pdf		Mechanical Ventilation - Home Vent Word Document Updated 7-2018
+Mechanical Ventilation - Pediatrics	Airway Management		Validated by Observation of Behavior			Mechanical Ventilation - Pediatrics Word Document Updated 3/2018
+Mechanical Ventilation - ICN	Airway Management		Validated by Observation of Behavior			
+Laryngectomy Care	Airway Management		Validated by Observation of Behavior			Laryngectomy Care Word Document Updated 10-2018
+Larytube/HME	Airway Management		Validated by Observation of Behavior			Larytube/HME Word Document Updated 4/2017
+Nasal Packing Removal	Airway Management		Validated by Observation of Behavior			Nasal Packing Removal Word Document Updated 6/2020
+Naso/Orpharyngeal/ Tracheal Suctioning - ED/LF	Airway Management		Validated by Observation of Behavior			
+Needle Cricothyoidotomy – Adults	Airway Management		"Validated by completion of educational activity, skills lab practice and Observation of Behavior"			Needle Cricothyoidotomy – Adults Word Document Updated 9-2016
+Needle Cricothyoidotomy – Pediatrics	Airway Management		"Validated by completion of educational activity, skills lab practice and Observation of Behavior"			Needle Cricothyoidotomy – Pediatrics Word Document Updated 9-16-2020
+Surgical Cricothyroidotomy - Adult - Life Flight	Airway Management					Surgical Cricothyroidotomy - Adult - LifeFlight Feb 2024
+Naso/Oropharyngeal Suctioning	Airway Management		Validated by Observation of Behavior			
+Oropharyngeal Suctioning	Airway Management					Oropharyngeal Suctioning Word Document updated 4/2017
+Oxygen System Safety - Life Flight	Airway Management					
+Suction Equipment	Airway Management		Validated by Observation of Behavior			Suction Equipment Word Document Updated 2/2019
+Tracheostomy Care	Airway Management		Validated by Observation of Behavior	Video https://warpwire.duke.edu/w/Q6ECAA/		Tracheostomy Care Word Document Updated 4/2017
+Tracheostomy Care - ICN	Airway Management		Validated by Observation of Behavior			
+Tracheal Suctioning	Airway Management		Validated by Observation of Behavior	Video https://warpwire.duke.edu/w/Q6ECAA/		Tracheal Suctioning Word Document Updated 4/2017
+Tracheal Suctioning - ICN	Airway Management		Validated by Observation of Behavior			
+Cardiac Monitor	Cardiac Monitoring		Validated by Completion of EKG test and Observation of Behavior			Cardiac Monitor Word Document Updated 6/2019
+IABP Maintenance	Cardiac Monitoring		Validated by Observation of Behavior		DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836	IABP Maintenance Word Document Updated 5/2018
+IABP - Assists with Insertion	Cardiac Monitoring		Validated by Observation of Behavior		DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836	IABP - Assists with Insertion Word Document Updated 4/2019
+IABP - EP Lab	Cardiac Monitoring		Validated by Observation of Behavior			
+IABP - Patient Transport	Cardiac Monitoring		Validated by Observation of Behavior			
+Propaq	Cardiac Monitoring		Validated by Observation of Behavior			
+QTc Interval Measurement	Cardiac Monitoring		Validated by Successful Test Completion and Observation of Behavior			QTc Interval Measurement Word Document Updated 1-2020
+Intra-Aortic Balloon Pump – Maintenance – Cath Lab	Cardiac Monitoring		Validated by completion of educational activity and Observation of Behavior		DUHS Policy Link https://dukeuniversity.policytech.com/dotNet/documents/?docid=4836	
+Zoll Propaq MD	Cardiac Monitoring		Validated by Observation of Behavior			
+Chest Tube Site Care and Management	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	JIT Videos and Resources: https://medvideos.duhs.duke.edu/		Chest Tube Site Care and Management Word Document Updated 4/2017
+Chest Tube Small Bore Catheter Flush - Adult	Drainage Devices	Chest Tube Management	Validated by Policy Review and Observation of Behaviors			Chest Tube Small Bore Flush Word Document Updated 2-2020
+Needle Decompression via Cook Catheter	Drainage Devices	Chest Tube Management	"Validated by completion of educational activity, skills lab practice and Observation of Behavior"			Needle Decompression via Cook Catheter Word Document Updated 9-2016
+Needle Chest Decompression - Percutaneous	Drainage Devices	Chest Tube Management	"Validated by completion of educational activity, skills lab practice and Observation of Behavior"			Needle Chest Decompression - Percutaneous Word Document Updated 9-2016
+Pleurx Catheter	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			Pleurx Catheter Word Document Updated 4/2017
+Drainage Tubes	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Drainage%20Tubes%204-2017.pdf		Drainage Tubes Word Document
+Drainage Tubes - OR	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			
+External Ventricular Drain - Adults	Drainage Devices	Chest Tube Management				External Ventricular Drain - Adults updated 7/2024
+External Ventricular Drain - Peds	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20External%20Ventricular%20Drain%202-2020.pdf		External Ventricular Drain - Peds Word Document Updated 2/2020
+Fecal Incontinence Management	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Fecal%20Incontinence%20Management%204-2017.pdf		Fecal Incontinence Management Word Document Updated 4/2017
+Lumbar Drain Care	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Lumbar%20Drain%203-2018.pdf		Lumbar Drain Care Word Document Updated 3/2018
+Nasogastric/Orogastric Tube - Insertion	Drainage Devices	Chest Tube Management	Validated By Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Nasogastric%20Tube%20-%20Insertion%20and%20Removal%204-2017.pdf		Nasogastric Tube Insertion Updated 9/2024
+Nasogastric/Orogastric Tube - Removal	Drainage Devices	Chest Tube Management	Validated By Observation of Behavior			
+Nasogastric/Orogastric Tube - Maintenance	Drainage Devices	Chest Tube Management	Validated By Observation of Behavior			
+Nasogastric/Orogastric Tube - Maintenance and Removal	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			
+Pericardial Drain Care	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Pericardial%20Drain%20Care%203-2019.pdf		Pericardial Drain Care Word Document Updated 5/ 2025
+Pericardial Catheter Fluid Aspiration and Flush	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Pericardial%20Catheter%20Aspriation%20and%20Flush%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%20-3-2019.pdf	Policy: DUHS Pericardialcentesis Procedure and Protocol # 207492	
+Rectal Tube Insertion and Management	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Rectal%20Tube%20Insertion%20and%20Management%204-2017.pdf		Rectal Tube Insertion and Management Word Document  Updated 4/2017
+Repogle Insertion and Removal	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			Repogle Insertion and Removal Word Document Updated 6-2018
+Suction Equipment and Supplies – OR	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			
+Surgical Drain Removal	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	:https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Drainage%20Devices%20-%20Surgical%20Drain%20Removal%207-2018.pdf		Surgical Drain Removal Word Document Updated 7-2018
+Urinary Catheter Insertion	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%209-2018.pdf		Urinary Drainage Catheter Insertion Word Document
+Urinary Catheter Maintenance	Drainage Devices	Chest Tube Management	Validated By Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Maintenance%209-2018.pdf		Urinary Drainage Catheter Maintenance Word Document Updated 9/2019
+Urinary Catheter Insertion And Maintenance	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%20and%20Maintenance%209-2018.pdf		Urinary Drainage Catheter Insertion And Maintenance Word Document Updated 9/2018
+Urinary Drainage Catheter Insertion And Maintenance - Clinic	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Drainage%20Catheter%20Insertion%20and%20Maintenance%209-2018.pdf		
+Urinary Drainage Device - External Urinary Management Device	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Urinary%20Catheteter%20Insertion%20and%20Maintenance%20-%20Female%20External%20Urinary%20Catheter%20Device%209-2018doc.pdf		Urinary Drainage - Female External Urinary Management Device Word Document Updated 9-2018
+Urinary Drainage - Suprapubic Catheter Exchange	Drainage Devices	Chest Tube Management				Urinary Drainage - Suprapubic Catheter Exchange Updated 1/2023
+Urinary Drainage Catheter Maintenance - OR	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			
+Urinary Drainage Catheter Maintenance - PACU	Drainage Devices	Chest Tube Management	Validated by Observation of Behavior			
+Self Catheterization Teaching Assessment	Drainage Devices	Chest Tube Management				
+Voiding Trials	Drainage Devices	Chest Tube Management				
+Autotransfusion via SureTrans	IV Therapy	Blood Product Administration	Validated by Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Autotransfusion%20via%20SureTrans%20-%207-2018.pdf		Autotransfusion via SureTrans Word Document Updated 7/2018
+Rapid Infusion - Blood Products/Fluids	IV Therapy	Blood Product Administration	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Administration%20-%20Level%20One%20Rapid%20Fluid%20Infuser%20-%20Warmer%20-%205-2018.pdf		Level One Rapid Fluid Infuser/Warmer Updated 4/2018
+Fluid Warming System	IV Therapy	Blood Product Administration	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Ranger%20Blood-Fluid%20Warming%20System%20-%203-2019.pdf		Ranger Blood/Fluid Warming System Updated 3/2019
+Symphony Blood Concentrate System	IV Therapy	Blood Product Administration	Validated by Blood Test Completion and Observation of Behavior			
+Symphony Blood Concentrate System/Angel - ASC	IV Therapy	Blood Product Administration	Validated by Blood Test Completion and Observation of Behavior			
+Granulocyte Transfusion	IV Therapy	Blood Product Administration				
+Stem Cell/Progenitor Cell Reinfusion	IV Therapy	Blood Product Administration	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Stem%20Cell%20-%20Progenitor%20Cell%20Reinfusion%204-2017.pdf		Stem Cell/Progenitor Cell Reinfusion Word Document Updated 4/2017
+Therapeutic Phlebotomy	IV Therapy	Blood Product Administration	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Therapeutic%20Phlebotomy%204-2017.pdf		Therapeutic Phlebotomy Word Document Updated 4/2017
+Transfusion	IV Therapy	Blood Product Administration	Validated by Blood Test Completion and Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Blood%20Product%20Administration%20-%20Transfusion%204-2017.pdf		Transfusion Word Document Updated 4/2017
+Transfusion for Transport	IV Therapy	Blood Product Administration	Validated by Blood Test Completion and Observation of Behavior			
+Blood Product Verification - OR	IV Therapy	Blood Product Administration	Validated by Blood Test Completion and Observation of Behavior			
+Solid Organ Transplant Verification Process	IV Therapy	Blood Product Administration	Validated by Blood Observation of Behavior			
+Declots Central Line with tPA	IV Therapy	Central Line Management	Validated by Observation of Behavior DUHS Advanced Skill	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-Declotting%20With%20tPA%20DUHS%20Advanced%20Skill%20Education%20Plan%204-2017.pdf		Declots Central Line with tPA Word Document Updated 4/2017
+Implanted Port Access and Care	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Implanted%20Port%20Access%20and%20Care%203-17.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	Implanted Port Access and Care Word Document Updated 3/2017
+Midline Removal	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Midline%20Removal%204-2017.pdf		Midline Removal Word Document Updated 4/2017
+Removal - PICC/Non-Tunneled Catheter - Adult	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management-%20Removal%20of%20central%20line%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%209-2017.pdf		Removal - PICC/Non-Tunneled Catheter - Adult Word Document Updated 1/2025
+Removal - PICC/Non-Tunneled Catheter - Peds	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management-%20Removal%20of%20central%20line%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%209-2017.pdf		Removal - PICC/Non-Tunneled Catheter - Peds Word Document Updated 1/2025
+Ethanol Lock Therapy	IV Therapy	Central Line Management				
+External Jugular Venous Cannulation - Adult	IV Therapy	Central Line Management	Validated by Policy review and Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20External%20Jugular%20Vein%20Cannulation-%20DUHS%20Advanced%20Skill%20Education%20Plan%2011-2019.pdf	Policy Link #3514 https://dukeuniversity.policytech.com/dotNet/documents/?docid=3637	External Jugular Venous Cannulation - Adult Word Document Updated 11-2019
+Femoral Venous Cannulation - Adult	IV Therapy	Central Line Management	Validated by Policy review and Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20Femoral%20Vein%20Cannulation-%20DUHS%20Advanced%20Skill%20Education%20Plan%2011-2019.pdff	Policy Link #3515 https://dukeuniversity.policytech.com/dotNet/documents/?docid=3638	Femoral Venous Cannulation - Adult Word Document Updated 11/2019
+Hemodialysis/Pheresis Catheter - Adult	IV Therapy	Central Line Management				Hemodialysis/Pheresis Catheter - Adult
+Accessing and De-accessing AV Grafts or Primary Fistulas	IV Therapy	Central Line Management				Accessing and De-Accessing AV Grafts or Primary Fistulas
+Removal - PICC/Non-Tunneled Catheter - Peds	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management-%20Removal%20of%20central%20line%20-%20DUHS%20Advanced%20Skill%20Education%20Plan%209-2017.pdf		Removal - PICC/Non-Tunneled Catheter - Peds Word Document Updated 1/2025
+Removal - Venous Sheath	IV Therapy	Central Line Management	Validated by Policy Review and Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Removal%20of%20a%20Central%20Line%20-%20Venous%20Sheath-%20DUHS%20Advanced%20Skill%20Education%20Plan%201-2020.pdf		Removal - Venous Sheath Word Document
+Temporary CVAD - Adult	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Temporary%20CVAD%20-%20Adults%203-17.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	Temporary CVAD - Adult Word Document Updated 3/2017
+Temporary CVAD - Adult - PostOp PACU	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Temporary CVAD - Pediatrics	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Temporary%20CVAD%20-%20Pediatrics%203-18.pdf		Temporary CVAD - Pediatrics Word Document Updated 3/2018
+Temporary CVAD - Peds - PACU	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Temporary CVAD - ICN - UAC/UVC	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Tunneled Catheter - Adults	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Tunneled%20Catheter%20-%20Adults%203-17.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	Tunneled Catheter - Adults Updated 3/2017
+Tunneled Catheter - Pediatrics	IV Therapy	Central Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Central%20Line%20Management%20-%20Tunneled%20Catheter%20-%20Pediatrics%204-2018.pdf		Tunneled Catheter - Pediatrics Word Document Updated 4/2018
+Tunneled Catheter - ICN	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Tunneled Catheter - LifeFlight	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Central Line Catheter Care - Pediatrics - LifeFlight	IV Therapy	Central Line Management	Validated by Observation of Behavior			
+Tunneled Catheter - Peds - PACU	IV Therapy	Central Line Management				
+Alaris Medley Infusion Control Device	IV Therapy	Infusion Control Device	Validation By Observation Of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Alaris%20Medley%20%20Infusion%20Control%20Device%202-2018.pdf		Alaris Medley Infusion Control Device Updated 2/2018
+Alaris Syringe Module	IV Therapy	Infusion Control Device	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Alaris%20Medley%20Syringe%20Module%203-2018.pdf		Alaris Syringe Module Word Document Updated 3/2018
+Alaris Medley Infusion Control Device - Syringe Pump ICN	IV Therapy	Infusion Control Device	Validated by Observation of Behavior			
+LF IV Infusion Pump	IV Therapy	Infusion Control Device	Validation By Observation Of Behavior			
+Curlin Infusion Pump	IV Therapy	Infusion Control Device	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Curlin%20Infusion%20Pump%204-2017.pdf		Curlin Infusion Pump Word Document Updated 4/2017
+LifeFlow Infusion Device	IV Therapy	Infusion Control Device	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/LifeFlow%20Infusion%20Device%204-2019.pdf		LifeFlow Infusion Device Word Document Update 4/2019
+Smith’s Medical Syringe Pump	IV Therapy	Infusion Control Device	Validation By Observation Of Behavior			
+Peripheral IV Insertion	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20IV%20Insertion%204-2017.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	Peripheral IV Insertion Word Document Updated 4/2017
+Peripheral IV Maintenance	IV Therapy	Peripheral Line Management	Validation By Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20Maintenance%204-2017.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	Peripheral IV Maintenance Word Document Updated 4/2017
+Peripheral IV Maintenance - Clinic	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior			
+Peripheral IV Maintenance - PACU	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior			
+Peripheral Vein Identification Using Ultrasound Device	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20Ultrasound%20Guided%20Insertion%203-2017.pdf		Peripheral Vein Identification Using Ultrasound Device Word Document Updated 3-2017
+PICC Insertion - PICC/Midline	IV Therapy	Peripheral Line Management	Validated by Completion  of an Educational Activity and Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-Insertion%20of%20PICC-Midline%20Catheter%20DUHS%20Advanced%20Skill%20Education%20Plan-%205-2017.pdf		PICC Insertion - PICC/Midline Word Document Updated 5-2017
+PICC Maintenance	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/Peripheral%20IV%20Therapy%20-%20PICC%20Maintenance%204-2017.pdf	DUHS Policy#3454  DUHS IV Therapy - Adult https://dukeuniversity.policytech.com/dotNet/documents/?docid=3560	PICC Maintenance Word Document   Updated 4/2017
+PICC Maintenance - ICN	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior			
+PICC Tip Verification by Chest XRay Following Placement	IV Therapy	Peripheral Line Management	Validated by Completion  of an Educational Activity and Observation of Behavior	: https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20PICC%20Tip%20Verification%20by%20CXR%20following%20Placement%20DUHS%20Advanced%20Skill%20Education%20Plan%20-%209-2017.pdf		PICC Tip Verification Word Document Updated 9-2017
+Total Parenteral Nutrition	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior	https://intranet.dh.duke.edu/hospitals/duh/duhedcouncil/Competencies/IV%20Therapy%20-%20Total%20Parenteral%20Nutrition%204-2017.pdf		Total Parenteral Nutrition Word Document    Updated 4/2017
+Total Parenteral Nutrition - ICN	IV Therapy	Peripheral Line Management	Validated by Observation of Behavior			
+Medical Surgical Asepsis	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Medical Surgical Aseptic Technique - Procedural	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Medical Surgical Aseptic Technique - Procedural Word Document Updated 6/2019
+Colorectal Closure	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Electrosurgical Unit with Grounding Pad	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Electrosurgical Unit with Grounding Pad Word Document Updated 3/2019
+Instrument Cleaning	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Procedural Tray Set Up	Skin and Wound Care	Aseptic Technique	Non-PeriOp Areas with Procedures - Validated by Observation of Behavior			Procedure Tray Set Up Word Document Updated 1/2020
+Procedural Safety	Skin and Wound Care	Aseptic Technique				
+Pre-Operative/Pre-Procedural Clipping of Surgical Site	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Pre-Operative/Pre-Procedural Clipping of Surgical Site Word document update 1/2020
+Prevalon AirTAP Patient Repositioning system	Skin and Wound Care	Aseptic Technique				Prevalon AirTap Patient Repositioning system Word document update 3/25/25
+Sterile Field Set Up and Maintenance - Procedural	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Sterile Field Set Up and Maintenance - Procedural Word Documents Updated 1/2020
+Sterilization Process	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Sterilization Process - Flash Sterilization	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Sterilization Process - Steris Process	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Surgical Counts	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Surgical Counts Word Document
+Surgical Draping	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Surgical Draping Word Document Updated 6/2018
+Surgical Hand Scrub	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Surgical Hand Scrub Word Document Updated 6/2019
+Surgical Gowning And Gloving	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Surgical Gowning And Gloving Word Document Updated 6/2019
+Surgical Skin Preps	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Surgical Sterile Field - Basic	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Surgical Sterile Field - Complex	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			
+Surgical Technique - Basic	Skin and Wound Care	Aseptic Technique	Validated by Observation of Behavior			Surgical Technique - Basic Word Document Updated 6-2019
+Arm Immobilizers	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Casting Equipment Preparation and Set Up - OR	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Cast Application	Skin and Wound Care	Patient Positioning - Immobilization				Cast Application Word Document Updated July 2024
+Cast Removal	Skin and Wound Care	Patient Positioning - Immobilization				Cast Removal Word Document Updated July 2024
+Infant Positioning	Skin and Wound Care	Patient Positioning - Immobilization				
+Kangaroo Care Standing Transfer	Skin and Wound Care	Patient Positioning - Immobilization				
+Kangaroo Care – Sitting Transfer	Skin and Wound Care	Patient Positioning - Immobilization				
+OB Positioning - L&D	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+OR Positioning	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			OR Positioning Word Document Updated 6-2019
+Patient Positioning - Allen/Yellowfin Stirrups	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Patient Positioning - Candy Cane Stirrups	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Patient Positioning - Orthopedic Procedures	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Hare Traction	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Hare Traction Word Document Updated 4/2019
+Pneumatic AntiShock Garment (PASG)	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Traction	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Traction Word Document Updated 9-2018
+Traction - LF	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			
+Continuous Passive Motion	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Continuous Passive Motion Word Document Updated 9-2018
+Knee Immobilizer	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Knee Immobilizer Word Document Updated 9-2018
+Lateral Transfer	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Lateral Transfer Word Document Updated 9/2017
+Crutches - Fitting and Walking	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Crutches - Fitting and Walking Word Document Updated
+Splinting	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Splinting Word Document
+Walker/Crutches	Skin and Wound Care	Patient Positioning - Immobilization	Validated by Observation of Behavior			Walker/Crutches Word Document Updated 9-2018
+Diapering - ICN	Skin and Wound Care	Skin Care	Validated by Observation of Behavior			
+Isolette Bath - ICN	Skin and Wound Care	Skin Care				
+Tub Bath - ICN	Skin and Wound Care	Skin Care				
+Ostomy Care	Skin and Wound Care	Skin Care	Validated by Observation of Behavior			Ostomy Care Word Document Updated 4/2017
+Duke Boot - Multilayer Compression Wrap	Skin and Wound Care	Wound Care				
+Elastic Bandages - Ace Wrap	Skin and Wound Care	Wound Care				
+Leech Therapy	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Leech Therapy Word Document Updated 4/2017
+Incision Care - Ambulatory	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Incision Care - Ambulatory Word Document Updated 3-2020
+Negative Pressure Wound Therapy (NPWT)	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Negative Pressure Wound Therapy (NPWT) Word Document Updated 4/2017
+Initiates Negative Pressure Wound Therapy (NPWT) - OR	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			
+Initiates Negative Pressure Wound Therapy (NPWT) - OR - ASC	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			
+Negative Pressure Wound Therapy (NPWT) - PACU	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			
+Negative Pressure Wound Therapy (NPWT) - Dressing Change	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			NPWT-Dressing Change Word Document Updated 1-2020
+Wound Care	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Wound Care Word Document Updated 4/2017
+Wound Care - Ambulatory	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			
+Wound Management Device	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Wound Management Device Word Document Updated 4/2017
+Staple Removal	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Staple Removal Word Document Upfated 4/2017
+Suture Removal	Skin and Wound Care	Wound Care	Validated by Observation of Behavior			Suture Removal Word Document

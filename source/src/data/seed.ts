@@ -107,7 +107,7 @@ function toPerson(n: any): Person {
     primaryPreceptorId: n.primaryPreceptorId ?? undefined,
     startDate: n.startDate ?? n.hireDate ?? "",
     stageOverride: (n.stage ?? n.stageOverride ?? undefined) as StageOrFully | undefined,
-    dukeId: n.dukeId ?? undefined,
+    dukeNetid: n.dukeNetid ?? undefined,
     jobCode: n.jobCode ?? undefined,
   };
 }

@@ -3,131 +3,196 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  BookOpen, Layers, ClipboardList, Users, MailQuestion,
-  FileBarChart2, ShieldCheck, Sparkles,
+  BookOpen, MailQuestion, Sparkles, HardDrive,
 } from "lucide-react";
+import { CR_STATUS_LABEL } from "@/data/types";
 
-/**
- * Administrator landing page. Not currently routed by default (Home auto-routes
- * admins to a quicklink layout), but kept here as an alternative dashboard
- * view should you want to wire it to a route like /admin.
- *
- * Surfaces health-of-catalog metrics and direct links to the admin workspaces.
- */
 export default function AdminConsolePage() {
   const { currentLogin } = useAuth();
   const {
-    competencies, groups, units, assignments, changeRequests,
-    auditEvents, persons, achievements, observations,
+    competencies, groups, changeRequests, auditEvents,
   } = useData();
 
   const stats = useMemo(() => {
-    const pending = changeRequests.filter((cr) => cr.status === "Pending").length;
-    const orphanCompetencies = competencies.filter(
-      (c) => !assignments.some((a) => a.competencyId === c.id),
-    ).length;
+    const crOpen        = changeRequests.filter((cr) => cr.status === "Pending").length;
+    const crUnderReview = changeRequests.filter((cr) => cr.status === "UnderReview").length;
+    const crSolved      = changeRequests.filter((cr) => cr.status === "Approved" || cr.status === "Rejected").length;
+
+    const oldestCR = [...changeRequests]
+      .filter((cr) => cr.status === "Pending" || cr.status === "UnderReview")
+      .sort((a, b) => a.submittedAt.localeCompare(b.submittedAt))[0] ?? null;
+
     const ungrouped = competencies.filter((c) => !c.groupId).length;
-    const auditToday = auditEvents.filter((e) => e.timestamp.startsWith(new Date().toISOString().slice(0, 10))).length;
-    return {
-      competencyCount: competencies.length,
-      groupCount: groups.length,
-      unitCount: units.length,
-      assignmentCount: assignments.length,
-      pending,
-      orphanCompetencies,
-      ungrouped,
-      auditToday,
-      personCount: persons.length,
-      achievementCount: achievements.length,
-      observationCount: observations.length,
-    };
-  }, [competencies, groups, units, assignments, changeRequests, auditEvents, persons, achievements, observations]);
+
+    const recentAudit = [...auditEvents]
+      .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+      .slice(0, 6);
+
+    return { crOpen, crUnderReview, crSolved, oldestCR, competencyCount: competencies.length, groupCount: groups.length, ungrouped, recentAudit };
+  }, [competencies, groups, changeRequests, auditEvents]);
 
   if (currentLogin?.systemRole !== "Administrator") {
     return <p className="text-sm text-muted-foreground">Administrator access required.</p>;
   }
 
+  const oldestDays = stats.oldestCR
+    ? Math.floor((Date.now() - new Date(stats.oldestCR.submittedAt).getTime()) / 86_400_000)
+    : null;
+
   return (
     <>
       <PageHeader
         title="Admin Console"
-        description="Catalog health at a glance, plus quick links to the admin workspaces."
-        actions={
-          <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
-            <Sparkles className="h-4 w-4 text-primary" />
-            CareCompetencies · DUHS prototype
-          </div>
-        }
+        description="System health, governance, and catalog at a glance"
       />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <Stat label="Competencies"          value={stats.competencyCount} />
-        <Stat label="Groups"                value={stats.groupCount} />
-        <Stat label="Units"                 value={stats.unitCount} />
-        <Stat label="Assignments"           value={stats.assignmentCount} />
-        <Stat label="Pending requests"      value={stats.pending} highlight={stats.pending > 0} />
-        <Stat label="Orphan competencies"   value={stats.orphanCompetencies} highlight={stats.orphanCompetencies > 0} />
-        <Stat label="Ungrouped"             value={stats.ungrouped} highlight={stats.ungrouped > 0} />
-        <Stat label="Audit events today"    value={stats.auditToday} />
+      {/* Summary cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        {/* Change Requests */}
+        <Link to="/requests" className="block group">
+        <Card className="h-full transition-colors group-hover:border-primary/40">
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <MailQuestion className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold">Change Requests</div>
+                <div className="text-[11px] text-muted-foreground">Competency amendment proposals</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <StatCell label="Open"         value={stats.crOpen}        highlight={stats.crOpen > 0} />
+              <StatCell label="Under Review" value={stats.crUnderReview} />
+              <StatCell label="Solved"       value={stats.crSolved} />
+            </div>
+            {oldestDays !== null && (
+              <p className="text-[11px] text-muted-foreground mt-2 pt-2 border-t">
+                Oldest waiting {oldestDays} {oldestDays === 1 ? "day" : "days"} · {CR_STATUS_LABEL[stats.oldestCR!.status]}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+        </Link>
+
+        {/* Competency Library */}
+        <Link to="/competencies" className="block group">
+        <Card className="h-full transition-colors group-hover:border-primary/40">
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <BookOpen className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <div className="text-sm font-semibold">Competency Library</div>
+                <div className="text-[11px] text-muted-foreground">Competencies &amp; groups</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              <StatCell label="Competencies" value={stats.competencyCount} />
+              <StatCell label="Groups"       value={stats.groupCount} />
+              <StatCell label="Ungrouped"    value={stats.ungrouped} highlight={stats.ungrouped > 0} />
+            </div>
+            {stats.ungrouped > 0 && (
+              <p className="text-[11px] text-amber-600 mt-2 pt-2 border-t">
+                {stats.ungrouped} ungrouped → needs group assignment
+              </p>
+            )}
+            {stats.ungrouped === 0 && (
+              <p className="text-[11px] text-muted-foreground mt-2 pt-2 border-t">
+                All competencies are grouped
+              </p>
+            )}
+          </CardContent>
+        </Card>
+        </Link>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <Stat label="Persons"               value={stats.personCount} />
-        <Stat label="Achievements (total)"  value={stats.achievementCount} />
-        <Stat label="Observations (total)"  value={stats.observationCount} />
-        <Stat label="—"                     value={0} dimmed />
-      </div>
+      {/* Recent governance activity */}
+      <Card className="mb-6">
+        <CardContent className="pt-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-sm font-semibold">Recent governance activity</div>
+            <Link to="/audit" className="text-xs text-primary hover:underline">
+              View audit log →
+            </Link>
+          </div>
+          {stats.recentAudit.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No recent activity.</p>
+          ) : (
+            <div className="divide-y">
+              {stats.recentAudit.map((event) => (
+                <div key={event.id} className="flex items-start gap-3 py-2">
+                  <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-[9px] font-semibold text-muted-foreground uppercase">
+                      {event.actorRole?.[0] ?? "?"}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-foreground leading-snug">{event.summary}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      {new Date(event.timestamp).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-      <h2 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Workspaces</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <Workspace to="/competencies" icon={BookOpen}       title="Catalog"          desc="Browse and add competencies." />
-        <Workspace to="/groups"       icon={Layers}         title="Manage Groups"    desc="Edit the hierarchical taxonomy." />
-        <Workspace to="/assignments"  icon={ClipboardList}  title="Assignments"      desc="Map competencies to units + roles." />
-        <Workspace to="/people"       icon={Users}          title="People"           desc="System role management." />
-        <Workspace to="/requests"     icon={MailQuestion}   title="Change Requests"  desc={stats.pending > 0 ? `${stats.pending} pending` : "Up to date"} />
-        <Workspace to="/reports"      icon={FileBarChart2}  title="Reports"          desc="Unit readiness and throughput." />
-        <Workspace to="/audit"        icon={ShieldCheck}    title="Audit Log"        desc="Catalog + governance event stream." />
+      {/* Data Retention Policy */}
+      <Card className="mb-6">
+        <CardContent className="pt-4">
+          <div className="flex items-start gap-3">
+            <div className="h-9 w-9 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+              <HardDrive className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm font-semibold">Data Retention Policy</span>
+                <Badge variant="outline" className="text-amber-600 border-amber-300 bg-amber-50 text-[10px] font-normal">
+                  Pending DHTS confirmation
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Step observations and competency achievements are retained for{" "}
+                <strong className="text-foreground">7 years</strong>. Superseded records (older
+                observations on the same step) are purged after the retention window; the{" "}
+                <em>most current</em> rating per step and all achievement records are always
+                preserved. Records linked to an active dispute or remediation hold are exempt
+                from purge.
+              </p>
+              <p className="text-[11px] text-muted-foreground mt-2 italic">
+                Note: this is illustrative in the prototype. The production system will run this
+                as a scheduled backend job; the policy value above must be confirmed against Duke
+                retention requirements before pilot.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Footer */}
+      <div className="pt-4 border-t text-center text-[11px] text-muted-foreground flex items-center justify-center gap-1.5">
+        <Sparkles className="h-3 w-3" />
+        CareCompetencies · Administrator console
       </div>
     </>
   );
 }
 
-function Stat({ label, value, highlight, dimmed }: { label: string; value: number; highlight?: boolean; dimmed?: boolean }) {
+function StatCell({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
   return (
-    <Card className={highlight ? "border-primary/40 bg-primary/5" : ""}>
-      <CardContent className="pt-4">
-        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-        <div className={`text-2xl font-semibold tabular-nums mt-0.5 ${dimmed ? "text-muted-foreground" : ""}`}>{value}</div>
-      </CardContent>
-    </Card>
+    <div>
+      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
+      <div className={`text-2xl font-semibold tabular-nums mt-0.5 ${highlight ? "text-amber-600" : ""}`}>
+        {value}
+      </div>
+    </div>
   );
 }
 
-function Workspace({
-  to, icon: Icon, title, desc,
-}: {
-  to: string;
-  icon: typeof BookOpen;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <Link to={to} className="block group">
-      <Card className="h-full transition-colors group-hover:border-primary/40">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Icon className="h-4 w-4 text-primary" />
-            {title}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">{desc}</p>
-          <Button variant="link" className="px-0 mt-1 h-auto">Open →</Button>
-        </CardContent>
-      </Card>
-    </Link>
-  );
-}

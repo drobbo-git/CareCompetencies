@@ -1,0 +1,44 @@
+Hi Derek,
+
+My comments below in bold.
+
+Let me know if you have any questions.
+
+Thanks
+
+Chuck
+From: Derek Robinson <derek.robinson@duke.edu>
+Sent: Monday, June 8, 2026 3:51 PM
+To: Chuck Rodgers <chuck.rodgers@duke.edu>; Tammi Hicks <tammi.hicks@duke.edu>
+Cc: Jeff Volkheimer <jeff.volkheimer@duke.edu>
+Subject: Re: CMA and NA/HUC Master Competency Smartsheets
+ 
+Chuck and Tammi - appreciate your perspective on a couple of questions that would lead the tool in one direction or another ... and please let me know if there are other people I should ask for insight.
+
+1. Do the units in the smartsheet map onto cost centers? If not - can one smartsheet unit encompass multiple cost centers? Can multiple units in the smartsheet be part of one cost center? This will help determine how we import users, import units, and tie users to units.
+
+We have not mapped the units to cost centers.  It was more of a functional concept - what area needed what set of competencies.  The current smartsheet setup relied more on who came through orientation and where they were assigned then referencing enterprise data, like cost centers.
+
+2. Following that ... do we think of every user as having one home unit (and needing the competencies that are required on that unit)? Or are there common cases where users need the competencies for multiple home units as part of their ordinary responsibilities? This helps determine how people get a list of required competencies. Note: currently the tool allows for people to earn competencies that aren't required for their home unit, but the ones that are required come from one home unit.
+
+Typically yes each employee has a home unit, one unit - and with the exception of float pool, it is for that unit that we are checking the competencies for.  When someone transfer units - want to apply competencies that are already checked off and employee will need to complete additional competencies for the new unit.
+
+3. Can preceptors teach all required competencies on their units? Or are they only qualified to teach a subset? Can they teach competencies in other units? Can they teach any competency they personally have? This helps determine how we allow preceptors to sign off.
+
+This would be an enhancement for preceptors.  They have taken education to be preceptor - getting granular to say you have the competency and that allows you to check off people and if you don't have it can't check people off - would be steps further than where we were at.
+
+4. I've called the people acquiring competencies "orientees," which most of the time is true. But I assume people can learn additional competencies over time. Thoughts on changing that to "learners"?
+
+Employees?
+
+5. Do competencies expire? That is, are there competencies like my compliance training, where I have to "re-up" each year?
+
+The competencies are completed within specific time frames.  Annually there are revalidations for specific things based on the unit needs.  These revalidations are not included in this work at the moment.
+
+6. Any idea how float pool competencies are handled? That is, float pool people don't "live" in a clinical unit". How are their competency requirements determined.
+
+I will defer to Tammi about Float Pool specifics.
+
+There will probably be more 🙂
+
+Derek

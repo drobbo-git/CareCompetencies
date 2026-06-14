@@ -77,7 +77,7 @@ router.get('/', requireAuth, async (_req, res, next) => {
       description: r.description ?? undefined,
       groupId: r.group_id ?? undefined,
       categoryId: r.category_id ?? undefined,
-      unitIds: r.unit_ids as string[],
+      unitIds: typeof r.unit_ids === 'string' ? JSON.parse(r.unit_ids) : (r.unit_ids ?? []),
       validationMethod: r.validation_method ?? undefined,
       knowledgeSource: r.knowledge_source ?? undefined,
       policySource: r.policy_source ?? undefined,
@@ -102,15 +102,23 @@ router.post('/', requireAuth, async (req, res, next) => {
 
 router.put('/:id', requireAuth, async (req, res, next) => {
   try {
-    const { name, description, groupId, categoryId, unitIds } = req.body as {
+    const { name, description, groupId, categoryId, unitIds,
+            validationMethod, knowledgeSource, policySource, updateNote } = req.body as {
       name: string; description?: string; groupId?: string; categoryId?: string; unitIds: string[];
+      validationMethod?: string; knowledgeSource?: string; policySource?: string; updateNote?: string;
     };
     const { rowCount } = await pool.query(
-      'UPDATE competencies SET name=$1, description=$2, group_id=$3, category_id=$4, unit_ids=$5 WHERE id=$6',
-      [name, description ?? null, groupId ?? null, categoryId ?? null, JSON.stringify(unitIds ?? []), req.params.id],
+      `UPDATE competencies
+       SET name=$1, description=$2, group_id=$3, category_id=$4, unit_ids=$5,
+           validation_method=$6, knowledge_source=$7, policy_source=$8, update_note=$9
+       WHERE id=$10`,
+      [name, description ?? null, groupId ?? null, categoryId ?? null, JSON.stringify(unitIds ?? []),
+       validationMethod ?? null, knowledgeSource ?? null, policySource ?? null, updateNote ?? null,
+       req.params.id],
     );
     if (!rowCount) { res.status(404).json({ error: 'Competency not found' }); return; }
-    res.json({ id: req.params.id, name, description, groupId, categoryId, unitIds: unitIds ?? [] });
+    res.json({ id: req.params.id, name, description, groupId, categoryId, unitIds: unitIds ?? [],
+               validationMethod, knowledgeSource, policySource, updateNote });
   } catch (err) { next(err); }
 });
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -31,7 +31,7 @@ const ALL_STATUSES: ChangeRequestStatus[] = ["Pending", "UnderReview", "Approved
 // ---------------------------------------------------------------------------
 export default function RequestsPage() {
   const { currentLogin } = useAuth();
-  const { changeRequests, competencies, persons, personRoles, decideChangeRequest, logAudit } = useData();
+  const { changeRequests, competencies, persons, personRoles, decideChangeRequest, patchChangeRequest, logAudit } = useData();
   const location = useLocation();
   const prefilledCompetencyId: string | undefined = (location.state as { competencyId?: string } | null)?.competencyId;
 
@@ -220,17 +220,17 @@ export default function RequestsPage() {
                     </button>
                   </div>
 
-                  {/* Admin note */}
-                  {cr.adminNote && (
-                    <p className="text-xs text-muted-foreground italic border-t pt-2">Admin note: {cr.adminNote}</p>
-                  )}
-
-                  {/* Admin action buttons */}
-                  {isAdmin && cr.status === "Pending" && (
-                    <div className="flex gap-2 pt-1 border-t">
-                      <Button size="sm" onClick={() => openDecision(cr, "Approved")}>Approve</Button>
-                      <Button size="sm" variant="outline" onClick={() => openDecision(cr, "Rejected")}>Decline</Button>
-                    </div>
+                  {/* Admin inline note + actions */}
+                  {isAdmin && (
+                    <AdminActions
+                      cr={cr}
+                      onMarkUnderReview={async () => {
+                        await patchChangeRequest(cr.id, { status: "UnderReview" });
+                        logAudit({ actor: currentLogin!.id, actorRole: currentLogin!.systemRole, type: "ChangeRequestUnderReview", summary: "Marked change request Under Review", targetLabel: cr.id });
+                      }}
+                      onDecide={(dec) => openDecision(cr, dec)}
+                      onSaveNote={(note) => patchChangeRequest(cr.id, { adminNote: note })}
+                    />
                   )}
                 </CardContent>
               </Card>
@@ -246,7 +246,7 @@ export default function RequestsPage() {
         prefilledCompetencyId={prefilledCompetencyId}
       />
 
-      {/* ── Admin decision dialog ────────────────────────────────────── */}
+      {/* ── Admin decision dialog (Approve / Decline) ───────────────── */}
       <Dialog open={!!decideOn} onOpenChange={(o) => !o && setDecideOn(null)}>
         <DialogContent>
           <DialogHeader>
@@ -269,5 +269,68 @@ export default function RequestsPage() {
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// AdminActions — inline Under Review button + editable note field
+// ---------------------------------------------------------------------------
+function AdminActions({
+  cr, onMarkUnderReview, onDecide, onSaveNote,
+}: {
+  cr: ChangeRequest;
+  onMarkUnderReview: () => void;
+  onDecide: (d: "Approved" | "Rejected") => void;
+  onSaveNote: (note: string) => Promise<void>;
+}) {
+  const [note, setNote] = useState(cr.adminNote ?? "");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  async function handleSaveNote() {
+    setSaving(true);
+    await onSaveNote(note);
+    setSaving(false);
+    setSaved(true);
+    if (savedTimer.current) clearTimeout(savedTimer.current);
+    savedTimer.current = setTimeout(() => setSaved(false), 2000);
+  }
+
+  const isPending     = cr.status === "Pending";
+  const isActionable  = cr.status === "Pending" || cr.status === "UnderReview";
+
+  return (
+    <div className="border-t pt-3 mt-1 space-y-3">
+      {/* Admin note */}
+      <div className="space-y-1.5">
+        <label className="text-[11px] uppercase tracking-wider text-muted-foreground">Admin note</label>
+        <Textarea
+          rows={2}
+          placeholder="Internal note visible to admins only…"
+          value={note}
+          onChange={(e) => { setNote(e.target.value); setSaved(false); }}
+          className="text-sm resize-none"
+        />
+        <div className="flex justify-end">
+          <Button size="sm" variant="outline" onClick={handleSaveNote} disabled={saving}>
+            {saving ? "Saving…" : saved ? "Saved ✓" : "Save note"}
+          </Button>
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      {isActionable && (
+        <div className="flex flex-wrap gap-2">
+          {isPending && (
+            <Button size="sm" variant="outline" onClick={onMarkUnderReview}>
+              Under Review
+            </Button>
+          )}
+          <Button size="sm" onClick={() => onDecide("Approved")}>Approve</Button>
+          <Button size="sm" variant="outline" onClick={() => onDecide("Rejected")}>Decline</Button>
+        </div>
+      )}
+    </div>
   );
 }

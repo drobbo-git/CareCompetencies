@@ -66,7 +66,7 @@ export interface Person {
   startDate: string;            // ISO date (yyyy-mm-dd)
   /** When set, overrides the computed stage (e.g. for FullyOriented or Nonclinical). */
   stageOverride?: StageOrFully;
-  dukeId?: string;
+  dukeNetid?: string;
   jobCode?: string;
 }
 

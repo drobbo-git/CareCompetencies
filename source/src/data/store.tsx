@@ -67,6 +67,7 @@ interface DataCtx {
 
   submitChangeRequest: (cr: Omit<ChangeRequest, "id" | "submittedAt" | "status">) => Promise<ChangeRequest>;
   decideChangeRequest: (id: string, decision: "Approved" | "Rejected", adminNote?: string) => Promise<void>;
+  patchChangeRequest: (id: string, patch: { status?: string; adminNote?: string }) => Promise<void>;
 
   logAudit: (e: Omit<AuditEvent, "id" | "timestamp">) => Promise<void>;
 }
@@ -264,6 +265,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     await queryClient.invalidateQueries({ queryKey: ['change-requests'] });
   }, [queryClient]);
 
+  const patchChangeRequest = useCallback(async (
+    id: string, body: { status?: string; adminNote?: string },
+  ): Promise<void> => {
+    await api.patchChangeRequest(id, body);
+    await queryClient.invalidateQueries({ queryKey: ['change-requests'] });
+  }, [queryClient]);
+
   // -------------------------------------------------------------------------
   // Mutations — audit
   // -------------------------------------------------------------------------
@@ -297,7 +305,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     upsertCompetency, upsertSteps,
     upsertGroup, removeGroup,
     upsertAssignment, removeAssignment,
-    submitChangeRequest, decideChangeRequest,
+    submitChangeRequest, decideChangeRequest, patchChangeRequest,
     logAudit,
   };
 
