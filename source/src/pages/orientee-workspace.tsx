@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import OrienteeDetailMobile from "@/pages/mobile/orientee-detail-mobile";
 import { HoverCard } from "radix-ui";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -215,6 +217,9 @@ export default function OrienteeWorkspacePage() {
       }))
       .filter((x) => !!x.comp);
   }, [achievements, person, competencies, persons]);
+
+  const isMobile = useIsMobile();
+  if (isMobile) return <OrienteeDetailMobile />;
 
   if (!currentLogin) return null;
   if (!person) {

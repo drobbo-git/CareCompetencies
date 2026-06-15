@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { Card, CardContent } from "@/components/ui/card";
@@ -66,6 +67,9 @@ function fmtISO(iso: string): string {
 // Page
 // ---------------------------------------------------------------------------
 export default function SignOffPage() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <Navigate to="/my-orientees" replace />;
+
   const { currentLogin } = useAuth();
   const {
     persons, units, steps, competencies, assignments, observations,

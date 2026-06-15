@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,6 +41,9 @@ interface SavedResult {
 // Page
 // ---------------------------------------------------------------------------
 export default function ObservePage() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <Navigate to="/my-orientees" replace />;
+
   const navigate = useNavigate();
   const { currentLogin } = useAuth();
   const {

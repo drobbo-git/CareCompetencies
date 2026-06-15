@@ -23,6 +23,8 @@ import AuditLogPage from "./pages/audit";
 import PeoplePage from "./pages/people";
 import AdminConsolePage from "./pages/admin-console";
 import ApiExplorerPage from "./pages/api-explorer";
+import ObserveMobilePage from "./pages/mobile/observe-mobile";
+import SignOffMobilePage from "./pages/mobile/sign-off-mobile";
 import NotFoundPage from "./pages/not-found";
 import AssignmentsPage from "./pages/assignments";
 import CompetencyMatrixPage from "./pages/competency-matrix";
@@ -53,6 +55,8 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path="my-orientees" element={<MyOrienteesPage />} />
                     <Route path="my-orientees/:id" element={<OrienteeWorkspacePage />} />
+                    <Route path="my-orientees/:nurseId/observe/:competencyId" element={<ObserveMobilePage />} />
+                    <Route path="my-orientees/:nurseId/sign-off/:competencyId" element={<SignOffMobilePage />} />
                     <Route path="my-competencies" element={<MyCompetenciesPage />} />
                     <Route path="competencies" element={<CompetenciesPage />} />
                     <Route path="competencies/:id" element={<CompetencyDetailPage />} />

@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import MyCompetenciesMobile from "@/pages/mobile/my-competencies-mobile";
 import { HoverCard } from "radix-ui";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -37,6 +39,9 @@ function fmtISO(iso: string | undefined): string {
 // Page
 // ---------------------------------------------------------------------------
 export default function MyCompetenciesPage() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MyCompetenciesMobile />;
+
   const { currentLogin } = useAuth();
   const {
     persons, units, personRoles, categories, groups,
