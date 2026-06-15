@@ -1,6 +1,7 @@
 import { Link, Navigate } from "react-router-dom";
 import MyCompetenciesPage from "./my-competencies";
 import { useAuth } from "@/data/auth";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,10 +20,12 @@ export default function Home() {
   const { currentLogin } = useAuth();
   const { persons } = useData();
 
+  const isMobile = useIsMobile();
+
   if (!currentLogin) return null;
 
   if (currentLogin.systemRole === "Administrator") return <Navigate to="/admin" replace />;
-  if (currentLogin.systemRole === "UnitLeader")    return <Navigate to="/dashboard" replace />;
+  if (currentLogin.systemRole === "UnitLeader")    return <Navigate to={isMobile ? "/my-orientees" : "/dashboard"} replace />;
   if (currentLogin.systemRole === "Preceptor")     return <Navigate to="/my-orientees" replace />;
   if (currentLogin.systemRole === "Person")        return <MyCompetenciesPage />;
 

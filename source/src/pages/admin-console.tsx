@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
+import { useIsMobile } from "@/hooks/use-is-mobile";
+import { Monitor } from "lucide-react";
 import { useData } from "@/data/store";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +13,33 @@ import {
 import { CR_STATUS_LABEL } from "@/data/types";
 
 export default function AdminConsolePage() {
-  const { currentLogin } = useAuth();
+  const { currentLogin, signOut } = useAuth();
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6 gap-6">
+        <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center">
+          <Monitor className="h-8 w-8 text-muted-foreground" />
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-xl font-bold">Administrator console</h1>
+          <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+            The admin tools — competency editing, change requests, audit log, and people management —
+            are designed for a full-size screen. Please open CareCompetencies on your computer to
+            access them.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={signOut}
+          className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-4"
+        >
+          Sign out
+        </button>
+      </div>
+    );
+  }
   const {
     competencies, groups, changeRequests, auditEvents,
   } = useData();
