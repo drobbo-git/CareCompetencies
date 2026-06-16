@@ -32,9 +32,7 @@ import UnitLeaderDashboardPage from "./pages/unit-leader-dashboard";
 import UnitAssignmentsPage from "./pages/unit-assignments";
 import { AppErrorBoundary } from "./components/system/AppErrorBoundary";
 
-// Vite provides BASE_URL from the `base` option in vite.config.ts (default "/").
-// Set `base` there for sub-path deployments (e.g. "/CareCompetencies/").
-const APP_BASENAME = import.meta.env.BASE_URL;
+const APP_BASENAME = "/";
 
 function App() {
   return (
