@@ -32,15 +32,9 @@ import UnitLeaderDashboardPage from "./pages/unit-leader-dashboard";
 import UnitAssignmentsPage from "./pages/unit-assignments";
 import { AppErrorBoundary } from "./components/system/AppErrorBoundary";
 
-// Determine the router basename from the URL.
-// In production, the app is typically deployed at the root ("/") or a known
-// sub-path. This helper accommodates either case by treating the first path
-// segment as the base. If you deploy at "/", set APP_BASENAME = "/".
-function getBase(pathname: string): string {
-  const parts = pathname.split("/").filter(Boolean);
-  return parts.length ? `/${parts[0]}/` : "/";
-}
-const APP_BASENAME = getBase(window.location.pathname);
+// Vite provides BASE_URL from the `base` option in vite.config.ts (default "/").
+// Set `base` there for sub-path deployments (e.g. "/CareCompetencies/").
+const APP_BASENAME = import.meta.env.BASE_URL;
 
 function App() {
   return (
