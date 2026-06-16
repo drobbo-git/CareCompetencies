@@ -47,7 +47,7 @@ export default function ObservePage() {
   const navigate = useNavigate();
   const { currentLogin } = useAuth();
   const {
-    persons, units, steps, competencies, assignments, groups,
+    persons, units, steps, competencies, assignments, achievements, groups,
     getPersonStage, recordObservation, logAudit,
   } = useData();
   const { state } = useLocation();
@@ -86,13 +86,29 @@ export default function ObservePage() {
     return sorted.filter((p) => p.name.toLowerCase().includes(q)).slice(0, 20);
   }, [persons, orienteeQuery]);
 
-  // All competency IDs valid for the person's role (any unit, any stage)
+  // Competencies the observing preceptor is personally qualified to teach
+  // — a preceptor may observe any competency they've achieved themselves,
+  // not just their home unit's catalog (see CLAUDE.md "Preceptor").
+  // Administrators bypass the check.
+  const qualifiedCompetencyIds = useMemo(() => {
+    if (!currentLogin) return new Set<string>();
+    if (currentLogin.systemRole === "Administrator") return null;
+    return new Set(
+      achievements.filter((a) => a.personId === currentLogin.id).map((a) => a.competencyId),
+    );
+  }, [achievements, currentLogin]);
+
+  // All competency IDs valid for the person's role (any unit, any stage),
+  // further narrowed to ones the observer is personally qualified to teach.
   const roleCompetencyIds = useMemo(() => {
     if (!person) return null; // null = no filter applied yet
     return new Set(
-      assignments.filter((a) => a.roleId === personRoleId).map((a) => a.competencyId),
+      assignments
+        .filter((a) => a.roleId === personRoleId)
+        .map((a) => a.competencyId)
+        .filter((id) => qualifiedCompetencyIds === null || qualifiedCompetencyIds.has(id)),
     );
-  }, [person, personRoleId, assignments]);
+  }, [person, personRoleId, assignments, qualifiedCompetencyIds]);
 
   // Group tree: root groups sorted, children filtered to role when known
   const groupTree = useMemo(() => {

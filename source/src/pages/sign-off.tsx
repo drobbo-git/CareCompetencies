@@ -9,11 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import {
+  Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { STAGES, type Stage } from "@/data/types";
 import type { ObservationRating } from "@/data/types";
 import {
   CheckCircle2, XCircle, EyeOff, User, Home, Building2,
-  Globe, Shield, Info, Award,
+  Globe, Shield, Info, Award, ChevronsUpDown,
 } from "lucide-react";
 import { todayLocalISODate, localDateStringToISO } from "@/lib/utils";
 
@@ -72,20 +76,12 @@ export default function SignOffPage() {
 
   const { currentLogin } = useAuth();
   const {
-    persons, units, steps, competencies, assignments, observations,
+    persons, units, steps, competencies, assignments, achievements, observations,
     getPersonStage, getCompetencyProgress, recordAchievement, logAudit,
   } = useData();
 
   const { state } = useLocation();
   const prefill = state as { personId?: string; competencyId?: string } | null;
-
-  const myOrientees = useMemo(() => {
-    if (!currentLogin) return [];
-    if (currentLogin.systemRole === "UnitLeader") {
-      return persons.filter((n) => n.unitId === currentLogin.unitId);
-    }
-    return persons.filter((n) => n.primaryPreceptorId === currentLogin.id);
-  }, [persons, currentLogin]);
 
   const [personId, setPersonId] = useState<string>(prefill?.personId ?? "");
   const [competencyId, setCompetencyId] = useState<string>(prefill?.competencyId ?? "");
@@ -95,9 +91,32 @@ export default function SignOffPage() {
   const [notes, setNotes] = useState("");
   const [saved, setSaved] = useState(false);
 
+  // Nurse combobox state — any learner is searchable, not just assigned
+  // ones (a preceptor may sign off unassigned/float/QR-found learners too).
+  const [orienteeOpen, setOrienteeOpen] = useState(false);
+  const [orienteeQuery, setOrienteeQuery] = useState("");
+  const filteredPersons = useMemo(() => {
+    const q = orienteeQuery.trim().toLowerCase();
+    const sorted = [...persons].sort((a, b) => a.name.localeCompare(b.name));
+    if (!q) return sorted.slice(0, 12);
+    return sorted.filter((p) => p.name.toLowerCase().includes(q)).slice(0, 20);
+  }, [persons, orienteeQuery]);
+
   const person = persons.find((n) => n.id === personId);
   const personStage = person ? getPersonStage(person.id) : undefined;
   const selectedComp = competencies.find((c) => c.id === competencyId);
+
+  // Competencies the signing-off preceptor is personally qualified to teach
+  // — a preceptor may sign off any competency they've achieved themselves,
+  // not just their home unit's catalog (see CLAUDE.md "Preceptor").
+  // Administrators bypass the check.
+  const qualifiedCompetencyIds = useMemo(() => {
+    if (!currentLogin) return new Set<string>();
+    if (currentLogin.systemRole === "Administrator") return null;
+    return new Set(
+      achievements.filter((a) => a.personId === currentLogin.id).map((a) => a.competencyId),
+    );
+  }, [achievements, currentLogin]);
 
   // Scoped competency list
   const scopedCompetencies = useMemo(() => {
@@ -113,9 +132,9 @@ export default function SignOffPage() {
     }
     const ids = new Set(filtered.map((a) => a.competencyId));
     return competencies
-      .filter((c) => ids.has(c.id))
+      .filter((c) => ids.has(c.id) && (qualifiedCompetencyIds === null || qualifiedCompetencyIds.has(c.id)))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [person, personStage, scopeFilter, assignments, competencies]);
+  }, [person, personStage, scopeFilter, assignments, competencies, qualifiedCompetencyIds]);
 
   const scopeDescription = useMemo(() => {
     if (!person) return "";
@@ -258,16 +277,53 @@ export default function SignOffPage() {
             {/* Nurse */}
             <div className="space-y-1.5">
               <Label>Nurse</Label>
-              <Select value={personId} onValueChange={(v) => { setPersonId(v); setCompetencyId(""); }}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a nurse…" />
-                </SelectTrigger>
-                <SelectContent>
-                  {myOrientees.map((n) => (
-                    <SelectItem key={n.id} value={n.id}>{n.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={orienteeOpen} onOpenChange={setOrienteeOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <span className={person ? "text-foreground" : "text-muted-foreground"}>
+                      {person ? person.name : "Search by name…"}
+                    </span>
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                  <Command shouldFilter={false}>
+                    <CommandInput
+                      placeholder="Type a name…"
+                      value={orienteeQuery}
+                      onValueChange={setOrienteeQuery}
+                    />
+                    <CommandList>
+                      <CommandEmpty>No match found.</CommandEmpty>
+                      <CommandGroup>
+                        {filteredPersons.map((p) => {
+                          const u = units.find((u) => u.id === p.unitId);
+                          return (
+                            <CommandItem
+                              key={p.id}
+                              value={p.id}
+                              onSelect={() => {
+                                setPersonId(p.id);
+                                setCompetencyId("");
+                                setOrienteeOpen(false);
+                                setOrienteeQuery("");
+                              }}
+                            >
+                              <div className="flex flex-col min-w-0">
+                                <span className="font-medium truncate">{p.name}</span>
+                                {u && <span className="text-[11px] text-muted-foreground truncate">{u.name}</span>}
+                              </div>
+                            </CommandItem>
+                          );
+                        })}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
             {/* Competency */}

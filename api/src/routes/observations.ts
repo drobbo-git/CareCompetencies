@@ -23,6 +23,23 @@ router.post('/', requireAuth, async (req, res, next) => {
       personId: string; stepId: string; competencyId: string; observerId: string;
       rating: string; observedAt?: string; notes?: string;
     };
+
+    // A preceptor may observe any competency they've personally achieved
+    // themselves — not just their home unit's catalog (see CLAUDE.md
+    // "Preceptor"). Checked against the authenticated caller, not the
+    // client-supplied observerId, so it can't be spoofed. Administrators
+    // bypass this so they can bootstrap a brand-new competency's first achiever.
+    if (req.auth!.systemRole !== 'Administrator') {
+      const { rows } = await pool.query(
+        `SELECT 1 FROM competency_achievements WHERE person_id = $1 AND competency_id = $2`,
+        [req.auth!.loginId, competencyId],
+      );
+      if (rows.length === 0) {
+        res.status(403).json({ error: 'You have not achieved this competency yourself, so you cannot observe it for someone else.' });
+        return;
+      }
+    }
+
     const id = `obs-${crypto.randomUUID().slice(0, 8)}`;
     const ts = observedAt ?? new Date().toISOString();
     await pool.query(

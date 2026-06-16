@@ -110,13 +110,28 @@ export default function OrienteeWorkspacePage() {
     return d;
   }, [person, stageWindow]);
 
-  // My assignments
+  // My assignments — the learner must learn everything required by their
+  // own home unit/role, regardless of who's viewing.
   const myAssignments = useMemo(() => {
     if (!person) return [];
     return assignments.filter(
       (a) => a.unitId === person.unitId && a.roleId === (person.roleId ?? "r-rn"),
     );
   }, [assignments, person]);
+
+  // Competencies the viewing preceptor is personally qualified to teach —
+  // a preceptor may observe/sign off any competency they've achieved
+  // themselves, not just their home unit's catalog (see CLAUDE.md "Preceptor").
+  // Administrators bypass the check.
+  const qualifiedCompetencyIds = useMemo(() => {
+    if (!currentLogin) return new Set<string>();
+    if (currentLogin.systemRole === "Administrator") return null;
+    return new Set(
+      achievements.filter((a) => a.personId === currentLogin.id).map((a) => a.competencyId),
+    );
+  }, [achievements, currentLogin]);
+  const canTeach = (competencyId: string) =>
+    qualifiedCompetencyIds === null || (qualifiedCompetencyIds?.has(competencyId) ?? false);
 
   // Per-stage rollup (with detail for hover)
   const perStage = useMemo(() => {
@@ -437,10 +452,14 @@ export default function OrienteeWorkspacePage() {
                         <p className="text-[11px] text-muted-foreground">{cat?.name ?? "—"} · <StageBadge stage={stageLabel} size="sm" /></p>
                       </div>
                     </div>
-                    <div className="flex gap-1.5 mt-1.5 ml-5">
-                      <ObserveButton personId={person.id} competencyId={comp.id} />
-                      <SignOffButton personId={person.id} competencyId={comp.id} />
-                    </div>
+                    {canTeach(comp.id) ? (
+                      <div className="flex gap-1.5 mt-1.5 ml-5">
+                        <ObserveButton personId={person.id} competencyId={comp.id} />
+                        <SignOffButton personId={person.id} competencyId={comp.id} />
+                      </div>
+                    ) : (
+                      <p className="text-[11px] text-muted-foreground mt-1.5 ml-5">Outside your skill set</p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -469,10 +488,14 @@ export default function OrienteeWorkspacePage() {
                         <p className="text-[11px] text-muted-foreground">{cat?.name ?? "—"} · <StageBadge stage={stageLabel} size="sm" /></p>
                       </div>
                     </div>
-                    <div className="flex gap-1.5 mt-1.5 ml-5">
-                      <ObserveButton personId={person.id} competencyId={comp.id} />
-                      <SignOffButton personId={person.id} competencyId={comp.id} />
-                    </div>
+                    {canTeach(comp.id) ? (
+                      <div className="flex gap-1.5 mt-1.5 ml-5">
+                        <ObserveButton personId={person.id} competencyId={comp.id} />
+                        <SignOffButton personId={person.id} competencyId={comp.id} />
+                      </div>
+                    ) : (
+                      <p className="text-[11px] text-muted-foreground mt-1.5 ml-5">Outside your skill set</p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -518,8 +541,14 @@ export default function OrienteeWorkspacePage() {
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <StatusBadge status={progress} size="sm" />
-                        <ObserveButton personId={person.id} competencyId={comp.id} />
-                        <SignOffButton personId={person.id} competencyId={comp.id} />
+                        {canTeach(comp.id) ? (
+                          <>
+                            <ObserveButton personId={person.id} competencyId={comp.id} />
+                            <SignOffButton personId={person.id} competencyId={comp.id} />
+                          </>
+                        ) : (
+                          <span className="text-[11px] text-muted-foreground">Outside your skill set</span>
+                        )}
                       </div>
                     </div>
                   </li>

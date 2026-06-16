@@ -23,6 +23,23 @@ router.post('/', requireAuth, async (req, res, next) => {
       personId: string; competencyId: string; observerId: string;
       achievedAt?: string; notes?: string; earnedAtUnitId?: string;
     };
+
+    // A preceptor may sign off any competency they've personally achieved
+    // themselves — not just their home unit's catalog (see CLAUDE.md
+    // "Preceptor"). Checked against the authenticated caller, not the
+    // client-supplied observerId, so it can't be spoofed. Administrators
+    // bypass this so they can bootstrap a brand-new competency's first achiever.
+    if (req.auth!.systemRole !== 'Administrator') {
+      const { rows } = await pool.query(
+        `SELECT 1 FROM competency_achievements WHERE person_id = $1 AND competency_id = $2`,
+        [req.auth!.loginId, competencyId],
+      );
+      if (rows.length === 0) {
+        res.status(403).json({ error: 'You have not achieved this competency yourself, so you cannot sign it off for someone else.' });
+        return;
+      }
+    }
+
     const id = `ach-${crypto.randomUUID().slice(0, 8)}`;
     const ts = achievedAt ?? new Date().toISOString();
     await pool.query(

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { StageBadge } from "@/components/common/StageBadge";
 import { STAGES, type Stage } from "@/data/types";
@@ -40,9 +41,10 @@ function ActionButtons({ nurseId, competencyId }: { nurseId: string; competencyI
 
 export default function OrienteeDetailMobile() {
   const { id } = useParams<{ id: string }>();
+  const { currentLogin } = useAuth();
   const {
     persons, units,
-    competencies, assignments, observations,
+    competencies, assignments, achievements, observations,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
   } = useData();
 
@@ -51,12 +53,28 @@ export default function OrienteeDetailMobile() {
   const stage   = person ? getPersonStage(person.id) : "Core";
   const daysSince = person ? getDaysSinceStart(person.id) : 0;
 
+  // The learner must learn everything required by their own home unit/role,
+  // regardless of who's viewing.
   const myAssignments = useMemo(() => {
     if (!person) return [];
     return assignments.filter(
       (a) => a.unitId === person.unitId && a.roleId === (person.roleId ?? "r-rn"),
     );
   }, [assignments, person]);
+
+  // Competencies the viewing preceptor is personally qualified to teach —
+  // a preceptor may observe/sign off any competency they've achieved
+  // themselves, not just their home unit's catalog (see CLAUDE.md "Preceptor").
+  // Administrators bypass the check.
+  const qualifiedCompetencyIds = useMemo(() => {
+    if (!currentLogin) return new Set<string>();
+    if (currentLogin.systemRole === "Administrator") return null;
+    return new Set(
+      achievements.filter((a) => a.personId === currentLogin.id).map((a) => a.competencyId),
+    );
+  }, [achievements, currentLogin]);
+  const canTeach = (competencyId: string) =>
+    qualifiedCompetencyIds === null || (qualifiedCompetencyIds?.has(competencyId) ?? false);
 
   const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
     ? STAGES.length
@@ -199,7 +217,11 @@ export default function OrienteeDetailMobile() {
                     )}
                   </div>
                   {progress !== "Achieved" && (
-                    <ActionButtons nurseId={person.id} competencyId={comp.id} />
+                    canTeach(comp.id) ? (
+                      <ActionButtons nurseId={person.id} competencyId={comp.id} />
+                    ) : (
+                      <p className="text-[11px] text-muted-foreground mt-2">Outside your skill set</p>
+                    )
                   )}
                 </div>
               ))}
