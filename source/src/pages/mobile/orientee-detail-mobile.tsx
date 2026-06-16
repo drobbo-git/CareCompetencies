@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { StageBadge } from "@/components/common/StageBadge";
-import { STAGES, type Stage } from "@/data/types";
+import { STAGES, type Stage, type Competency } from "@/data/types";
 import { ArrowLeft, CheckCircle2, AlertTriangle, Stethoscope, ClipboardCheck, CalendarDays } from "lucide-react";
 
 function initials(name: string) {
@@ -75,6 +75,23 @@ export default function OrienteeDetailMobile() {
   }, [achievements, currentLogin]);
   const canTeach = (competencyId: string) =>
     qualifiedCompetencyIds === null || (qualifiedCompetencyIds?.has(competencyId) ?? false);
+
+  // Competencies this preceptor has achieved that aren't part of the
+  // learner's home-unit requirements — they can still teach these; it just
+  // records as a cross-trained "Other" achievement for the learner instead
+  // of a required one (see CLAUDE.md "Preceptor").
+  const teachableExtras = useMemo(() => {
+    if (!person || qualifiedCompetencyIds === null) return [];
+    const requiredIds = new Set(myAssignments.map((a) => a.competencyId));
+    const alreadyAchievedIds = new Set(
+      achievements.filter((a) => a.personId === person.id).map((a) => a.competencyId),
+    );
+    return [...qualifiedCompetencyIds]
+      .filter((cid) => !requiredIds.has(cid) && !alreadyAchievedIds.has(cid))
+      .map((cid) => competencies.find((c) => c.id === cid))
+      .filter((c): c is Competency => !!c)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [person, qualifiedCompetencyIds, myAssignments, achievements, competencies]);
 
   const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
     ? STAGES.length
@@ -229,6 +246,28 @@ export default function OrienteeDetailMobile() {
           </div>
         );
       })}
+
+      {/* Other competencies you can teach */}
+      {teachableExtras.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-2 px-1">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Other Competencies You Can Teach
+            </span>
+          </div>
+          <div className="space-y-2">
+            {teachableExtras.map((comp) => (
+              <div key={comp.id} className="rounded-xl border p-3 bg-card">
+                <p className="text-sm font-medium leading-snug">{comp.name}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Not required on {person.name.split(",")[0]}'s home unit — counts as cross-trained
+                </p>
+                <ActionButtons nurseId={person.id} competencyId={comp.id} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

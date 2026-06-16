@@ -86,7 +86,10 @@ export default function SignOffPage() {
   const [personId, setPersonId] = useState<string>(prefill?.personId ?? "");
   const [competencyId, setCompetencyId] = useState<string>(prefill?.competencyId ?? "");
   const [signOffContext, setSignOffContext] = useState<SignOffContext>("HomeUnit");
-  const [scopeFilter, setScopeFilter] = useState<ScopeFilter>("Stage");
+  // A prefilled competency may be a prior-stage (overdue) or cross-unit
+  // ("teach an extra") item that "Stage" scope wouldn't show in the
+  // dropdown — default wide enough that the prefilled selection is visible.
+  const [scopeFilter, setScopeFilter] = useState<ScopeFilter>(prefill?.competencyId ? "AllForRole" : "Stage");
   const [achievedAt, setAchievedAt] = useState(todayLocalISODate());
   const [notes, setNotes] = useState("");
   const [saved, setSaved] = useState(false);
@@ -173,6 +176,24 @@ export default function SignOffPage() {
     ? getCompetencyProgress(person.id, competencyId)
     : null;
 
+  // Provenance: if this competency is part of the learner's own home-unit
+  // requirements, it was earned there. Otherwise (a cross-trained
+  // competency the preceptor brought in) credit the unit where the signing
+  // preceptor actually holds it, falling back to the learner's home unit.
+  const earnedAtUnitId = useMemo(() => {
+    if (!person || !competencyId) return undefined;
+    const roleId = person.roleId ?? "r-rn";
+    const isHomeRequired = assignments.some(
+      (a) => a.unitId === person.unitId && a.roleId === roleId && a.competencyId === competencyId,
+    );
+    if (isHomeRequired) return person.unitId;
+    const viewerUnitIds = currentLogin?.unitIds ?? [];
+    const viaViewer = assignments.find(
+      (a) => viewerUnitIds.includes(a.unitId) && a.roleId === roleId && a.competencyId === competencyId,
+    )?.unitId;
+    return viaViewer ?? person.unitId;
+  }, [person, competencyId, assignments, currentLogin]);
+
   const canSave = !!currentLogin && !!personId && !!competencyId && !saved;
 
   function handleSave() {
@@ -183,7 +204,7 @@ export default function SignOffPage() {
       observerId: currentLogin.id,
       achievedAt: localDateStringToISO(achievedAt),
       notes: notes.trim() || undefined,
-      earnedAtUnitId: person.unitId,
+      earnedAtUnitId,
     });
     const comp = competencies.find((c) => c.id === competencyId)?.name ?? competencyId;
     logAudit({

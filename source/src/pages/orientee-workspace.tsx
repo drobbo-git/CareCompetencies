@@ -133,6 +133,23 @@ export default function OrienteeWorkspacePage() {
   const canTeach = (competencyId: string) =>
     qualifiedCompetencyIds === null || (qualifiedCompetencyIds?.has(competencyId) ?? false);
 
+  // Competencies this preceptor has achieved that aren't part of the
+  // learner's home-unit requirements — they can still teach these; it just
+  // records as a cross-trained "Other" achievement for the learner instead
+  // of a required one (see CLAUDE.md "Preceptor").
+  const teachableExtras = useMemo(() => {
+    if (!person || qualifiedCompetencyIds === null) return [];
+    const requiredIds = new Set(myAssignments.map((a) => a.competencyId));
+    const alreadyAchievedIds = new Set(
+      achievements.filter((a) => a.personId === person.id).map((a) => a.competencyId),
+    );
+    return [...qualifiedCompetencyIds]
+      .filter((cid) => !requiredIds.has(cid) && !alreadyAchievedIds.has(cid))
+      .map((cid) => competencies.find((c) => c.id === cid))
+      .filter((c): c is Competency => !!c)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [person, qualifiedCompetencyIds, myAssignments, achievements, competencies]);
+
   // Per-stage rollup (with detail for hover)
   const perStage = useMemo(() => {
     if (!person) return [];
@@ -596,6 +613,34 @@ export default function OrienteeWorkspacePage() {
         </Card>
 
       </div>
+
+      {/* ── Other competencies you can teach ────────────────────────── */}
+      {teachableExtras.length > 0 && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm">Other Competencies You Can Teach</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              You're qualified for these but they aren't required on {person.name.split(",")[0]}'s home
+              unit — teaching one records it as a cross-trained credential.
+            </p>
+          </CardHeader>
+          <CardContent className="p-0">
+            <ul className="divide-y">
+              {teachableExtras.map((comp) => (
+                <li key={comp.id} className="px-4 py-3 flex items-center justify-between gap-3">
+                  <Link to={`/competencies/${comp.id}`} className="text-sm font-medium hover:underline truncate">
+                    {comp.name}
+                  </Link>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <ObserveButton personId={person.id} competencyId={comp.id} />
+                    <SignOffButton personId={person.id} competencyId={comp.id} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

@@ -27,10 +27,28 @@ export default function SignOffMobilePage() {
   const { nurseId, competencyId } = useParams<{ nurseId: string; competencyId: string }>();
   const navigate = useNavigate();
   const { currentLogin } = useAuth();
-  const { persons, competencies, steps, observations, recordAchievement, logAudit } = useData();
+  const { persons, competencies, steps, assignments, observations, recordAchievement, logAudit } = useData();
 
   const person = useMemo(() => persons.find((n) => n.id === nurseId), [persons, nurseId]);
   const comp   = useMemo(() => competencies.find((c) => c.id === competencyId), [competencies, competencyId]);
+
+  // Provenance: if this competency is part of the learner's own home-unit
+  // requirements, it was earned there. Otherwise (a cross-trained
+  // competency the preceptor brought in) credit the unit where the signing
+  // preceptor actually holds it, falling back to the learner's home unit.
+  const earnedAtUnitId = useMemo(() => {
+    if (!person || !competencyId) return undefined;
+    const roleId = person.roleId ?? "r-rn";
+    const isHomeRequired = assignments.some(
+      (a) => a.unitId === person.unitId && a.roleId === roleId && a.competencyId === competencyId,
+    );
+    if (isHomeRequired) return person.unitId;
+    const viewerUnitIds = currentLogin?.unitIds ?? [];
+    const viaViewer = assignments.find(
+      (a) => viewerUnitIds.includes(a.unitId) && a.roleId === roleId && a.competencyId === competencyId,
+    )?.unitId;
+    return viaViewer ?? person.unitId;
+  }, [person, competencyId, assignments, currentLogin]);
   const compSteps = useMemo(
     () => steps.filter((s) => s.competencyId === competencyId).sort((a, b) => a.orderIndex - b.orderIndex),
     [steps, competencyId],
@@ -60,7 +78,7 @@ export default function SignOffMobilePage() {
       observerId:    currentLogin.id,
       achievedAt:    localDateStringToISO(achievedAt),
       notes:         notes.trim() || undefined,
-      earnedAtUnitId: person.unitId,
+      earnedAtUnitId,
     });
     void logAudit({
       actor:       currentLogin.id,
