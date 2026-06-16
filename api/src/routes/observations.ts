@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
-import { personScopeFilter } from '../lib/scopeFilter';
+import { personScopeFilter, parsePersonScopeOpts } from '../lib/scopeFilter';
 import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
@@ -20,7 +20,7 @@ const observationSchema = z.object({
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { where, params } = personScopeFilter(req.auth!, 'person_id');
+    const { where, params } = personScopeFilter(req.auth!, 'person_id', parsePersonScopeOpts(req.query));
     const { rows } = await pool.query(
       `SELECT * FROM step_observations ${where} ORDER BY observed_at DESC`,
       params,

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -27,7 +27,17 @@ export default function SignOffMobilePage() {
   const { nurseId, competencyId } = useParams<{ nurseId: string; competencyId: string }>();
   const navigate = useNavigate();
   const { currentLogin } = useAuth();
-  const { persons, competencies, steps, assignments, observations, recordAchievement, logAudit } = useData();
+  const {
+    persons, competencies, steps, assignments, observations, recordAchievement, logAudit,
+    ensurePersonDataLoaded,
+  } = useData();
+
+  // observations are scoped server-side (see scopeFilter.ts) — explicitly
+  // load this learner's data (usually already loaded by the page that
+  // linked here, but this page can also be reached directly/on refresh).
+  useEffect(() => {
+    if (nurseId) ensurePersonDataLoaded(nurseId);
+  }, [nurseId, ensurePersonDataLoaded]);
 
   const person = useMemo(() => persons.find((n) => n.id === nurseId), [persons, nurseId]);
   const comp   = useMemo(() => competencies.find((c) => c.id === competencyId), [competencies, competencyId]);

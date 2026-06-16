@@ -31,6 +31,12 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   return res.json() as Promise<T>;
 }
 
+function personScopeQuery(opts?: { personId?: string; personIds?: string[] }): string {
+  if (opts?.personId) return `?personId=${encodeURIComponent(opts.personId)}`;
+  if (opts?.personIds?.length) return `?personIds=${opts.personIds.map(encodeURIComponent).join(',')}`;
+  return '';
+}
+
 const get = <T>(path: string) => request<T>('GET', path);
 const post = <T>(path: string, body: unknown) => request<T>('POST', path, body);
 const put = <T>(path: string, body: unknown) => request<T>('PUT', path, body);
@@ -71,13 +77,19 @@ export const api = {
   createAssignment:  (a: Omit<CompetencyAssignment, 'id'> & { id?: string }) => post<CompetencyAssignment>('/competency-assignments', a),
   deleteAssignment:  (id: string) => del(`/competency-assignments/${id}`),
 
-  // observations
-  getObservations:   () => get<StepObservation[]>('/step-observations'),
+  // observations — getObservations() with no args is scoped server-side to
+  // "my own rows" for Preceptors (see scopeFilter.ts) since the unscoped
+  // table is ~1.5M rows at production volume; pass personId/personIds to
+  // fetch a specific learner's (or a roster's) observations instead.
+  getObservations:   (opts?: { personId?: string; personIds?: string[] }) =>
+    get<StepObservation[]>(`/step-observations${personScopeQuery(opts)}`),
   createObservation: (o: Omit<StepObservation, 'id' | 'observedAt'> & { observedAt?: string }) =>
     post<StepObservation>('/step-observations', o),
 
-  // achievements
-  getAchievements:   () => get<CompetencyAchievement[]>('/competency-achievements'),
+  // achievements — same personId/personIds scoping as observations above
+  // (the table is ~500k rows at production volume).
+  getAchievements:   (opts?: { personId?: string; personIds?: string[] }) =>
+    get<CompetencyAchievement[]>(`/competency-achievements${personScopeQuery(opts)}`),
   createAchievement: (a: Omit<CompetencyAchievement, 'id' | 'achievedAt'> & { achievedAt?: string }) =>
     post<CompetencyAchievement>('/competency-achievements', a),
 

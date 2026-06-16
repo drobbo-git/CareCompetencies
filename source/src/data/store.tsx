@@ -6,7 +6,7 @@
 // Mutations call the API and invalidate the relevant query cache.
 // =============================================================================
 
-import { createContext, useCallback, useContext, useMemo, useRef, useEffect } from "react";
+import { createContext, useCallback, useContext, useMemo, useRef, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   Unit, PersonRole, Person, PersonPrivilege,
@@ -70,6 +70,12 @@ interface DataCtx {
   patchChangeRequest: (id: string, patch: { status?: string; adminNote?: string }) => Promise<void>;
 
   logAudit: (e: Omit<AuditEvent, "id" | "timestamp">) => Promise<void>;
+
+  // Call when a page needs a specific other person's (or small roster's)
+  // observations/achievements — merges that data into the arrays above
+  // instead of ever fetching the full table (see scopeFilter.ts).
+  ensurePersonDataLoaded: (personId: string) => void;
+  ensurePersonsDataLoaded: (personIds: string[]) => void;
 }
 
 const Ctx = createContext<DataCtx | null>(null);
@@ -93,10 +99,53 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const competenciesQ   = useQuery({ queryKey: ['competencies'],    queryFn: api.getCompetencies,   enabled, staleTime: 30_000 });
   const stepsQ          = useQuery({ queryKey: ['steps'],           queryFn: api.getAllSteps,        enabled, staleTime: 30_000 });
   const assignmentsQ    = useQuery({ queryKey: ['assignments'],     queryFn: api.getAssignments,    enabled, staleTime: 30_000 });
-  const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: api.getObservations,   enabled, staleTime: 10_000 });
-  const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: api.getAchievements,   enabled, staleTime: 10_000 });
+  // No args: scoped server-side to "my own rows" for Preceptors (the
+  // unscoped table is ~1.5M/~500k rows at production volume — see
+  // scopeFilter.ts). Pages that need a SPECIFIC other person's (or a small
+  // roster's) data call ensurePersonDataLoaded/ensurePersonsDataLoaded
+  // below, which merges that person's rows into these same arrays — so
+  // getCompetencyProgress and every existing .filter(a => a.personId===X)
+  // call site keep working unchanged, just against a dynamically-grown,
+  // still-bounded set instead of the full table.
+  const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: () => api.getObservations(), enabled, staleTime: 10_000 });
+  const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: () => api.getAchievements(), enabled, staleTime: 10_000 });
   const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
   const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled: enabled && currentLogin?.systemRole === 'Administrator', staleTime: 10_000 });
+
+  // -------------------------------------------------------------------------
+  // Extra person-scoped observations/achievements — merged into the arrays
+  // below on demand (see ensurePersonDataLoaded/ensurePersonsDataLoaded).
+  // -------------------------------------------------------------------------
+  const [extraPersonIds, setExtraPersonIds] = useState<readonly string[]>([]);
+
+  const ensurePersonsDataLoaded = useCallback((personIds: string[]) => {
+    setExtraPersonIds((prev) => {
+      const prevSet = new Set(prev);
+      const merged = [...prev];
+      let changed = false;
+      for (const id of personIds) {
+        if (!prevSet.has(id)) { merged.push(id); prevSet.add(id); changed = true; }
+      }
+      return changed ? merged.sort() : prev;
+    });
+  }, []);
+  const ensurePersonDataLoaded = useCallback(
+    (personId: string) => ensurePersonsDataLoaded([personId]),
+    [ensurePersonsDataLoaded],
+  );
+
+  const extraAchievementsQ = useQuery({
+    queryKey: ['achievements', 'extra', extraPersonIds],
+    queryFn: () => api.getAchievements({ personIds: [...extraPersonIds] }),
+    enabled: enabled && extraPersonIds.length > 0,
+    staleTime: 10_000,
+  });
+  const extraObservationsQ = useQuery({
+    queryKey: ['observations', 'extra', extraPersonIds],
+    queryFn: () => api.getObservations({ personIds: [...extraPersonIds] }),
+    enabled: enabled && extraPersonIds.length > 0,
+    staleTime: 10_000,
+  });
 
   const units       = unitsQ.data       ?? [];
   const personRoles = personRolesQ.data ?? [];
@@ -106,10 +155,24 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const competencies   = competenciesQ.data   ?? [];
   const steps          = stepsQ.data          ?? [];
   const assignments    = assignmentsQ.data    ?? [];
-  const observations   = observationsQ.data   ?? [];
-  const achievements   = achievementsQ.data   ?? [];
   const changeRequests = changeRequestsQ.data ?? [];
   const auditEvents    = auditQ.data          ?? [];
+
+  const observations = useMemo(() => {
+    const base = observationsQ.data ?? [];
+    const extra = extraObservationsQ.data;
+    if (!extra || extra.length === 0) return base;
+    const seen = new Set(base.map((o) => o.id));
+    return [...base, ...extra.filter((o) => !seen.has(o.id))];
+  }, [observationsQ.data, extraObservationsQ.data]);
+
+  const achievements = useMemo(() => {
+    const base = achievementsQ.data ?? [];
+    const extra = extraAchievementsQ.data;
+    if (!extra || extra.length === 0) return base;
+    const seen = new Set(base.map((a) => a.id));
+    return [...base, ...extra.filter((a) => !seen.has(a.id))];
+  }, [achievementsQ.data, extraAchievementsQ.data]);
 
   // Show a loading screen while initial data fetches settle (authenticated only)
   const isPending = enabled && (
@@ -307,6 +370,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     upsertAssignment, removeAssignment,
     submitChangeRequest, decideChangeRequest, patchChangeRequest,
     logAudit,
+    ensurePersonDataLoaded, ensurePersonsDataLoaded,
   };
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

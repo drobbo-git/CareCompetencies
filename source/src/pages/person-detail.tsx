@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -33,7 +33,16 @@ export default function PersonDetailPage() {
     persons, units, personRoles, competencies, steps,
     categories, groups, assignments, observations, achievements,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
+    ensurePersonDataLoaded,
   } = data;
+
+  // achievements/observations are scoped server-side (see scopeFilter.ts) —
+  // explicitly load this specific person's data (matters for Preceptor
+  // viewers; UnitLeader/Administrator already have it via the unit/global
+  // scope, this is a harmless no-op for them).
+  useEffect(() => {
+    if (id) ensurePersonDataLoaded(id);
+  }, [id, ensurePersonDataLoaded]);
 
   const person = useMemo(() => persons.find((n) => n.id === id), [persons, id]);
   const unit = person ? units.find((u) => u.id === person.unitId) : undefined;

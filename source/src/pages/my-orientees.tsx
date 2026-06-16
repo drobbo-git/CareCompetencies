@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -64,17 +64,28 @@ export default function MyOrienteesPage() {
   const {
     persons, units, assignments, observations, achievements,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
+    ensurePersonsDataLoaded,
   } = useData();
 
   const isUnitLeader = currentLogin?.systemRole === "UnitLeader";
 
-  const rows = useMemo(() => {
+  const orientees = useMemo(() => {
     if (!currentLogin) return [];
-
-    const orientees = isUnitLeader
+    return isUnitLeader
       ? persons.filter((n) => n.unitId === currentLogin.unitIds?.[0])
       : persons.filter((n) => n.primaryPreceptorId === currentLogin.id);
+  }, [currentLogin, isUnitLeader, persons]);
 
+  // achievements/observations are scoped server-side (see scopeFilter.ts) —
+  // for a Preceptor's small paired roster, explicitly load their data.
+  // (UnitLeader's roster is already covered by the unit-scoped global
+  // query, so this is a harmless no-op for them.)
+  useEffect(() => {
+    if (orientees.length > 0) ensurePersonsDataLoaded(orientees.map((n) => n.id));
+  }, [orientees, ensurePersonsDataLoaded]);
+
+  const rows = useMemo(() => {
+    if (!currentLogin) return [];
     return orientees
       .map((n) => {
         const stage = getPersonStage(n.id);
@@ -108,7 +119,7 @@ export default function MyOrienteesPage() {
       })
       .filter((r) => !isUnitLeader || r.stage !== "FullyOriented")
       .sort((a, b) => lastName(a.person.name).localeCompare(lastName(b.person.name)));
-  }, [currentLogin, isUnitLeader, persons, units, assignments, observations, achievements, getPersonStage, getDaysSinceStart, getCompetencyProgress]);
+  }, [currentLogin, isUnitLeader, orientees, units, assignments, observations, achievements, getPersonStage, getDaysSinceStart, getCompetencyProgress]);
 
   if (!currentLogin) return null;
 

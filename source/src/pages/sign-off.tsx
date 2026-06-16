@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useAuth } from "@/data/auth";
@@ -78,12 +78,20 @@ export default function SignOffPage() {
   const {
     persons, units, steps, competencies, assignments, achievements, observations,
     getPersonStage, getCompetencyProgress, recordAchievement, logAudit,
+    ensurePersonDataLoaded,
   } = useData();
 
   const { state } = useLocation();
   const prefill = state as { personId?: string; competencyId?: string } | null;
 
   const [personId, setPersonId] = useState<string>(prefill?.personId ?? "");
+
+  // achievements/observations are scoped server-side (see scopeFilter.ts) —
+  // explicitly load the selected person's data rather than assuming it's
+  // already in the global arrays.
+  useEffect(() => {
+    if (personId) ensurePersonDataLoaded(personId);
+  }, [personId, ensurePersonDataLoaded]);
   const [competencyId, setCompetencyId] = useState<string>(prefill?.competencyId ?? "");
   const [signOffContext, setSignOffContext] = useState<SignOffContext>("HomeUnit");
   // A prefilled competency may be a prior-stage (overdue) or cross-unit

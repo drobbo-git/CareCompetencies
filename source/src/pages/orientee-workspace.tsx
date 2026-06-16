@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import OrienteeDetailMobile from "@/pages/mobile/orientee-detail-mobile";
@@ -73,9 +73,17 @@ export default function OrienteeWorkspacePage() {
     persons, units, categories,
     competencies, assignments, achievements, observations,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
+    ensurePersonDataLoaded,
   } = useData();
 
   const person = useMemo(() => persons.find((n) => n.id === id), [persons, id]);
+
+  // achievements/observations are scoped server-side (see scopeFilter.ts) —
+  // explicitly load this specific learner's data rather than assuming it's
+  // already in the global arrays.
+  useEffect(() => {
+    if (id) ensurePersonDataLoaded(id);
+  }, [id, ensurePersonDataLoaded]);
   const unit = person ? units.find((u) => u.id === person.unitId) : undefined;
   const primaryPreceptor = person?.primaryPreceptorId
     ? persons.find((n) => n.id === person.primaryPreceptorId)
