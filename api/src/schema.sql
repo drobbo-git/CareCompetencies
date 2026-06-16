@@ -133,6 +133,27 @@ CREATE TABLE dbo.audit_events (
   detail       NVARCHAR(MAX) NULL
 );
 
+-- Bulk async data loads (e.g. an administrator-triggered person bulk load
+-- from a CSV file). Modeled the same shape a real nightly file-drop import
+-- would have — submit now, a job runs in the background, poll for results —
+-- even though today's transfer mechanism is a manual upload, not SFTP.
+IF OBJECT_ID('dbo.import_jobs', 'U') IS NULL
+CREATE TABLE dbo.import_jobs (
+  id            NVARCHAR(64)  NOT NULL PRIMARY KEY,
+  type          NVARCHAR(32)  NOT NULL,  -- 'PersonBulkLoad'
+  status        NVARCHAR(32)  NOT NULL DEFAULT 'Pending'
+    CONSTRAINT ck_import_jobs_status CHECK (status IN ('Pending', 'Processing', 'Completed', 'Failed')),
+  filename      NVARCHAR(255) NULL,
+  submitted_by  NVARCHAR(36)  NOT NULL,
+  submitted_at  DATETIME2(0)  NOT NULL DEFAULT GETUTCDATE(),
+  completed_at  DATETIME2(0)  NULL,
+  total_rows    INT           NULL,
+  success_count INT           NULL,
+  error_count   INT           NULL,
+  row_results   NVARCHAR(MAX) NULL  -- JSON array of { row, netid, name, action, error }
+    CONSTRAINT ck_import_jobs_row_results CHECK (row_results IS NULL OR ISJSON(row_results) = 1)
+);
+
 -- Indexes on hot query paths
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_persons_unit' AND object_id = OBJECT_ID('dbo.persons'))
     CREATE INDEX ix_persons_unit ON dbo.persons(unit_id);
@@ -169,3 +190,6 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_cr_requester_date' AND
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_audit_ts' AND object_id = OBJECT_ID('dbo.audit_events'))
     CREATE INDEX ix_audit_ts ON dbo.audit_events(timestamp DESC);
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_import_jobs_submitted' AND object_id = OBJECT_ID('dbo.import_jobs'))
+    CREATE INDEX ix_import_jobs_submitted ON dbo.import_jobs(submitted_at DESC);

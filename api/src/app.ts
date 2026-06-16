@@ -10,6 +10,7 @@ import achievementsRouter from './routes/achievements';
 import changeRequestsRouter from './routes/change-requests';
 import auditRouter from './routes/audit';
 import integrationRouter from './routes/integration';
+import importsRouter from './routes/imports';
 
 export function createApp() {
   const app = express();
@@ -33,6 +34,7 @@ export function createApp() {
   app.use('/change-requests', changeRequestsRouter);
   app.use('/audit-events', auditRouter);
   app.use('/integration', integrationRouter);
+  app.use('/imports', importsRouter);
 
   // Global error handler
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

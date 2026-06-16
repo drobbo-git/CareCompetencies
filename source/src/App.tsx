@@ -23,6 +23,7 @@ import AuditLogPage from "./pages/audit";
 import PeoplePage from "./pages/people";
 import AdminConsolePage from "./pages/admin-console";
 import ApiExplorerPage from "./pages/api-explorer";
+import BulkUserLoadPage from "./pages/bulk-user-load";
 import ObserveMobilePage from "./pages/mobile/observe-mobile";
 import SignOffMobilePage from "./pages/mobile/sign-off-mobile";
 import NotFoundPage from "./pages/not-found";
@@ -68,6 +69,7 @@ function App() {
                     <Route path="people" element={<PeoplePage />} />
                     <Route path="admin" element={<AdminConsolePage />} />
                     <Route path="api-explorer" element={<ApiExplorerPage />} />
+                    <Route path="bulk-user-load" element={<BulkUserLoadPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Route>
                 </Routes>

@@ -3,6 +3,7 @@ import type {
   CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
   ChangeRequest, AuditEvent, Login,
+  ImportJobSummary, ImportJobDetail,
 } from '@/data/types';
 
 const BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://localhost:3001';
@@ -111,4 +112,10 @@ export const api = {
     name: string; unitId: string; roleId?: string;
     startDate: string; jobCode?: string; stageOverride?: string;
   }) => put<Record<string, unknown>>(`/integration/persons/${encodeURIComponent(netid)}`, body),
+
+  // imports — admin-triggered bulk loads (e.g. person CSV upload)
+  getImportJobs:    () => get<ImportJobSummary[]>('/imports'),
+  getImportJob:     (id: string) => get<ImportJobDetail>(`/imports/${id}`),
+  createPersonImportJob: (filename: string, content: string) =>
+    post<ImportJobSummary>('/imports/users', { filename, content }),
 };

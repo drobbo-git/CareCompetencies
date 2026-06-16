@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   Home, Users, Stethoscope, ClipboardList,
   ClipboardCheck, MailQuestion, Layers, ShieldCheck, BookOpen,
-  Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard, Terminal,
+  Grid3x3, Sparkles, LogOut, UserCircle2, LayoutDashboard, Terminal, UploadCloud,
 } from "lucide-react";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -32,6 +32,7 @@ function getNavItems(role: SystemRole, isUnitLeader: boolean): NavItem[] {
     { id: "people",         to: "/people",            label: "People",              icon: Users,          roles: ["Administrator"] },
     { id: "audit",          to: "/audit",             label: "Audit Log",           icon: ShieldCheck,    roles: ["Administrator"] },
     { id: "api-explorer",   to: "/api-explorer",      label: "API Explorer",        icon: Terminal,       roles: ["Administrator"] },
+    { id: "bulk-user-load", to: "/bulk-user-load",    label: "Bulk User Load",      icon: UploadCloud,    roles: ["Administrator"] },
 
     // ── Preceptor + UnitLeader ────────────────────────────────────────────────
     { id: "my-comps",       to: "/my-competencies",   label: "My Competencies",     icon: UserCircle2,    roles: ["Preceptor", "UnitLeader"], dividerAfter: ["Preceptor", "UnitLeader"] },

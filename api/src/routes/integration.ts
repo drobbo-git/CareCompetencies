@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
-import crypto from 'crypto';
+import { upsertPersonByNetId } from '../lib/personUpsert';
 
 const router = Router();
 
@@ -171,48 +171,9 @@ router.put('/persons/:netid', async (req, res, next) => {
       return;
     }
 
-    const { rows: existing } = await pool.query(
-      'SELECT id FROM persons WHERE username = $1 OR duke_netid = $2',
-      [netid, netid],
-    );
-
-    if (existing.length > 0) {
-      const personId = existing[0].id;
-      await pool.query(
-        `UPDATE persons
-         SET name=$1, unit_id=$2, role_id=$3, start_date=$4,
-             job_code=$5, stage_override=$6, username=$7, duke_netid=$8
-         WHERE id=$9`,
-        [name.trim(), unitId, roleId ?? null, startDate,
-         jobCode ?? null, stageOverride ?? null, netid, netid, personId],
-      );
-      const { rows } = await pool.query('SELECT * FROM persons WHERE id = $1', [personId]);
-      res.json({ action: 'updated', person: toPerson(rows[0]) });
-    } else {
-      const id = crypto.randomUUID();
-      await pool.query(
-        `INSERT INTO persons (id, username, duke_netid, name, unit_id, role_id, start_date, job_code, stage_override)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-        [id, netid, netid, name.trim(), unitId, roleId ?? null, startDate,
-         jobCode ?? null, stageOverride ?? null],
-      );
-      const { rows } = await pool.query('SELECT * FROM persons WHERE id = $1', [id]);
-      res.json({ action: 'created', person: toPerson(rows[0]) });
-    }
+    const result = await upsertPersonByNetId({ netid, name, unitId, roleId, startDate, jobCode, stageOverride });
+    res.json(result);
   } catch (err) { next(err); }
 });
-
-function toPerson(r: Record<string, unknown>) {
-  return {
-    id: r.id,
-    netid: r.username ?? r.duke_netid,
-    name: r.name,
-    unitId: r.unit_id,
-    roleId: r.role_id ?? undefined,
-    startDate: (r.start_date as Date).toISOString().slice(0, 10),
-    stageOverride: r.stage_override ?? undefined,
-    jobCode: r.job_code ?? undefined,
-  };
-}
 
 export default router;

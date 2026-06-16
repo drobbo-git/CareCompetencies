@@ -210,6 +210,37 @@ export interface Login {
 }
 
 // -----------------------------------------------------------------------------
+// Bulk import jobs (e.g. administrator-triggered person bulk load)
+// -----------------------------------------------------------------------------
+export type ImportJobStatus = "Pending" | "Processing" | "Completed" | "Failed";
+
+export interface ImportJobRowResult {
+  row: number;
+  netid: string;
+  name: string;
+  action: "created" | "updated" | "error";
+  error?: string;
+}
+
+export interface ImportJobSummary {
+  id: string;
+  type: string;
+  status: ImportJobStatus;
+  filename?: string;
+  submittedBy: string;
+  submittedByName?: string;
+  submittedAt: string;
+  completedAt?: string;
+  totalRows?: number;
+  successCount?: number;
+  errorCount?: number;
+}
+
+export interface ImportJobDetail extends ImportJobSummary {
+  rowResults?: ImportJobRowResult[];
+}
+
+// -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
 /**
