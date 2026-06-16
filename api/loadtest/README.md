@@ -44,3 +44,36 @@ majority failure rates. Two compounding causes, confirmed by isolating each:
 
 Pool size alone is a quick partial mitigation; the real fix is pagination
 (or a reasonable hard cap) on these list endpoints regardless of role.
+
+## Findings after the scoping fix (2026-06-16)
+
+Two changes shipped since the first run:
+
+1. **Preceptor scope fixed** — `GET /competency-achievements` and
+   `GET /step-observations` now default to `WHERE person_id = loginId` for
+   Preceptor role (own rows only, ~32 achievements / 0 observations). Callers
+   pass `?personId=` or `?personIds=` on demand. This eliminated the largest
+   class of unscoped reads.
+2. **Pool.max raised 10 → 50** — reduces connection-wait queuing under
+   moderate concurrency.
+
+**Calibration results after the fix** (achievements only, mixed roles):
+
+| Phase | Arrival rate | Failures | p95 |
+|---|---|---|---|
+| Tier-2 | 2 req/s | 0% | 191ms |
+| Tier-5 | 5 req/s | 0% | 198ms |
+| Tier-10 | 10 req/s | 0% | 354ms |
+| Tier-20 | 20 req/s | 24% | 3534ms |
+
+Previous baseline: majority failures at 10–20 req/sec. Now: 10 req/s is clean.
+
+**Remaining bottleneck**: UnitLeader `GET /step-observations` still returns the
+entire unit's observation history (~4970 rows per unit). When 20+ UnitLeaders
+are concurrent, Node.js saturates serializing large JSON arrays and the
+connection pool backs up. The full load test (`api-load-test.yml`) still fails
+under the 50-VU sustained phase because it includes observations.
+
+**Next fix**: server-side aggregation or lazy loading for UnitLeader observations
+— the roster/dashboard only needs achievements for progress computation;
+observations should be deferred until a specific person is viewed.
