@@ -1,10 +1,18 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { personScopeFilter } from '../lib/scopeFilter';
+import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
 const router = Router();
+
+const changeRequestSchema = z.object({
+  type: z.enum(['Add', 'Edit', 'Remove', 'Stage', 'ChangeSteps']),
+  competencyId: z.string().max(64).optional(),
+  rationale: z.string().max(5000).optional(),
+});
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
@@ -19,10 +27,12 @@ router.get('/', requireAuth, async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { requesterId, requesterRole, type, competencyId, rationale } = req.body as {
-      requesterId: string; requesterRole: string; type: string;
-      competencyId?: string; rationale?: string;
-    };
+    const { type, competencyId, rationale } = parseBody(changeRequestSchema, req.body);
+    // Attribution comes from the authenticated session, not the request
+    // body — otherwise a caller could submit a request that displays as
+    // having come from a different person/role than who actually sent it.
+    const requesterId = req.auth!.loginId;
+    const requesterRole = req.auth!.systemRole;
     const id = `cr-${crypto.randomUUID().slice(0, 8)}`;
     const submittedAt = new Date().toISOString();
     await pool.query(

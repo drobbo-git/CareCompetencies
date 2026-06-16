@@ -32,3 +32,16 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     res.status(401).json({ error: 'Invalid or expired token' });
   }
 }
+
+// Use after requireAuth to restrict a route to specific systemRoles.
+// For finer-grained checks (e.g. "UnitLeader, but only for their own
+// unit"), do the unitIds comparison in the route handler itself.
+export function requireRole(...roles: string[]) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    if (!roles.includes(req.auth!.systemRole)) {
+      res.status(403).json({ error: `Requires one of: ${roles.join(', ')}` });
+      return;
+    }
+    next();
+  };
+}

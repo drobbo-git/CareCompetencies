@@ -79,6 +79,9 @@ async function processImportJob(jobId: string, rows: string[][], colIdx: Record<
       if (!netid || !name || !unitName || !startDate) {
         throw new Error('Missing required value (NetID, Name, Unit, StartDate)');
       }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate)) {
+        throw new Error(`StartDate "${startDate}" must be in YYYY-MM-DD format`);
+      }
       const unitId = unitByName.get(unitName.toLowerCase());
       if (!unitId) throw new Error(`Unknown unit "${unitName}"`);
       let roleId: string | undefined;

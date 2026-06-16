@@ -1,10 +1,19 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { parsePagination } from '../lib/scopeFilter';
+import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
 const router = Router();
+
+const auditEventSchema = z.object({
+  type: z.string().min(1).max(64),
+  summary: z.string().min(1).max(2000),
+  targetLabel: z.string().max(200).optional(),
+  detail: z.string().max(5000).optional(),
+});
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
@@ -24,10 +33,12 @@ router.get('/', requireAuth, async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { actor, actorRole, type, summary, targetLabel, detail } = req.body as {
-      actor: string; actorRole: string; type: string; summary: string;
-      targetLabel?: string; detail?: string;
-    };
+    const { type, summary, targetLabel, detail } = parseBody(auditEventSchema, req.body);
+    // Attribution comes from the authenticated session, not the request
+    // body — otherwise any caller could forge an audit entry under
+    // someone else's name, defeating the point of an audit trail.
+    const actor = req.auth!.loginId;
+    const actorRole = req.auth!.systemRole;
     const id = `aud-${crypto.randomUUID().slice(0, 8)}`;
     const timestamp = new Date().toISOString();
     await pool.query(

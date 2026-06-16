@@ -1,10 +1,22 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { personScopeFilter } from '../lib/scopeFilter';
+import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
 const router = Router();
+
+const observationSchema = z.object({
+  personId: z.string().min(1).max(36),
+  stepId: z.string().min(1).max(64),
+  competencyId: z.string().min(1).max(64),
+  observerId: z.string().min(1).max(36).optional(),
+  rating: z.enum(['Satisfactory', 'Unsatisfactory', 'NotObserved']),
+  observedAt: z.string().datetime().optional(),
+  notes: z.string().max(5000).optional(),
+});
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
@@ -19,10 +31,14 @@ router.get('/', requireAuth, async (req, res, next) => {
 
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { personId, stepId, competencyId, observerId, rating, observedAt, notes } = req.body as {
-      personId: string; stepId: string; competencyId: string; observerId: string;
-      rating: string; observedAt?: string; notes?: string;
-    };
+    const body = parseBody(observationSchema, req.body);
+    const { personId, stepId, competencyId, rating, observedAt, notes } = body;
+    // Attribution comes from the authenticated session for everyone except
+    // Administrators, who may attribute to a specific preceptor when
+    // bootstrapping/importing historical records.
+    const observerId = req.auth!.systemRole === 'Administrator' && body.observerId
+      ? body.observerId
+      : req.auth!.loginId;
 
     // A preceptor may observe any competency they've personally achieved
     // themselves — not just their home unit's catalog (see CLAUDE.md

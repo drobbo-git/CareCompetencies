@@ -1,9 +1,40 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db';
-import { requireAuth } from '../middleware/auth';
+import { requireAuth, requireRole } from '../middleware/auth';
+import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
 const router = Router();
+
+// Catalog management (groups, competencies, steps) is Administrator-only —
+// every authenticated role can still read it via the GET routes below.
+const adminOnly = requireRole('Administrator');
+
+const groupSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  parentGroupId: z.string().max(64).optional(),
+  orderIndex: z.number().int().optional(),
+  description: z.string().max(5000).optional(),
+});
+
+const competencySchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  description: z.string().max(5000).optional(),
+  groupId: z.string().max(64).optional(),
+  categoryId: z.string().max(64).optional(),
+  unitIds: z.array(z.string()).optional(),
+  validationMethod: z.string().max(200).optional(),
+  knowledgeSource: z.string().max(200).optional(),
+  policySource: z.string().max(200).optional(),
+  updateNote: z.string().max(2000).optional(),
+});
+
+const stepsSchema = z.array(z.object({
+  id: z.string().max(64).optional(),
+  name: z.string().trim().min(1).max(500),
+  orderIndex: z.number().int(),
+}));
 
 // --- Groups ---
 
@@ -20,11 +51,10 @@ router.get('/groups', requireAuth, async (_req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.post('/groups', requireAuth, async (req, res, next) => {
+router.post('/groups', requireAuth, adminOnly, async (req, res, next) => {
   try {
-    const { id: clientId, name, parentGroupId, orderIndex, description } = req.body as {
-      id?: string; name: string; parentGroupId?: string; orderIndex?: number; description?: string;
-    };
+    const { id: clientId, ...body } = req.body as { id?: string } & Record<string, unknown>;
+    const { name, parentGroupId, orderIndex, description } = parseBody(groupSchema, body);
     const id = clientId ?? `grp-${crypto.randomUUID().slice(0, 8)}`;
     await pool.query(
       'INSERT INTO competency_groups (id, name, parent_group_id, order_index, description) VALUES ($1,$2,$3,$4,$5)',
@@ -34,11 +64,9 @@ router.post('/groups', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.put('/groups/:id', requireAuth, async (req, res, next) => {
+router.put('/groups/:id', requireAuth, adminOnly, async (req, res, next) => {
   try {
-    const { name, parentGroupId, orderIndex, description } = req.body as {
-      name: string; parentGroupId?: string; orderIndex?: number; description?: string;
-    };
+    const { name, parentGroupId, orderIndex, description } = parseBody(groupSchema, req.body);
     const { rowCount } = await pool.query(
       'UPDATE competency_groups SET name=$1, parent_group_id=$2, order_index=$3, description=$4 WHERE id=$5',
       [name, parentGroupId ?? null, orderIndex ?? null, description ?? null, req.params.id],
@@ -48,7 +76,7 @@ router.put('/groups/:id', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.delete('/groups/:id', requireAuth, async (req, res, next) => {
+router.delete('/groups/:id', requireAuth, adminOnly, async (req, res, next) => {
   try {
     await pool.query('DELETE FROM competency_groups WHERE id = $1', [req.params.id]);
     res.status(204).end();
@@ -86,11 +114,10 @@ router.get('/', requireAuth, async (_req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.post('/', requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, adminOnly, async (req, res, next) => {
   try {
-    const { id: clientId, name, description, groupId, categoryId, unitIds } = req.body as {
-      id?: string; name: string; description?: string; groupId?: string; categoryId?: string; unitIds: string[];
-    };
+    const { id: clientId, ...body } = req.body as { id?: string } & Record<string, unknown>;
+    const { name, description, groupId, categoryId, unitIds } = parseBody(competencySchema, body);
     const id = clientId ?? `comp-${crypto.randomUUID().slice(0, 8)}`;
     await pool.query(
       'INSERT INTO competencies (id, name, description, group_id, category_id, unit_ids) VALUES ($1,$2,$3,$4,$5,$6)',
@@ -100,13 +127,10 @@ router.post('/', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.put('/:id', requireAuth, async (req, res, next) => {
+router.put('/:id', requireAuth, adminOnly, async (req, res, next) => {
   try {
     const { name, description, groupId, categoryId, unitIds,
-            validationMethod, knowledgeSource, policySource, updateNote } = req.body as {
-      name: string; description?: string; groupId?: string; categoryId?: string; unitIds: string[];
-      validationMethod?: string; knowledgeSource?: string; policySource?: string; updateNote?: string;
-    };
+            validationMethod, knowledgeSource, policySource, updateNote } = parseBody(competencySchema, req.body);
     const { rowCount } = await pool.query(
       `UPDATE competencies
        SET name=$1, description=$2, group_id=$3, category_id=$4, unit_ids=$5,
@@ -136,10 +160,14 @@ router.get('/:id/steps', requireAuth, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-router.put('/:id/steps', requireAuth, async (req, res, next) => {
+router.put('/:id/steps', requireAuth, adminOnly, async (req, res, next) => {
+  let steps;
+  try {
+    steps = parseBody(stepsSchema, req.body);
+  } catch (err) { next(err); return; }
+
   const client = await pool.connect();
   try {
-    const steps = req.body as { id?: string; name: string; orderIndex: number }[];
     await client.query('BEGIN');
     await client.query('DELETE FROM competency_steps WHERE competency_id = $1', [req.params.id]);
     const saved = [];

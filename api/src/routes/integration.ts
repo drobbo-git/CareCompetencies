@@ -1,7 +1,18 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
 import { upsertPersonByNetId } from '../lib/personUpsert';
+import { parseBody } from '../lib/validate';
+
+const upsertPersonSchema = z.object({
+  name: z.string().trim().min(1).max(200),
+  unitId: z.string().min(1).max(64),
+  roleId: z.string().max(64).optional(),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'must be in YYYY-MM-DD format'),
+  jobCode: z.string().max(32).optional(),
+  stageOverride: z.enum(['Core', 'Orientation', 'Education', 'FullyOriented', 'Nonclinical']).optional(),
+});
 
 const router = Router();
 
@@ -161,15 +172,7 @@ router.get('/competencies/:id/persons', async (req, res, next) => {
 router.put('/persons/:netid', async (req, res, next) => {
   try {
     const { netid } = req.params;
-    const { name, unitId, roleId, startDate, jobCode, stageOverride } = req.body as {
-      name: string; unitId: string; roleId?: string; startDate: string;
-      jobCode?: string; stageOverride?: string;
-    };
-
-    if (!name?.trim() || !unitId || !startDate) {
-      res.status(400).json({ error: 'name, unitId, and startDate are required' });
-      return;
-    }
+    const { name, unitId, roleId, startDate, jobCode, stageOverride } = parseBody(upsertPersonSchema, req.body);
 
     const result = await upsertPersonByNetId({ netid, name, unitId, roleId, startDate, jobCode, stageOverride });
     res.json(result);

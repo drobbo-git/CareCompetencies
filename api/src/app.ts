@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { ZodError } from 'zod';
 import authRouter from './routes/auth';
 import referenceRouter from './routes/reference';
 import personsRouter from './routes/persons';
@@ -38,8 +39,18 @@ export function createApp() {
 
   // Global error handler
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    if (err instanceof ZodError) {
+      res.status(400).json({
+        error: 'Invalid request',
+        details: err.issues.map((i) => ({ path: i.path.join('.'), message: i.message })),
+      });
+      return;
+    }
     console.error(err);
-    res.status(500).json({ error: 'Internal server error', message: err.message });
+    // Driver error messages (mssql, etc.) can include table/column/constraint
+    // names — don't hand that to the client outside of local development.
+    const isProd = process.env.NODE_ENV === 'production';
+    res.status(500).json({ error: 'Internal server error', ...(isProd ? {} : { message: err.message }) });
   });
 
   return app;
