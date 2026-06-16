@@ -18,6 +18,9 @@ api/dist
 # TypeScript build info
 **/*.tsbuildinfo
 
+# Load test run output (configs/fixtures are checked in, results are not)
+api/loadtest/*.json
+
 # Logs
 *.log
 **/logs

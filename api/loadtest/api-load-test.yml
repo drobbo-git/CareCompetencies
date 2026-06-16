@@ -1,0 +1,58 @@
+config:
+  target: "http://localhost:3001"
+  payload:
+    path: "./accounts.csv"
+    fields:
+      - "username"
+      - "role"
+    order: random
+  phases:
+    - duration: 30
+      arrivalRate: 5
+      rampTo: 50
+      name: ramp-up
+    - duration: 60
+      arrivalRate: 50
+      name: sustained
+    - duration: 30
+      arrivalRate: 50
+      rampTo: 150
+      name: spike
+    - duration: 20
+      arrivalRate: 10
+      name: cool-down
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "login + scoped reads (mixed roles)"
+    flow:
+      - post:
+          url: "/auth/login"
+          json:
+            username: "{{ username }}"
+            password: "duke24"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/persons"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/competency-achievements"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/step-observations"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/competencies"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/competency-assignments"
+          headers:
+            Authorization: "Bearer {{ token }}"

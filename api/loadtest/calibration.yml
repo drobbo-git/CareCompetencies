@@ -1,0 +1,44 @@
+config:
+  target: "http://localhost:3001"
+  payload:
+    path: "./accounts.csv"
+    fields:
+      - "username"
+      - "role"
+    order: random
+  phases:
+    - duration: 20
+      arrivalRate: 2
+      name: tier-2
+    - duration: 20
+      arrivalRate: 5
+      name: tier-5
+    - duration: 20
+      arrivalRate: 10
+      name: tier-10
+    - duration: 20
+      arrivalRate: 20
+      name: tier-20
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "login + scoped reads (mixed roles)"
+    flow:
+      - post:
+          url: "/auth/login"
+          json:
+            username: "{{ username }}"
+            password: "duke24"
+          capture:
+            - json: "$.token"
+              as: "token"
+      - get:
+          url: "/persons"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/competency-achievements"
+          headers:
+            Authorization: "Bearer {{ token }}"
