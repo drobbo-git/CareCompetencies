@@ -1,10 +1,11 @@
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Link, useHref } from "react-router-dom";
+import QRCode from "react-qr-code";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { StageBadge } from "@/components/common/StageBadge";
 import { STAGES, getStageDays, type Stage } from "@/data/types";
-import { CheckCircle2, AlertTriangle, Clock, CalendarDays } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Clock, CalendarDays, QrCode, X } from "lucide-react";
 
 function fmt(iso: string | undefined) {
   if (!iso) return "—";
@@ -16,6 +17,7 @@ function fmt(iso: string | undefined) {
 
 export default function MyCompetenciesMobile() {
   const { currentLogin } = useAuth();
+  const [showQr, setShowQr] = useState(false);
   const {
     persons, units, competencies, assignments, achievements, observations,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
@@ -23,6 +25,8 @@ export default function MyCompetenciesMobile() {
 
   const person = useMemo(() => persons.find((n) => n.id === currentLogin?.id), [persons, currentLogin]);
   const unit   = person ? units.find((u) => u.id === person.unitId) : undefined;
+  const profileHref = useHref(`/my-orientees/${person?.id ?? ""}`);
+  const qrUrl = `${window.location.origin}${profileHref}`;
   const primaryPreceptor = person?.primaryPreceptorId
     ? persons.find((n) => n.id === person.primaryPreceptorId)
     : undefined;
@@ -151,6 +155,15 @@ export default function MyCompetenciesMobile() {
             {totalAchieved} / {totalRequired} achieved · {overallPct}%
           </span>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setShowQr(true)}
+          className="w-full flex items-center justify-center gap-2 rounded-xl border border-dashed border-primary/40 py-2.5 text-sm text-primary font-medium hover:bg-primary/5 transition-colors"
+        >
+          <QrCode className="h-4 w-4" />
+          Share my profile
+        </button>
       </div>
 
       {/* Overdue */}
@@ -239,6 +252,42 @@ export default function MyCompetenciesMobile() {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* QR overlay */}
+      {showQr && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/85 px-8"
+          onClick={() => setShowQr(false)}
+        >
+          <div
+            className="w-full max-w-xs rounded-3xl bg-white p-6 flex flex-col items-center gap-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-full flex items-center justify-between">
+              <div>
+                <p className="text-base font-bold text-gray-900">{person.name}</p>
+                <p className="text-xs text-gray-500">{unit?.name ?? "—"}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowQr(false)}
+                className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+                aria-label="Close"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-gray-50 border">
+              <QRCode value={qrUrl} size={220} />
+            </div>
+
+            <p className="text-xs text-center text-gray-400 leading-relaxed">
+              Ask your preceptor to scan this with their phone camera to open your profile.
+            </p>
+          </div>
         </div>
       )}
 
