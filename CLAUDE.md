@@ -52,11 +52,23 @@ dev; the Railway dev/prod deployments use their own environment variables for th
   and `Nonclinical` (stage concept doesn't apply, e.g. admin staff). Stored as
   `persons.stage_override` when set; `null` means stage is computed from `start_date`.
 
-- **Preceptor** — An experienced RN paired one-to-one with an orientee via
-  `persons.primary_preceptor_id`. Signs off competency steps and whole competencies for
-  their paired orientees. **Any preceptor on the unit can sign off any competency** —
-  there is no competency-level preceptor qualification (confirmed by SME; see
-  `sme-comments.txt`).
+- **Preceptor** — An experienced RN, usually paired one-to-one with an orientee via
+  `persons.primary_preceptor_id`, but preceptors can also observe/sign off unassigned
+  learners they find via search or QR scan (e.g. float/travel nurses visiting their
+  unit). What a preceptor can teach is **achievement-based, not unit-catalog-based**:
+  a preceptor may observe or sign off any competency they have personally achieved
+  themselves (a row in `competency_achievements` where `person_id` is their own id),
+  regardless of which unit that competency belongs to. Preceptors are always
+  achievers of their own home unit's full competency catalog, so the common case
+  (assigned learner, same home unit) needs no special-casing — it just falls out of
+  the achievement check. The competency *list* shown for a learner is always scoped
+  to the learner's own home unit/stage (what they're required to learn), independent
+  of who's viewing it. Enforced client-side in `orientee-workspace.tsx`,
+  `mobile/orientee-detail-mobile.tsx`, `observe.tsx`, and `sign-off.tsx`, and
+  server-side in `achievements.ts` / `observations.ts` POST routes (checked against
+  the authenticated caller, not the client-supplied `observerId`). Administrators
+  bypass the check so they can bootstrap a brand-new competency's first achiever.
+  (Confirmed by SME and refined by user 2026-06-16; see `sme-comments.txt`.)
 
 - **Unit Leader** — Holds both `Preceptor` and `UnitLeader` privilege rows in
   `person_privileges`. Sees all incomplete orientees on their unit (not just their paired
