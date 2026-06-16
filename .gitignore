@@ -9,6 +9,7 @@ api/dist
 # Environment — never commit real env files; .env.example files are safe
 .env
 .env.local
+.env.test
 .env.*.local
 **/. env
 **/.env.local

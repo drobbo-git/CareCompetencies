@@ -12,7 +12,8 @@
     "db:setup": "ts-node src/db-setup.ts",
     "db:drop": "ts-node src/db-drop.ts",
     "db:reset": "ts-node src/db-drop.ts && ts-node src/db-setup.ts && ts-node src/seed.ts",
-    "seed": "ts-node src/seed.ts"
+    "seed": "ts-node src/seed.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@types/mssql": "^9.1.5",
@@ -28,8 +29,12 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.17.10",
+    "@types/supertest": "^7.2.0",
+    "dotenv-cli": "^11.0.0",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.9"
   }
 }

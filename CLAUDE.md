@@ -250,7 +250,33 @@ npm run dev               # http://localhost:3001/health
 *Note: `DB_SERVER !== 'localhost'` triggers `encrypt: true` and longer timeouts in
 `db.ts`. This is how the Azure SQL serverless auto-resume delay is handled.*
 
-**Local SQL Server:** [TODO — Docker one-liner or setup instructions]
+**Local SQL Server (Docker):**
+
+```bash
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourStrong!Passw0rd" \
+  -p 1433:1433 --name carecompetencies-sql-test \
+  -v carecompetencies-sql-test-data:/var/opt/mssql \
+  -d mcr.microsoft.com/mssql/server:2022-latest
+```
+
+`npm run db:setup` creates the `CareCompetencies` database itself when `DB_SERVER=localhost`
+(it doesn't exist yet on a fresh container) and then applies the schema. Run
+`npm run db:setup && npm run seed` as above with `DB_SERVER=localhost`.
+
+### API Tests
+
+```bash
+cd api
+cp .env.test.example .env.test   # fill in DB_PASSWORD to match your container
+npm test                          # vitest run, against .env.test
+```
+
+`api/test/setup.ts` loads `.env.test` (not `.env`) and **refuses to run unless
+`DB_SERVER=localhost`** — this suite mutates real rows (creates competencies,
+assignments, audit events, etc.) and must never point at the shared Azure SQL dev
+DB. Run `db:setup` + `seed` (see above) against the same local container first; the
+tests assume the standard seed data is present (specific NetIDs/IDs are hardcoded in
+`api/test/helpers.ts`).
 
 ### E2E Tests
 

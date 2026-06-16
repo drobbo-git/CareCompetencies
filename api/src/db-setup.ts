@@ -8,15 +8,16 @@ import fs from 'fs';
 import path from 'path';
 import sql from 'mssql';
 
-const sqlConfig: sql.config = {
+const isLocal = process.env.DB_SERVER === 'localhost';
+
+const baseConfig: sql.config = {
   server:   process.env.DB_SERVER!,
   port:     parseInt(process.env.DB_PORT ?? '1433', 10),
-  database: process.env.DB_NAME!,
   user:     process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   options: {
-    encrypt:                process.env.DB_SERVER !== 'localhost',
-    trustServerCertificate: process.env.DB_SERVER === 'localhost',
+    encrypt:                !isLocal,
+    trustServerCertificate: isLocal,
   },
 };
 
@@ -26,7 +27,22 @@ async function setup() {
     'utf-8',
   );
 
-  const pool = await sql.connect(sqlConfig);
+  // A fresh local Docker container has no databases beyond the system ones —
+  // create ours if missing. Skipped against Azure SQL, where the database
+  // is provisioned ahead of time and a server-level connection works
+  // differently.
+  if (isLocal) {
+    const masterPool = await sql.connect({ ...baseConfig, database: 'master' });
+    try {
+      await masterPool.request().batch(
+        `IF DB_ID(N'${process.env.DB_NAME}') IS NULL CREATE DATABASE [${process.env.DB_NAME}];`,
+      );
+    } finally {
+      await masterPool.close();
+    }
+  }
+
+  const pool = await sql.connect({ ...baseConfig, database: process.env.DB_NAME! });
   try {
     // Execute the entire schema as a single batch.
     // mssql's batch() handles multi-statement SQL without needing GO separators.
