@@ -16,18 +16,12 @@ export function personScopeFilter(auth: AuthPayload, column: string): ScopeFilte
 
   if (systemRole === 'Administrator') return { where: '', params: [] };
 
+  // Preceptors can teach any learner — scope is on competencies (unit catalog),
+  // not on which persons they can observe.
+  if (systemRole === 'Preceptor') return { where: '', params: [] };
+
   if (systemRole === 'Person') {
     return { where: `WHERE ${column} = $1`, params: [loginId] };
-  }
-
-  if (systemRole === 'Preceptor') {
-    const ids = unitIds ?? [];
-    if (ids.length === 0) return { where: 'WHERE 1=0', params: [] };
-    const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
-    return {
-      where: `WHERE ${column} IN (SELECT id FROM persons WHERE unit_id IN (${placeholders}))`,
-      params: ids,
-    };
   }
 
   // UnitLeader
@@ -49,15 +43,12 @@ export function personsScopeFilter(auth: AuthPayload): ScopeFilter {
 
   if (systemRole === 'Administrator') return { where: '', params: [] };
 
+  // Preceptors can teach any learner — scope is on competencies (unit catalog),
+  // not on which persons they can observe.
+  if (systemRole === 'Preceptor') return { where: '', params: [] };
+
   if (systemRole === 'Person') {
     return { where: 'WHERE id = $1', params: [loginId] };
-  }
-
-  if (systemRole === 'Preceptor') {
-    const ids = unitIds ?? [];
-    if (ids.length === 0) return { where: 'WHERE 1=0', params: [] };
-    const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
-    return { where: `WHERE unit_id IN (${placeholders})`, params: ids };
   }
 
   // UnitLeader
