@@ -21,9 +21,12 @@ export function personScopeFilter(auth: AuthPayload, column: string): ScopeFilte
   }
 
   if (systemRole === 'Preceptor') {
+    const ids = unitIds ?? [];
+    if (ids.length === 0) return { where: 'WHERE 1=0', params: [] };
+    const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
     return {
-      where: `WHERE ${column} IN (SELECT id FROM persons WHERE primary_preceptor_id = $1)`,
-      params: [loginId],
+      where: `WHERE ${column} IN (SELECT id FROM persons WHERE unit_id IN (${placeholders}))`,
+      params: ids,
     };
   }
 
@@ -51,7 +54,10 @@ export function personsScopeFilter(auth: AuthPayload): ScopeFilter {
   }
 
   if (systemRole === 'Preceptor') {
-    return { where: 'WHERE primary_preceptor_id = $1', params: [loginId] };
+    const ids = unitIds ?? [];
+    if (ids.length === 0) return { where: 'WHERE 1=0', params: [] };
+    const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
+    return { where: `WHERE unit_id IN (${placeholders})`, params: ids };
   }
 
   // UnitLeader
