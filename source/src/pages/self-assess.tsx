@@ -97,7 +97,25 @@ export default function SelfAssessPage() {
       {/* Step confidence ratings */}
       {compSteps.length > 0 && (
         <div className="space-y-4">
-          <p className="text-sm font-semibold">Rate your confidence for each step</p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm font-semibold">Rate your confidence for each step</p>
+            <div className="flex gap-1.5 shrink-0">
+              {CONFIDENCE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => {
+                    const all: Record<string, SelfAssessmentConfidence> = {};
+                    compSteps.forEach((s) => { all[s.id] = opt.value; });
+                    setConfidences(all);
+                  }}
+                  className={`rounded-lg border px-2 py-1 text-[11px] font-medium transition-all active:scale-95 ${opt.color}`}
+                >
+                  All {opt.label.split(" ")[0].toLowerCase()}
+                </button>
+              ))}
+            </div>
+          </div>
           {compSteps.map((step, i) => (
             <div key={step.id} className="space-y-2">
               <p className="text-sm text-foreground">
