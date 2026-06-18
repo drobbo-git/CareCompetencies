@@ -163,6 +163,10 @@ export default function OrienteeWorkspacePage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [person, qualifiedCompetencyIds, myAssignments, achievements, competencies]);
 
+  const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
+    ? STAGES.length
+    : STAGES.indexOf(stage as Stage);
+
   // Per-stage rollup — includes overdue flag for items in prior stages not yet achieved.
   const perStage = useMemo(() => {
     if (!person) return [];
@@ -194,10 +198,6 @@ export default function OrienteeWorkspacePage() {
   const totalAchieved = perStage.reduce((s, r) => s + r.achieved, 0);
   const totalRequired = myAssignments.length;
   const overallPct = totalRequired === 0 ? 0 : Math.round((totalAchieved / totalRequired) * 100);
-
-  const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
-    ? STAGES.length
-    : STAGES.indexOf(stage as Stage);
 
   // Overdue
   const overdueItems = useMemo(() => {
