@@ -176,6 +176,15 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_obs_person_date' AND o
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_ach_person' AND object_id = OBJECT_ID('dbo.competency_achievements'))
     CREATE INDEX ix_ach_person ON dbo.competency_achievements(person_id);
 
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_ach_person_date' AND object_id = OBJECT_ID('dbo.competency_achievements'))
+    CREATE INDEX ix_ach_person_date ON dbo.competency_achievements(person_id, achieved_at DESC);
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_ach_achieved_at' AND object_id = OBJECT_ID('dbo.competency_achievements'))
+    CREATE INDEX ix_ach_achieved_at ON dbo.competency_achievements(achieved_at DESC);
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_persons_name' AND object_id = OBJECT_ID('dbo.persons'))
+    CREATE INDEX ix_persons_name ON dbo.persons(name);
+
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_ach_person_comp' AND object_id = OBJECT_ID('dbo.competency_achievements'))
     CREATE INDEX ix_ach_person_comp ON dbo.competency_achievements(person_id, competency_id);
 

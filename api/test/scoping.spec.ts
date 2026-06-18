@@ -17,7 +17,7 @@ describe('role-based data scoping', () => {
     const res = await request(app).get('/persons').set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
     expect(res.body.data.length).toBeGreaterThanOrEqual(29);
-    expect(typeof res.body.total).toBe('number');
+    expect(typeof res.body.hasMore).toBe('boolean');
   });
 
   it('UnitLeader only sees persons on their own unit', async () => {
@@ -83,8 +83,8 @@ describe('Preceptor achievement/observation scoping (the load-test fix)', () => 
       .get('/competency-achievements?pageSize=2000')
       .set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
-    expect(typeof res.body.total).toBe('number');
-    expect(res.body.total).toBeGreaterThan(0);
+    expect(typeof res.body.hasMore).toBe('boolean');
+    expect(res.body.data.length).toBeGreaterThan(0);
     // Unscoped: results span more than one person
     const personIds = new Set(res.body.data.map((a: { personId: string }) => a.personId));
     expect(personIds.size).toBeGreaterThan(1);

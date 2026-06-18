@@ -21,18 +21,15 @@ router.get('/', requireAuth, async (req, res, next) => {
   try {
     const { where, params: scopeParams } = personScopeFilter(req.auth!, 'person_id', parsePersonScopeOpts(req.query));
     const pag = parsePagination(req.query, scopeParams.length + 1);
-    const [{ rows }, { rows: countRows }] = await Promise.all([
-      pool.query(
-        `SELECT * FROM competency_achievements ${where} ORDER BY achieved_at DESC
-         OFFSET ${pag.offsetParam} ROWS FETCH NEXT ${pag.fetchParam} ROWS ONLY`,
-        [...scopeParams, ...pag.params],
-      ),
-      pool.query(
-        `SELECT COUNT(*) AS total FROM competency_achievements ${where}`,
-        scopeParams,
-      ),
-    ]);
-    res.json({ data: rows.map(toAch), total: Number(countRows[0].total), page: pag.page, pageSize: pag.pageSize });
+    // Fetch pageSize+1 to detect hasMore — avoids a separate COUNT(*) query
+    // (which would scan the full table for Administrator and double pool usage).
+    const { rows } = await pool.query(
+      `SELECT * FROM competency_achievements ${where} ORDER BY achieved_at DESC
+       OFFSET ${pag.offsetParam} ROWS FETCH NEXT ${pag.fetchParam} ROWS ONLY`,
+      [...scopeParams, pag.params[0], (pag.params[1] as number) + 1],
+    );
+    const hasMore = rows.length > pag.pageSize;
+    res.json({ data: rows.slice(0, pag.pageSize).map(toAch), page: pag.page, pageSize: pag.pageSize, hasMore });
   } catch (err) { next(err); }
 });
 

@@ -54,7 +54,7 @@ export const api = {
 
   // persons — pageSize=2000 covers the largest realistic unit roster in one page
   getPersons: () =>
-    get<{ data: Person[]; total: number; page: number; pageSize: number }>('/persons?pageSize=2000')
+    get<{ data: Person[]; hasMore: boolean; page: number; pageSize: number }>('/persons?pageSize=2000')
       .then((r) => r.data),
   patchPerson: (id: string, data: { primaryPreceptorId?: string | null }) => patch<Person>(`/persons/${id}`, data),
 
@@ -102,7 +102,7 @@ export const api = {
     let qs = '?pageSize=2000';
     if (opts?.personId) qs += `&personId=${encodeURIComponent(opts.personId)}`;
     else if (opts?.personIds?.length) qs += `&personIds=${opts.personIds.map(encodeURIComponent).join(',')}`;
-    return get<{ data: CompetencyAchievement[]; total: number; page: number; pageSize: number }>(
+    return get<{ data: CompetencyAchievement[]; hasMore: boolean; page: number; pageSize: number }>(
       `/competency-achievements${qs}`,
     ).then((r) => r.data);
   },
