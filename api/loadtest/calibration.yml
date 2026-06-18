@@ -42,3 +42,11 @@ scenarios:
           url: "/competency-achievements"
           headers:
             Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/step-observations/weekly-summary"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - get:
+          url: "/step-observations/last-activity"
+          headers:
+            Authorization: "Bearer {{ token }}"
