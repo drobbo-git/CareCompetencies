@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth } from '../middleware/auth';
-import { personScopeFilter, parsePersonScopeOpts } from '../lib/scopeFilter';
+import { personScopeFilter, parsePersonScopeOpts, parsePagination } from '../lib/scopeFilter';
 import { parseBody } from '../lib/validate';
 import crypto from 'crypto';
 
@@ -19,12 +19,20 @@ const achievementSchema = z.object({
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { where, params } = personScopeFilter(req.auth!, 'person_id', parsePersonScopeOpts(req.query));
-    const { rows } = await pool.query(
-      `SELECT * FROM competency_achievements ${where} ORDER BY achieved_at DESC`,
-      params,
-    );
-    res.json(rows.map(toAch));
+    const { where, params: scopeParams } = personScopeFilter(req.auth!, 'person_id', parsePersonScopeOpts(req.query));
+    const pag = parsePagination(req.query, scopeParams.length + 1);
+    const [{ rows }, { rows: countRows }] = await Promise.all([
+      pool.query(
+        `SELECT * FROM competency_achievements ${where} ORDER BY achieved_at DESC
+         OFFSET ${pag.offsetParam} ROWS FETCH NEXT ${pag.fetchParam} ROWS ONLY`,
+        [...scopeParams, ...pag.params],
+      ),
+      pool.query(
+        `SELECT COUNT(*) AS total FROM competency_achievements ${where}`,
+        scopeParams,
+      ),
+    ]);
+    res.json({ data: rows.map(toAch), total: Number(countRows[0].total), page: pag.page, pageSize: pag.pageSize });
   } catch (err) { next(err); }
 });
 

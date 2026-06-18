@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -37,7 +37,7 @@ const STAGE_RANK: Record<StageOrFully, number> = {
  */
 export default function PersonsPage() {
   const { currentLogin } = useAuth();
-  const { persons, assignments, achievements, units, getPersonStage } = useData();
+  const { persons, assignments, achievements, units, getPersonStage, ensurePersonsDataLoaded } = useData();
 
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("progress");
@@ -71,6 +71,14 @@ export default function PersonsPage() {
     const q = query.trim().toLowerCase();
     return q ? rows.filter((r) => r.name.toLowerCase().includes(q)) : rows;
   }, [rows, query]);
+
+  // For Administrators, achievements are not fetched globally (see store.tsx).
+  // Load them lazily for the currently visible filtered set so progress counts
+  // populate after a brief delay rather than staying at 0 permanently.
+  useEffect(() => {
+    const ids = filtered.map((r) => r.id);
+    if (ids.length > 0) ensurePersonsDataLoaded(ids);
+  }, [filtered, ensurePersonsDataLoaded]);
 
   const sorted = useMemo(() => {
     const arr = filtered.slice();

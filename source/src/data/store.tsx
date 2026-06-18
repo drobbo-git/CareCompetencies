@@ -88,6 +88,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
   const enabled = !!currentLogin;
   const isUnitLeader = currentLogin?.systemRole === 'UnitLeader';
+  const isAdministrator = currentLogin?.systemRole === 'Administrator';
 
   // -------------------------------------------------------------------------
   // Queries — only run when authenticated
@@ -115,7 +116,11 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   // server-side aggregation endpoints instead; other pages call
   // ensurePersonsDataLoaded to load observations lazily per person.
   const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: () => api.getObservations(), enabled: enabled && !isUnitLeader, staleTime: 10_000 });
-  const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: () => api.getAchievements(), enabled, staleTime: 10_000 });
+  // Administrators skip the global fetch — the unscoped table is 500k rows
+  // at production volume and would exhaust the connection pool under concurrent
+  // load (see api/loadtest/README.md). They rely on ensurePersonDataLoaded
+  // for per-person work; pages showing aggregate stats are a known follow-up.
+  const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: () => api.getAchievements(), enabled: enabled && !isAdministrator, staleTime: 10_000 });
   const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
   const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled: enabled && currentLogin?.systemRole === 'Administrator', staleTime: 10_000 });
 

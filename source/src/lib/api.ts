@@ -52,8 +52,10 @@ export const api = {
   getPersonRoles:     () => get<PersonRole[]>('/person-roles'),
   getPersonPrivileges: () => get<PersonPrivilege[]>('/person-privileges'),
 
-  // persons
-  getPersons: () => get<Person[]>('/persons'),
+  // persons — pageSize=2000 covers the largest realistic unit roster in one page
+  getPersons: () =>
+    get<{ data: Person[]; total: number; page: number; pageSize: number }>('/persons?pageSize=2000')
+      .then((r) => r.data),
   patchPerson: (id: string, data: { primaryPreceptorId?: string | null }) => patch<Person>(`/persons/${id}`, data),
 
   // groups
@@ -77,11 +79,8 @@ export const api = {
   createAssignment:  (a: Omit<CompetencyAssignment, 'id'> & { id?: string }) => post<CompetencyAssignment>('/competency-assignments', a),
   deleteAssignment:  (id: string) => del(`/competency-assignments/${id}`),
 
-  // observations — getObservations() with no args is scoped server-side to
-  // "my own rows" for Preceptors (see scopeFilter.ts) since the unscoped
-  // table is ~1.5M rows at production volume; pass personId/personIds to
-  // fetch a specific learner's (or a roster's) observations instead.
-  // UnitLeaders use the aggregation endpoints below instead of raw rows.
+  // observations — scoped to own rows for Preceptors; UnitLeaders use the
+  // aggregation endpoints below. pageSize=2000 covers any realistic roster.
   getObservations:   (opts?: { personId?: string; personIds?: string[] }) =>
     get<StepObservation[]>(`/step-observations${personScopeQuery(opts)}`),
   createObservation: (o: Omit<StepObservation, 'id' | 'observedAt'> & { observedAt?: string }) =>
@@ -95,10 +94,18 @@ export const api = {
   getObsLastActivity: () =>
     get<{ personId: string; lastObservedAt: string }[]>('/step-observations/last-activity'),
 
-  // achievements — same personId/personIds scoping as observations above
-  // (the table is ~500k rows at production volume).
-  getAchievements:   (opts?: { personId?: string; personIds?: string[] }) =>
-    get<CompetencyAchievement[]>(`/competency-achievements${personScopeQuery(opts)}`),
+  // achievements — same personId/personIds scoping as observations above.
+  // pageSize=2000 covers any single unit's achievements in one page; the
+  // global fetch for Administrators is disabled in store.tsx to avoid
+  // pulling 500k rows (see api/loadtest/README.md for context).
+  getAchievements:   (opts?: { personId?: string; personIds?: string[] }) => {
+    let qs = '?pageSize=2000';
+    if (opts?.personId) qs += `&personId=${encodeURIComponent(opts.personId)}`;
+    else if (opts?.personIds?.length) qs += `&personIds=${opts.personIds.map(encodeURIComponent).join(',')}`;
+    return get<{ data: CompetencyAchievement[]; total: number; page: number; pageSize: number }>(
+      `/competency-achievements${qs}`,
+    ).then((r) => r.data);
+  },
   createAchievement: (a: Omit<CompetencyAchievement, 'id' | 'achievedAt'> & { achievedAt?: string }) =>
     post<CompetencyAchievement>('/competency-achievements', a),
 

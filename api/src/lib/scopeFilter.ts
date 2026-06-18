@@ -107,7 +107,7 @@ export function parsePagination(
   startParamIndex = 1,
 ): { page: number; pageSize: number; offset: number; offsetParam: string; fetchParam: string; params: unknown[] } {
   const page     = Math.max(1, parseInt(String(query.page     ?? '1'),  10) || 1);
-  const pageSize = Math.min(100, Math.max(1, parseInt(String(query.pageSize ?? '50'), 10) || 50));
+  const pageSize = Math.min(2000, Math.max(1, parseInt(String(query.pageSize ?? '500'), 10) || 500));
   const offset   = (page - 1) * pageSize;
   return {
     page,

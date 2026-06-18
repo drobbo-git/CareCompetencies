@@ -16,21 +16,22 @@ describe('role-based data scoping', () => {
   it('Administrator sees all persons', async () => {
     const res = await request(app).get('/persons').set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThanOrEqual(29);
+    expect(res.body.data.length).toBeGreaterThanOrEqual(29);
+    expect(typeof res.body.total).toBe('number');
   });
 
   it('UnitLeader only sees persons on their own unit', async () => {
     const res = await request(app).get('/persons').set('Authorization', `Bearer ${unitLeaderToken}`);
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThan(0);
-    expect(res.body.every((p: { unitId: string }) => p.unitId === SEED.dn4100UnitId)).toBe(true);
+    expect(res.body.data.length).toBeGreaterThan(0);
+    expect(res.body.data.every((p: { unitId: string }) => p.unitId === SEED.dn4100UnitId)).toBe(true);
   });
 
   it('Person only sees themselves', async () => {
     const res = await request(app).get('/persons').set('Authorization', `Bearer ${personToken}`);
     expect(res.status).toBe(200);
-    expect(res.body).toHaveLength(1);
-    expect(res.body[0].id).toBe(SEED.personDn4100Id);
+    expect(res.body.data).toHaveLength(1);
+    expect(res.body.data[0].id).toBe(SEED.personDn4100Id);
   });
 });
 
@@ -54,8 +55,8 @@ describe('Preceptor achievement/observation scoping (the load-test fix)', () => 
   it('defaults to the preceptor\'s own rows only — not the whole table', async () => {
     const res = await request(app).get('/competency-achievements').set('Authorization', `Bearer ${preceptorToken}`);
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThan(0);
-    expect(res.body.every((a: { personId: string }) => a.personId === SEED.preceptorDn4100Id)).toBe(true);
+    expect(res.body.data.length).toBeGreaterThan(0);
+    expect(res.body.data.every((a: { personId: string }) => a.personId === SEED.preceptorDn4100Id)).toBe(true);
   });
 
   it('lets a preceptor explicitly request a specific learner\'s achievements via personId', async () => {
@@ -63,8 +64,8 @@ describe('Preceptor achievement/observation scoping (the load-test fix)', () => 
       .get(`/competency-achievements?personId=${SEED.personDn4100Id}`)
       .set('Authorization', `Bearer ${preceptorToken}`);
     expect(res.status).toBe(200);
-    expect(res.body.length).toBeGreaterThan(0);
-    expect(res.body.every((a: { personId: string }) => a.personId === SEED.personDn4100Id)).toBe(true);
+    expect(res.body.data.length).toBeGreaterThan(0);
+    expect(res.body.data.every((a: { personId: string }) => a.personId === SEED.personDn4100Id)).toBe(true);
   });
 
   it('lets a preceptor request multiple learners via personIds', async () => {
@@ -72,16 +73,20 @@ describe('Preceptor achievement/observation scoping (the load-test fix)', () => 
       .get(`/competency-achievements?personIds=${SEED.personDn4100Id},${SEED.preceptorDn4100Id}`)
       .set('Authorization', `Bearer ${preceptorToken}`);
     expect(res.status).toBe(200);
-    const personIds = new Set(res.body.map((a: { personId: string }) => a.personId));
+    const personIds = new Set(res.body.data.map((a: { personId: string }) => a.personId));
     expect(personIds.has(SEED.personDn4100Id)).toBe(true);
     expect(personIds.has(SEED.preceptorDn4100Id)).toBe(true);
   });
 
-  it('Administrator default behavior (no personId) is unchanged — still sees everything', async () => {
-    const res = await request(app).get('/competency-achievements').set('Authorization', `Bearer ${adminToken}`);
+  it('Administrator default query is unscoped — sees achievements from multiple persons', async () => {
+    const res = await request(app)
+      .get('/competency-achievements?pageSize=2000')
+      .set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
-    const personIds = new Set(res.body.map((a: { personId: string }) => a.personId));
-    expect(personIds.has(SEED.preceptorDn4100Id)).toBe(true);
-    expect(personIds.has(SEED.personDn4100Id)).toBe(true);
+    expect(typeof res.body.total).toBe('number');
+    expect(res.body.total).toBeGreaterThan(0);
+    // Unscoped: results span more than one person
+    const personIds = new Set(res.body.data.map((a: { personId: string }) => a.personId));
+    expect(personIds.size).toBeGreaterThan(1);
   });
 });

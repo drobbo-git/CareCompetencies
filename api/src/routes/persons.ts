@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { pool } from '../db';
 import { requireAuth, requireRole } from '../middleware/auth';
-import { personsScopeFilter } from '../lib/scopeFilter';
+import { personsScopeFilter, parsePagination } from '../lib/scopeFilter';
 import { parseBody } from '../lib/validate';
 
 const router = Router();
@@ -13,12 +13,20 @@ const reassignSchema = z.object({
 
 router.get('/', requireAuth, async (req, res, next) => {
   try {
-    const { where, params } = personsScopeFilter(req.auth!);
-    const { rows } = await pool.query(
-      `SELECT * FROM persons ${where} ORDER BY name`,
-      params,
-    );
-    res.json(rows.map(toPerson));
+    const { where, params: scopeParams } = personsScopeFilter(req.auth!);
+    const pag = parsePagination(req.query, scopeParams.length + 1);
+    const [{ rows }, { rows: countRows }] = await Promise.all([
+      pool.query(
+        `SELECT * FROM persons ${where} ORDER BY name
+         OFFSET ${pag.offsetParam} ROWS FETCH NEXT ${pag.fetchParam} ROWS ONLY`,
+        [...scopeParams, ...pag.params],
+      ),
+      pool.query(
+        `SELECT COUNT(*) AS total FROM persons ${where}`,
+        scopeParams,
+      ),
+    ]);
+    res.json({ data: rows.map(toPerson), total: Number(countRows[0].total), page: pag.page, pageSize: pag.pageSize });
   } catch (err) { next(err); }
 });
 
