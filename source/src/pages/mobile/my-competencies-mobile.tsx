@@ -1,11 +1,18 @@
 import { useMemo, useState } from "react";
-import { Link, useHref } from "react-router-dom";
+import { Link, useHref, useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { StageBadge } from "@/components/common/StageBadge";
 import { STAGES, getStageDays, type Stage } from "@/data/types";
-import { CheckCircle2, AlertTriangle, Clock, CalendarDays, QrCode, X } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Clock, CalendarDays, QrCode, X, ClipboardList } from "lucide-react";
+import type { SelfAssessmentRating } from "@/data/types";
+
+const SA_BADGE: Record<SelfAssessmentRating, { label: string; cls: string }> = {
+  ReadyForAssessment: { label: "Ready",     cls: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+  NeedPractice:       { label: "Practice",  cls: "bg-amber-100 text-amber-800 border-amber-300" },
+  NeedInstruction:    { label: "Needs help", cls: "bg-rose-100 text-rose-800 border-rose-300" },
+};
 
 function fmt(iso: string | undefined) {
   if (!iso) return "—";
@@ -17,9 +24,10 @@ function fmt(iso: string | undefined) {
 
 export default function MyCompetenciesMobile() {
   const { currentLogin } = useAuth();
+  const navigate = useNavigate();
   const [showQr, setShowQr] = useState(false);
   const {
-    persons, units, competencies, assignments, achievements, observations,
+    persons, units, competencies, assignments, achievements, observations, selfAssessments,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
   } = useData();
 
@@ -197,29 +205,52 @@ export default function MyCompetenciesMobile() {
             <span className="text-xs text-muted-foreground">{dueNow.length} remaining</span>
           </div>
           <ul className="divide-y">
-            {dueNow.map(({ comp, progress, lastObs }) => (
-              <li key={comp.id} className="px-4 py-3.5 flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <Link to={`/competencies/${comp.id}`} className="text-sm font-medium hover:underline block truncate">
-                    {comp.name}
-                  </Link>
-                  {lastObs && (
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      Last observed {fmt(lastObs.observedAt)}
-                    </p>
-                  )}
-                </div>
-                {progress === "InProgress" ? (
-                  <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5 shrink-0 flex items-center gap-1 whitespace-nowrap">
-                    <Clock className="h-2.5 w-2.5" /> In Progress
-                  </span>
-                ) : (
-                  <span className="text-[10px] text-muted-foreground border border-dashed rounded-full px-2 py-0.5 shrink-0 whitespace-nowrap">
-                    Not Started
-                  </span>
-                )}
-              </li>
-            ))}
+            {dueNow.map(({ comp, progress, lastObs }) => {
+              const latestSA = [...selfAssessments]
+                .filter((sa) => sa.personId === person?.id && sa.competencyId === comp.id)
+                .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+              const saBadge = latestSA ? SA_BADGE[latestSA.overallRating] : null;
+              return (
+                <li key={comp.id} className="px-4 py-3.5 space-y-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <Link to={`/competencies/${comp.id}`} className="text-sm font-medium hover:underline block truncate">
+                        {comp.name}
+                      </Link>
+                      {lastObs && (
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Last observed {fmt(lastObs.observedAt)}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      {progress === "InProgress" ? (
+                        <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5 flex items-center gap-1 whitespace-nowrap">
+                          <Clock className="h-2.5 w-2.5" /> In Progress
+                        </span>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground border border-dashed rounded-full px-2 py-0.5 whitespace-nowrap">
+                          Not Started
+                        </span>
+                      )}
+                      {saBadge && (
+                        <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 whitespace-nowrap ${saBadge.cls}`}>
+                          {saBadge.label}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/my-competencies/self-assess/${comp.id}`)}
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border border-dashed rounded-lg px-2.5 py-1.5 transition-colors"
+                  >
+                    <ClipboardList className="h-3 w-3" />
+                    {latestSA ? "Re-assess" : "Self-assess"}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

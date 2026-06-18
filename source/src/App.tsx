@@ -24,6 +24,7 @@ import PeoplePage from "./pages/people";
 import AdminConsolePage from "./pages/admin-console";
 import ApiExplorerPage from "./pages/api-explorer";
 import BulkUserLoadPage from "./pages/bulk-user-load";
+import SelfAssessPage from "./pages/self-assess";
 import ObserveMobilePage from "./pages/mobile/observe-mobile";
 import SignOffMobilePage from "./pages/mobile/sign-off-mobile";
 import NotFoundPage from "./pages/not-found";
@@ -51,6 +52,7 @@ function App() {
                     <Route path="my-orientees/:nurseId/observe/:competencyId" element={<ObserveMobilePage />} />
                     <Route path="my-orientees/:nurseId/sign-off/:competencyId" element={<SignOffMobilePage />} />
                     <Route path="my-competencies" element={<MyCompetenciesPage />} />
+                    <Route path="my-competencies/self-assess/:competencyId" element={<SelfAssessPage />} />
                     <Route path="competencies" element={<CompetenciesPage />} />
                     <Route path="competencies/:id" element={<CompetencyDetailPage />} />
                     <Route path="competencies/:id/edit" element={<CompetencyEditPage />} />

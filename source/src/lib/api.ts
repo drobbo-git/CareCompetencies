@@ -2,6 +2,7 @@ import type {
   Unit, PersonRole, Person, PersonPrivilege,
   CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
+  SelfAssessment, SelfAssessmentConfidence, SelfAssessmentRating,
   ChangeRequest, AuditEvent, Login,
   ImportJobSummary, ImportJobDetail,
 } from '@/data/types';
@@ -108,6 +109,22 @@ export const api = {
   },
   createAchievement: (a: Omit<CompetencyAchievement, 'id' | 'achievedAt'> & { achievedAt?: string }) =>
     post<CompetencyAchievement>('/competency-achievements', a),
+
+  // self-assessments — person rates own confidence per step before working with a preceptor
+  getSelfAssessments: (opts?: { personId?: string; personIds?: string[] }) => {
+    let qs = '?pageSize=2000';
+    if (opts?.personId) qs += `&personId=${encodeURIComponent(opts.personId)}`;
+    else if (opts?.personIds?.length) qs += `&personIds=${opts.personIds.map(encodeURIComponent).join(',')}`;
+    return get<{ data: SelfAssessment[]; hasMore: boolean; page: number; pageSize: number }>(
+      `/self-assessments${qs}`,
+    ).then((r) => r.data);
+  },
+  createSelfAssessment: (sa: {
+    competencyId: string;
+    overallRating: SelfAssessmentRating;
+    notes?: string;
+    steps: Array<{ stepId: string; confidence: SelfAssessmentConfidence }>;
+  }) => post<SelfAssessment>('/self-assessments', sa),
 
   // change requests
   getChangeRequests:    () => get<ChangeRequest[]>('/change-requests'),

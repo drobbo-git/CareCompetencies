@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import MyCompetenciesMobile from "@/pages/mobile/my-competencies-mobile";
 import { HoverCard } from "radix-ui";
@@ -10,13 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StageBadge } from "@/components/common/StageBadge";
 import { StatusBadge } from "@/components/common/StatusBadge";
-import { STAGES, getStageDays, type Stage } from "@/data/types";
+import { STAGES, getStageDays, type Stage, type SelfAssessmentRating } from "@/data/types";
 import type { Competency, CompetencyCategory } from "@/data/types";
+
+const SA_BADGE: Record<SelfAssessmentRating, { label: string; cls: string }> = {
+  ReadyForAssessment: { label: "Ready",      cls: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+  NeedPractice:       { label: "Practice",   cls: "bg-amber-100 text-amber-800 border-amber-300" },
+  NeedInstruction:    { label: "Needs help", cls: "bg-rose-100 text-rose-800 border-rose-300" },
+};
 import { openCompetencySummaryWindow } from "@/lib/competency-summary";
 import { getOtherCompetencyAchievements } from "@/lib/other-competencies";
 import {
   CalendarClock, CheckCircle2, Clock, AlertTriangle,
-  FileText, ExternalLink,
+  FileText, ExternalLink, ClipboardList,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -42,10 +48,11 @@ export default function MyCompetenciesPage() {
   const isMobile = useIsMobile();
   if (isMobile) return <MyCompetenciesMobile />;
 
+  const navigate = useNavigate();
   const { currentLogin } = useAuth();
   const {
     persons, units, personRoles, categories, groups,
-    competencies, steps, assignments, achievements, observations,
+    competencies, steps, assignments, achievements, observations, selfAssessments,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
   } = useData();
 
@@ -543,23 +550,43 @@ export default function MyCompetenciesPage() {
               </p>
             ) : (
               <ul className="divide-y">
-                {upNext.map(({ comp, progress, lastObs }) => (
-                  <li key={comp.id} className="px-4 py-3 flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <Link
-                        to={`/competencies/${comp.id}`}
-                        className="text-sm font-medium hover:underline truncate block"
-                      >
-                        {comp.name}
-                      </Link>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        Due by {fmtDate(stageEndDate)}
-                        {lastObs && <> · last observed {fmtISO(lastObs.observedAt)}</>}
-                      </p>
-                    </div>
-                    <StatusBadge status={progress} size="sm" />
-                  </li>
-                ))}
+                {upNext.map(({ comp, progress, lastObs }) => {
+                  const latestSA = [...selfAssessments]
+                    .filter((sa) => sa.personId === person.id && sa.competencyId === comp.id)
+                    .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+                  return (
+                    <li key={comp.id} className="px-4 py-3 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <Link
+                          to={`/competencies/${comp.id}`}
+                          className="text-sm font-medium hover:underline truncate block"
+                        >
+                          {comp.name}
+                        </Link>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Due by {fmtDate(stageEndDate)}
+                          {lastObs && <> · last observed {fmtISO(lastObs.observedAt)}</>}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {latestSA && (
+                          <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 ${SA_BADGE[latestSA.overallRating].cls}`}>
+                            {SA_BADGE[latestSA.overallRating].label}
+                          </span>
+                        )}
+                        <StatusBadge status={progress} size="sm" />
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/my-competencies/self-assess/${comp.id}`)}
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                        >
+                          <ClipboardList className="h-3 w-3" />
+                          {latestSA ? "Re-assess" : "Self-assess"}
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </CardContent>

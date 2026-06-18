@@ -146,6 +146,25 @@ export interface CompetencyAchievement {
   earnedAtUnitId?: string;
 }
 
+export type SelfAssessmentConfidence = "HighConfidence" | "LowConfidence" | "NeverDone";
+export type SelfAssessmentRating = "ReadyForAssessment" | "NeedPractice" | "NeedInstruction";
+
+export interface SelfAssessmentStep {
+  stepId: string;
+  confidence: SelfAssessmentConfidence;
+}
+
+/** Staff person's self-rating of confidence per step + overall readiness. Append-only. */
+export interface SelfAssessment {
+  id: string;
+  personId: string;
+  competencyId: string;
+  overallRating: SelfAssessmentRating;
+  submittedAt: string;     // ISO timestamp
+  notes?: string;
+  steps: SelfAssessmentStep[];
+}
+
 // -----------------------------------------------------------------------------
 // Workflow
 // -----------------------------------------------------------------------------

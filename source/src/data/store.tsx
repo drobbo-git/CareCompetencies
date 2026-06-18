@@ -12,6 +12,7 @@ import type {
   Unit, PersonRole, Person, PersonPrivilege,
   CompetencyCategory, CompetencyGroup, Competency, CompetencyStep,
   CompetencyAssignment, StepObservation, CompetencyAchievement,
+  SelfAssessment, SelfAssessmentConfidence, SelfAssessmentRating,
   ChangeRequest, AuditEvent, Stage, ObservationRating, StageOrFully,
 } from "./types";
 import { STAGES, getStageDays } from "./types";
@@ -36,6 +37,7 @@ interface DataCtx {
   assignments: CompetencyAssignment[];
   observations: StepObservation[];
   achievements: CompetencyAchievement[];
+  selfAssessments: SelfAssessment[];
   changeRequests: ChangeRequest[];
   auditEvents: AuditEvent[];
 
@@ -48,6 +50,13 @@ interface DataCtx {
   ) => "Achieved" | "InProgress" | "NotStarted";
 
   // Mutations
+  recordSelfAssessment: (input: {
+    competencyId: string;
+    overallRating: SelfAssessmentRating;
+    notes?: string;
+    steps: Array<{ stepId: string; confidence: SelfAssessmentConfidence }>;
+  }) => Promise<SelfAssessment>;
+
   recordObservation: (input: Omit<StepObservation, "id" | "observedAt"> & {
     observedAt?: string;
   }) => Promise<StepObservation>;
@@ -120,8 +129,9 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   // at production volume and would exhaust the connection pool under concurrent
   // load (see api/loadtest/README.md). They rely on ensurePersonDataLoaded
   // for per-person work; pages showing aggregate stats are a known follow-up.
-  const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: () => api.getAchievements(), enabled: enabled && !isAdministrator, staleTime: 10_000 });
-  const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
+  const achievementsQ     = useQuery({ queryKey: ['achievements'],     queryFn: () => api.getAchievements(),     enabled: enabled && !isAdministrator, staleTime: 10_000 });
+  const selfAssessmentsQ  = useQuery({ queryKey: ['self-assessments'], queryFn: () => api.getSelfAssessments(), enabled, staleTime: 10_000 });
+  const changeRequestsQ   = useQuery({ queryKey: ['change-requests'],  queryFn: api.getChangeRequests,          enabled, staleTime: 10_000 });
   const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled: enabled && currentLogin?.systemRole === 'Administrator', staleTime: 10_000 });
 
   // -------------------------------------------------------------------------
@@ -158,6 +168,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     enabled: enabled && extraPersonIds.length > 0,
     staleTime: 10_000,
   });
+  const extraSelfAssessmentsQ = useQuery({
+    queryKey: ['self-assessments', 'extra', extraPersonIds],
+    queryFn: () => api.getSelfAssessments({ personIds: [...extraPersonIds] }),
+    enabled: enabled && extraPersonIds.length > 0,
+    staleTime: 10_000,
+  });
 
   const units       = unitsQ.data       ?? [];
   const personRoles = personRolesQ.data ?? [];
@@ -185,6 +201,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     const seen = new Set(base.map((a) => a.id));
     return [...base, ...extra.filter((a) => !seen.has(a.id))];
   }, [achievementsQ.data, extraAchievementsQ.data]);
+
+  const selfAssessments = useMemo(() => {
+    const base = selfAssessmentsQ.data ?? [];
+    const extra = extraSelfAssessmentsQ.data;
+    if (!extra || extra.length === 0) return base;
+    const seen = new Set(base.map((a) => a.id));
+    return [...base, ...extra.filter((a) => !seen.has(a.id))];
+  }, [selfAssessmentsQ.data, extraSelfAssessmentsQ.data]);
 
   // Show a loading screen while initial data fetches settle (authenticated only)
   const isPending = enabled && (
@@ -247,6 +271,17 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   // -------------------------------------------------------------------------
   // Mutations — activity
   // -------------------------------------------------------------------------
+  const recordSelfAssessment = useCallback(async (input: {
+    competencyId: string;
+    overallRating: SelfAssessmentRating;
+    notes?: string;
+    steps: Array<{ stepId: string; confidence: SelfAssessmentConfidence }>;
+  }): Promise<SelfAssessment> => {
+    const result = await api.createSelfAssessment(input);
+    await queryClient.invalidateQueries({ queryKey: ['self-assessments'] });
+    return result;
+  }, [queryClient]);
+
   const recordObservation = useCallback(async (
     input: Omit<StepObservation, "id" | "observedAt"> & { observedAt?: string },
   ): Promise<StepObservation> => {
@@ -372,10 +407,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
     units, personRoles, privileges, persons,
     categories: seedCategories,
     groups, competencies, steps,
-    assignments, observations, achievements,
+    assignments, observations, achievements, selfAssessments,
     changeRequests, auditEvents,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
-    recordObservation, recordAchievement,
+    recordSelfAssessment, recordObservation, recordAchievement,
     reassignPreceptor,
     upsertCompetency, upsertSteps,
     upsertGroup, removeGroup,

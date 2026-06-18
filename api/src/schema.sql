@@ -83,6 +83,29 @@ CREATE TABLE dbo.competency_assignments (
     CONSTRAINT ck_assignments_stage CHECK (stage IN ('Core', 'Orientation', 'Education'))
 );
 
+-- Self-assessments: staff person rates their own confidence per step before
+-- working with a preceptor. Append-only; no FK to persons/steps for the same
+-- reason as step_observations (see comment below).
+IF OBJECT_ID('dbo.self_assessments', 'U') IS NULL
+CREATE TABLE dbo.self_assessments (
+  id              NVARCHAR(64)  NOT NULL PRIMARY KEY,
+  person_id       NVARCHAR(36)  NOT NULL,
+  competency_id   NVARCHAR(64)  NOT NULL,
+  overall_rating  NVARCHAR(32)  NOT NULL
+    CONSTRAINT ck_sa_overall CHECK (overall_rating IN ('ReadyForAssessment', 'NeedPractice', 'NeedInstruction')),
+  submitted_at    DATETIME2(0)  NOT NULL DEFAULT GETUTCDATE(),
+  notes           NVARCHAR(MAX) NULL
+);
+
+IF OBJECT_ID('dbo.self_assessment_steps', 'U') IS NULL
+CREATE TABLE dbo.self_assessment_steps (
+  id            NVARCHAR(64)  NOT NULL PRIMARY KEY,
+  assessment_id NVARCHAR(64)  NOT NULL,
+  step_id       NVARCHAR(64)  NOT NULL,
+  confidence    NVARCHAR(32)  NOT NULL
+    CONSTRAINT ck_sas_confidence CHECK (confidence IN ('HighConfidence', 'LowConfidence', 'NeverDone'))
+);
+
 -- Clinical records use soft references (no FK constraints) to allow
 -- append-only writes without dependency on persons/steps existing in the same tx.
 IF OBJECT_ID('dbo.step_observations', 'U') IS NULL
@@ -172,6 +195,13 @@ IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_obs_person_comp' AND o
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_obs_person_date' AND object_id = OBJECT_ID('dbo.step_observations'))
     CREATE INDEX ix_obs_person_date ON dbo.step_observations(person_id, observed_at DESC);
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_sa_person_date' AND object_id = OBJECT_ID('dbo.self_assessments'))
+    CREATE INDEX ix_sa_person_date ON dbo.self_assessments(person_id, submitted_at DESC);
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_sa_person_comp' AND object_id = OBJECT_ID('dbo.self_assessments'))
+    CREATE INDEX ix_sa_person_comp ON dbo.self_assessments(person_id, competency_id);
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_sas_assessment' AND object_id = OBJECT_ID('dbo.self_assessment_steps'))
+    CREATE INDEX ix_sas_assessment ON dbo.self_assessment_steps(assessment_id);
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_ach_person' AND object_id = OBJECT_ID('dbo.competency_achievements'))
     CREATE INDEX ix_ach_person ON dbo.competency_achievements(person_id);

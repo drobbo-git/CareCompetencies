@@ -3,7 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
 import { StageBadge } from "@/components/common/StageBadge";
-import { STAGES, type Stage, type Competency } from "@/data/types";
+import { STAGES, type Stage, type Competency, type SelfAssessmentRating } from "@/data/types";
+
+const SA_BADGE: Record<SelfAssessmentRating, { label: string; cls: string }> = {
+  ReadyForAssessment: { label: "Ready",      cls: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+  NeedPractice:       { label: "Practice",   cls: "bg-amber-100 text-amber-800 border-amber-300" },
+  NeedInstruction:    { label: "Needs help", cls: "bg-rose-100 text-rose-800 border-rose-300" },
+};
 import { ArrowLeft, CheckCircle2, AlertTriangle, Stethoscope, ClipboardCheck, CalendarDays } from "lucide-react";
 
 function initials(name: string) {
@@ -44,7 +50,7 @@ export default function OrienteeDetailMobile() {
   const { currentLogin } = useAuth();
   const {
     persons, units,
-    competencies, assignments, achievements, observations,
+    competencies, assignments, achievements, observations, selfAssessments,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
     ensurePersonDataLoaded,
   } = useData();
@@ -241,6 +247,19 @@ export default function OrienteeDetailMobile() {
                       </span>
                     )}
                   </div>
+                  {progress !== "Achieved" && (() => {
+                    const latestSA = [...selfAssessments]
+                      .filter((sa) => sa.personId === person.id && sa.competencyId === comp.id)
+                      .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+                    return latestSA ? (
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <span className="text-[10px] text-muted-foreground">Self-assessed:</span>
+                        <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 ${SA_BADGE[latestSA.overallRating].cls}`}>
+                          {SA_BADGE[latestSA.overallRating].label}
+                        </span>
+                      </div>
+                    ) : null;
+                  })()}
                   {progress !== "Achieved" && (
                     canTeach(comp.id) ? (
                       <ActionButtons nurseId={person.id} competencyId={comp.id} />

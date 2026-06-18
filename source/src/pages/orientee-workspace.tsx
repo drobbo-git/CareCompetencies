@@ -9,8 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StageBadge } from "@/components/common/StageBadge";
 import { StatusBadge } from "@/components/common/StatusBadge";
-import { STAGES, getStageDays, type Stage } from "@/data/types";
+import { STAGES, getStageDays, type Stage, type SelfAssessmentRating } from "@/data/types";
 import type { Competency, CompetencyCategory } from "@/data/types";
+
+const SA_BADGE: Record<SelfAssessmentRating, { label: string; cls: string }> = {
+  ReadyForAssessment: { label: "Ready",      cls: "bg-emerald-100 text-emerald-800 border-emerald-300" },
+  NeedPractice:       { label: "Practice",   cls: "bg-amber-100 text-amber-800 border-amber-300" },
+  NeedInstruction:    { label: "Needs help", cls: "bg-rose-100 text-rose-800 border-rose-300" },
+};
 import { getOtherCompetencyAchievements } from "@/lib/other-competencies";
 import {
   CalendarClock, CheckCircle2, Clock, AlertTriangle,
@@ -71,7 +77,7 @@ export default function OrienteeWorkspacePage() {
   const { currentLogin } = useAuth();
   const {
     persons, units, categories,
-    competencies, assignments, achievements, observations,
+    competencies, assignments, achievements, observations, selfAssessments,
     getPersonStage, getDaysSinceStart, getCompetencyProgress,
     ensurePersonDataLoaded,
   } = useData();
@@ -552,32 +558,42 @@ export default function OrienteeWorkspacePage() {
               </p>
             ) : (
               <ul className="divide-y">
-                {upNext.map(({ comp, progress, lastObs }) => (
-                  <li key={comp.id} className="px-4 py-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <Link to={`/competencies/${comp.id}`} className="text-sm font-medium hover:underline truncate block">
-                          {comp.name}
-                        </Link>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          Due by {fmtDate(stageEndDate)}
-                          {lastObs && <> · last observed {fmtISO(lastObs.observedAt)}</>}
-                        </p>
+                {upNext.map(({ comp, progress, lastObs }) => {
+                  const latestSA = [...selfAssessments]
+                    .filter((sa) => sa.personId === person.id && sa.competencyId === comp.id)
+                    .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+                  return (
+                    <li key={comp.id} className="px-4 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <Link to={`/competencies/${comp.id}`} className="text-sm font-medium hover:underline truncate block">
+                            {comp.name}
+                          </Link>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Due by {fmtDate(stageEndDate)}
+                            {lastObs && <> · last observed {fmtISO(lastObs.observedAt)}</>}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          {latestSA && (
+                            <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 ${SA_BADGE[latestSA.overallRating].cls}`}>
+                              {SA_BADGE[latestSA.overallRating].label}
+                            </span>
+                          )}
+                          <StatusBadge status={progress} size="sm" />
+                          {canTeach(comp.id) ? (
+                            <>
+                              <ObserveButton personId={person.id} competencyId={comp.id} />
+                              <SignOffButton personId={person.id} competencyId={comp.id} />
+                            </>
+                          ) : (
+                            <span className="text-[11px] text-muted-foreground">Outside your skill set</span>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <StatusBadge status={progress} size="sm" />
-                        {canTeach(comp.id) ? (
-                          <>
-                            <ObserveButton personId={person.id} competencyId={comp.id} />
-                            <SignOffButton personId={person.id} competencyId={comp.id} />
-                          </>
-                        ) : (
-                          <span className="text-[11px] text-muted-foreground">Outside your skill set</span>
-                        )}
-                      </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </CardContent>

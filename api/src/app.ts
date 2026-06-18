@@ -12,6 +12,7 @@ import changeRequestsRouter from './routes/change-requests';
 import auditRouter from './routes/audit';
 import integrationRouter from './routes/integration';
 import importsRouter from './routes/imports';
+import selfAssessmentsRouter from './routes/self-assessments';
 
 export function createApp() {
   const app = express();
@@ -36,6 +37,7 @@ export function createApp() {
   app.use('/audit-events', auditRouter);
   app.use('/integration', integrationRouter);
   app.use('/imports', importsRouter);
+  app.use('/self-assessments', selfAssessmentsRouter);
 
   // Global error handler
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
