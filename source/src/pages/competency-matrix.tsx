@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -57,11 +57,21 @@ export default function CompetencyMatrixPage() {
   const { currentLogin } = useAuth();
   const {
     persons, units, competencies, groups, assignments, achievements, observations,
-    getPersonStage, personRoles,
+    getPersonStage, personRoles, ensurePersonsDataLoaded,
   } = useData();
 
   const unitId = currentLogin?.unitIds?.[0];
   const unit = unitId ? units.find((u) => u.id === unitId) : undefined;
+
+  // Lazily load observations for all persons on this unit (not fetched globally
+  // for UnitLeaders — see store.tsx). Idempotent once loaded.
+  const unitPersonIds = useMemo(
+    () => (unitId ? persons.filter((p) => p.unitId === unitId).map((p) => p.id) : []),
+    [unitId, persons],
+  );
+  useEffect(() => {
+    if (unitPersonIds.length > 0) ensurePersonsDataLoaded(unitPersonIds);
+  }, [unitPersonIds, ensurePersonsDataLoaded]);
 
   // ── Role selector ─────────────────────────────────────────────────────────
   const availableRoles = useMemo(() => {

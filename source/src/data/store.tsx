@@ -87,6 +87,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   const { currentLogin } = useAuth();
   const queryClient = useQueryClient();
   const enabled = !!currentLogin;
+  const isUnitLeader = currentLogin?.systemRole === 'UnitLeader';
 
   // -------------------------------------------------------------------------
   // Queries — only run when authenticated
@@ -107,7 +108,13 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   // getCompetencyProgress and every existing .filter(a => a.personId===X)
   // call site keep working unchanged, just against a dynamically-grown,
   // still-bounded set instead of the full table.
-  const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: () => api.getObservations(), enabled, staleTime: 10_000 });
+  //
+  // UnitLeaders skip this query entirely — the unit-scoped default returns
+  // ~5k raw rows per unit, which at production concurrency exhausts the
+  // connection pool (see api/loadtest/README.md). Their dashboard uses
+  // server-side aggregation endpoints instead; other pages call
+  // ensurePersonsDataLoaded to load observations lazily per person.
+  const observationsQ   = useQuery({ queryKey: ['observations'],    queryFn: () => api.getObservations(), enabled: enabled && !isUnitLeader, staleTime: 10_000 });
   const achievementsQ   = useQuery({ queryKey: ['achievements'],    queryFn: () => api.getAchievements(), enabled, staleTime: 10_000 });
   const changeRequestsQ = useQuery({ queryKey: ['change-requests'], queryFn: api.getChangeRequests, enabled, staleTime: 10_000 });
   const auditQ          = useQuery({ queryKey: ['audit-events'],    queryFn: api.getAuditEvents,    enabled: enabled && currentLogin?.systemRole === 'Administrator', staleTime: 10_000 });

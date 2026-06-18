@@ -1,5 +1,7 @@
 import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
+import { api } from "@/lib/api";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer,
@@ -77,8 +79,19 @@ export default function UnitLeaderDashboardPage() {
   const { currentLogin } = useAuth();
   const {
     units, persons, personRoles, privileges, assignments,
-    observations, achievements, getPersonStage, getDaysSinceStart,
+    achievements, getPersonStage, getDaysSinceStart,
   } = useData();
+
+  const obsWeeklySummaryQ = useQuery({
+    queryKey: ['obs-weekly-summary'],
+    queryFn: api.getObsWeeklySummary,
+    staleTime: 60_000,
+  });
+  const obsLastActivityQ = useQuery({
+    queryKey: ['obs-last-activity'],
+    queryFn: api.getObsLastActivity,
+    staleTime: 60_000,
+  });
 
   const unit = useMemo(
     () => currentLogin?.unitIds?.[0] ? units.find((u) => u.id === currentLogin.unitIds![0]) : undefined,
@@ -178,26 +191,20 @@ export default function UnitLeaderDashboardPage() {
     const weeks = lastNWeekStarts(12);
     const weekSet = new Set(weeks);
 
-    const obsByWeek = new Map<string, { sat: number; unsat: number }>();
+    // Obs counts come from the aggregation endpoint — no raw observation rows
+    const obsSummaryByWeek = new Map(
+      (obsWeeklySummaryQ.data ?? []).map((r) => [r.week, { sat: r.sat, unsat: r.unsat }]),
+    );
+
     const achByWeek = new Map<string, number>();
     const stageCompByWeek = new Map<string, Record<Stage, number>>();
 
     for (const w of weeks) {
-      obsByWeek.set(w, { sat: 0, unsat: 0 });
       achByWeek.set(w, 0);
       stageCompByWeek.set(w, { Core: 0, Orientation: 0, Education: 0 });
     }
 
-    // Step observations for unit orientees
     const unitPersonIds = new Set(unitPersons.map((p) => p.id));
-    for (const o of observations) {
-      if (!unitPersonIds.has(o.personId)) continue;
-      const w = mondayOf(o.observedAt);
-      if (!weekSet.has(w)) continue;
-      const bucket = obsByWeek.get(w)!;
-      if (o.rating === "Satisfactory") bucket.sat++;
-      else if (o.rating === "Unsatisfactory") bucket.unsat++;
-    }
 
     // Achievements
     for (const a of achievements) {
@@ -229,14 +236,14 @@ export default function UnitLeaderDashboardPage() {
 
     return weeks.map((w) => ({
       week: shortDate(w),
-      satisfactory: obsByWeek.get(w)!.sat,
-      unsatisfactory: obsByWeek.get(w)!.unsat,
+      satisfactory: obsSummaryByWeek.get(w)?.sat ?? 0,
+      unsatisfactory: obsSummaryByWeek.get(w)?.unsat ?? 0,
       achievements: achByWeek.get(w) ?? 0,
       Core:        stageCompByWeek.get(w)!.Core,
       Orientation: stageCompByWeek.get(w)!.Orientation,
       Education:   stageCompByWeek.get(w)!.Education,
     }));
-  }, [unit, unitPersons, observations, achievements, assignments]);
+  }, [unit, unitPersons, obsWeeklySummaryQ.data, achievements, assignments]);
 
   // ── Preceptor load ─────────────────────────────────────────────────────────
   const preceptorLoad = useMemo(() => {
@@ -275,10 +282,11 @@ export default function UnitLeaderDashboardPage() {
     if (!unit) return [];
     const cutoff = new Date(TODAY);
     cutoff.setDate(cutoff.getDate() - 14);
+    const lastObsByPerson = new Map(
+      (obsLastActivityQ.data ?? []).map((r) => [r.personId, r.lastObservedAt]),
+    );
     return orientees.filter((p) => {
-      const lastObs = observations
-        .filter((o) => o.personId === p.id)
-        .reduce<string | null>((max, o) => (!max || o.observedAt > max ? o.observedAt : max), null);
+      const lastObs = lastObsByPerson.get(p.id) ?? null;
       const lastAch = achievements
         .filter((a) => a.personId === p.id)
         .reduce<string | null>((max, a) => (!max || a.achievedAt > max ? a.achievedAt : max), null);
@@ -287,7 +295,7 @@ export default function UnitLeaderDashboardPage() {
       );
       return !lastActivity || new Date(lastActivity) < cutoff;
     });
-  }, [unit, orientees, observations, achievements]);
+  }, [unit, orientees, obsLastActivityQ.data, achievements]);
 
   // ── Guard ─────────────────────────────────────────────────────────────────
   if (!currentLogin) return null;

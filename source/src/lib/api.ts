@@ -81,10 +81,19 @@ export const api = {
   // "my own rows" for Preceptors (see scopeFilter.ts) since the unscoped
   // table is ~1.5M rows at production volume; pass personId/personIds to
   // fetch a specific learner's (or a roster's) observations instead.
+  // UnitLeaders use the aggregation endpoints below instead of raw rows.
   getObservations:   (opts?: { personId?: string; personIds?: string[] }) =>
     get<StepObservation[]>(`/step-observations${personScopeQuery(opts)}`),
   createObservation: (o: Omit<StepObservation, 'id' | 'observedAt'> & { observedAt?: string }) =>
     post<StepObservation>('/step-observations', o),
+
+  // Aggregated observation data — tiny payloads for UnitLeader dashboard widgets.
+  // weekly-summary: 0–12 rows (one per week) instead of ~5k raw observation rows.
+  // last-activity: one row per person who has any observations in scope.
+  getObsWeeklySummary: () =>
+    get<{ week: string; sat: number; unsat: number }[]>('/step-observations/weekly-summary'),
+  getObsLastActivity: () =>
+    get<{ personId: string; lastObservedAt: string }[]>('/step-observations/last-activity'),
 
   // achievements — same personId/personIds scoping as observations above
   // (the table is ~500k rows at production volume).

@@ -18,6 +18,59 @@ const observationSchema = z.object({
   notes: z.string().max(5000).optional(),
 });
 
+// Returns weekly sat/unsat observation counts for the last 12 weeks, scoped to
+// the caller's role (unit for UnitLeader, own rows for Preceptor/Person, all for Admin).
+// Result is 0–12 rows — no raw observation rows are sent to the client.
+router.get('/weekly-summary', requireAuth, async (req, res, next) => {
+  try {
+    const { where, params } = personScopeFilter(req.auth!, 'person_id');
+    const andOrWhere = where ? `${where}\n  AND` : 'WHERE';
+    const { rows } = await pool.query(
+      `SELECT
+        CONVERT(VARCHAR(10),
+          DATEADD(DAY,
+            -(( DATEPART(WEEKDAY, CONVERT(DATE, observed_at)) + @@DATEFIRST - 2) % 7),
+            CONVERT(DATE, observed_at)
+          ), 120
+        ) AS week,
+        COUNT(CASE WHEN rating = 'Satisfactory'   THEN 1 END) AS sat,
+        COUNT(CASE WHEN rating = 'Unsatisfactory' THEN 1 END) AS unsat
+       FROM step_observations
+       ${andOrWhere} observed_at >= DATEADD(WEEK, -12, GETDATE())
+       GROUP BY DATEADD(DAY,
+           -(( DATEPART(WEEKDAY, CONVERT(DATE, observed_at)) + @@DATEFIRST - 2) % 7),
+           CONVERT(DATE, observed_at)
+         )
+       ORDER BY week`,
+      params,
+    );
+    res.json(rows.map((r) => ({
+      week: r.week as string,
+      sat: Number(r.sat),
+      unsat: Number(r.unsat),
+    })));
+  } catch (err) { next(err); }
+});
+
+// Returns the most recent observation timestamp per person, scoped to the caller's role.
+// Used by the UnitLeader dashboard to identify stalled learners without fetching raw rows.
+router.get('/last-activity', requireAuth, async (req, res, next) => {
+  try {
+    const { where, params } = personScopeFilter(req.auth!, 'person_id');
+    const { rows } = await pool.query(
+      `SELECT person_id, MAX(observed_at) AS last_observed_at
+       FROM step_observations
+       ${where}
+       GROUP BY person_id`,
+      params,
+    );
+    res.json(rows.map((r) => ({
+      personId: r.person_id as string,
+      lastObservedAt: (r.last_observed_at as Date).toISOString(),
+    })));
+  } catch (err) { next(err); }
+});
+
 router.get('/', requireAuth, async (req, res, next) => {
   try {
     const { where, params } = personScopeFilter(req.auth!, 'person_id', parsePersonScopeOpts(req.query));

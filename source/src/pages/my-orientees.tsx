@@ -77,9 +77,9 @@ export default function MyOrienteesPage() {
   }, [currentLogin, isUnitLeader, persons]);
 
   // achievements/observations are scoped server-side (see scopeFilter.ts) —
-  // for a Preceptor's small paired roster, explicitly load their data.
-  // (UnitLeader's roster is already covered by the unit-scoped global
-  // query, so this is a harmless no-op for them.)
+  // for Preceptors this loads their paired learners' data; for UnitLeaders
+  // this is the primary way observations get loaded (no global fetch —
+  // see store.tsx isUnitLeader guard).
   useEffect(() => {
     if (orientees.length > 0) ensurePersonsDataLoaded(orientees.map((n) => n.id));
   }, [orientees, ensurePersonsDataLoaded]);

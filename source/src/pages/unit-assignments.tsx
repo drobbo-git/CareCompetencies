@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/data/auth";
 import { useData } from "@/data/store";
@@ -33,7 +33,7 @@ export default function UnitAssignmentsPage() {
   const {
     units, persons, privileges, observations, achievements,
     getPersonStage, getDaysSinceStart,
-    reassignPreceptor, logAudit,
+    reassignPreceptor, logAudit, ensurePersonsDataLoaded,
   } = useData();
 
   const [pending, setPending] = useState<PendingChange | null>(null);
@@ -62,6 +62,12 @@ export default function UnitAssignmentsPage() {
         return lastName(a.name).localeCompare(lastName(b.name));
       });
   }, [unit, persons, getPersonStage]);
+
+  // Lazily load observations for all learners on this unit (observations are
+  // not fetched globally for UnitLeaders — see store.tsx).
+  useEffect(() => {
+    if (learners.length > 0) ensurePersonsDataLoaded(learners.map((p) => p.id));
+  }, [learners, ensurePersonsDataLoaded]);
 
   // Persons with Preceptor privilege on this unit
   const unitPreceptors = useMemo(() => {
