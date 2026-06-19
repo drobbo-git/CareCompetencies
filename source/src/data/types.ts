@@ -24,7 +24,7 @@ export const STAGES: Stage[] = ["Core", "Orientation", "Education"];
 export const STAGE_DAYS: Record<Stage, number> = {
   Core: 30,
   Orientation: 60,
-  Education: 90,
+  Education: 275,
 };
 
 // -----------------------------------------------------------------------------

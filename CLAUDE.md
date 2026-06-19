@@ -23,12 +23,12 @@ next major work item. See "Current Status" below.
   `source/`. Fetches all data from the Express API via TanStack Query. The API base URL
   is set in `source/.env.local` (`VITE_API_BASE_URL=http://localhost:3001` for local dev).
 - **Backend / API:** Node.js + Express + TypeScript. JWT-based auth (dev stub — shared
-  password, not Entra). Lives in `api/`. 9 route files covering all entities.
+  password; production will use Duke OIT OIDC / Shibboleth). Lives in `api/`. 9 route files covering all entities.
 - **Database:** Azure SQL Server. Operational schema at `api/src/schema.sql`.
   ETL/warehouse scripts at `etl/`.
 - **Authentication:** Currently a stub — any username in the DB + the `DEV_PASSWORD`
-  environment variable grants access; a 12-hour JWT is issued. Planned: Entra ID / MSAL.
-- **Integrations:** None currently wired. Planned: PeopleSoft/LDAP nightly HR sync for
+  environment variable grants access; a 12-hour JWT is issued. Planned: Duke OIT OIDC / Shibboleth (see `doc/adr/002-authentication-shibboleth.md`).
+- **Integrations:** None currently wired. Planned: SAP/LDAP nightly HR sync for
   person data.
 - **Deployment:** API containerized via `Dockerfile.api`, deployed via `railway.toml`.
   Frontend is a static Vite build, deployable to Azure Static Web Apps, IIS, or any CDN.
@@ -41,7 +41,7 @@ dev; the Railway dev/prod deployments use their own environment variables for th
 ## Domain Concepts You Need to Know
 
 - **Stage** — One of three sequential windows in an orientee's first year: Core (0–30
-  days), Orientation (30–90 days), Education (90–180 days). Duration defaults are in
+  days), Orientation (30–90 days), Education (90–365 days). Duration defaults are in
   `STAGE_DAYS` in `source/src/data/types.ts`; some units override them via
   `Unit.stageDays`. Always read via `getStageDays(unit)`, not `STAGE_DAYS` directly.
   Stage applies to *assignments*, not people — `CompetencyAssignment` rows are keyed to
@@ -199,7 +199,7 @@ CareCompetencies/
   CHECK constraint that only allows `Core/Orientation/Education`.
 
 - **`/auth/logins` is a public (unauthenticated) endpoint** that lists all persons. This
-  is intentional for the dev-stub login dropdown. It must be gated when real Entra auth
+  is intentional for the dev-stub login. It must be removed or gated when Duke OIT OIDC
   is wired.
 
 - **E2E tests run against the in-memory frontend, not the API.** `playwright.config.ts`
@@ -295,9 +295,9 @@ in-memory frontend only; the API is not involved.
   the old in-memory approach.
 - **Mobile views:** Preceptor and RN mobile-optimized views are fully designed (see
   `plan.md`) but not yet built.
-- **Authentication:** Dev stub only. Real Entra ID / MSAL integration is planned;
-  see `doc/adr/` for the auth decision record.
-- **HR sync:** PeopleSoft/LDAP nightly sync planned but not built. Person data is
+- **Authentication:** Dev stub only. Real Duke OIT OIDC / Shibboleth integration is planned;
+  see `doc/adr/002-authentication-shibboleth.md`.
+- **HR sync:** SAP/LDAP nightly sync planned but not built. Person data is
   currently seeded manually.
 
 ## Who Owns What (by role, not name)
