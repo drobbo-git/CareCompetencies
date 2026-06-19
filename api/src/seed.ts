@@ -84,7 +84,7 @@ function toPerson(n: any) {
     role_id: n.roleId ?? DEFAULT_ROLE_ID,
     primary_preceptor_id: n.primaryPreceptorId ?? null,
     start_date: n.startDate ?? n.hireDate ?? null,
-    stage_override: n.stage ?? n.stageOverride ?? null,
+    stage_override: (() => { const s = n.stage ?? n.stageOverride ?? null; return (s === 'FullyOriented' || s === 'Nonclinical') ? s : null; })(),
     duke_netid: n.dukeNetid ?? null,
     job_code: n.jobCode ?? null,
   };

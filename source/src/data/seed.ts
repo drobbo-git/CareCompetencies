@@ -106,7 +106,7 @@ function toPerson(n: any): Person {
     roleId: n.roleId ?? DEFAULT_ROLE_ID,
     primaryPreceptorId: n.primaryPreceptorId ?? undefined,
     startDate: n.startDate ?? n.hireDate ?? "",
-    stageOverride: (n.stage ?? n.stageOverride ?? undefined) as StageOrFully | undefined,
+    stageOverride: (() => { const s = n.stage ?? n.stageOverride ?? undefined; return (s === 'FullyOriented' || s === 'Nonclinical') ? s as StageOrFully : undefined; })(),
     dukeNetid: n.dukeNetid ?? undefined,
     jobCode: n.jobCode ?? undefined,
   };
