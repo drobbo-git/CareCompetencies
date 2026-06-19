@@ -320,12 +320,15 @@ export default function OrienteeWorkspacePage() {
               <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${overallPct}%` }} />
             </div>
             <div className="space-y-2">
-              {perStage.map((ps) => {
+              {perStage.map((ps, sIdx) => {
                 const pct = ps.total > 0 ? Math.round((ps.achieved / ps.total) * 100) : 0;
+                const isPrior = sIdx < currentStageIdx;
+                const isComplete = isPrior && ps.total > 0 && ps.achieved === ps.total;
+                const isIncomplete = isPrior && ps.total > 0 && ps.achieved < ps.total;
                 return (
                   <HoverCard.Root key={ps.stage} openDelay={150} closeDelay={100}>
                     <HoverCard.Trigger asChild>
-                      <button className="w-full text-left cursor-default rounded-md px-1.5 py-1 hover:bg-accent transition-colors -mx-1.5">
+                      <button className={`w-full text-left cursor-default rounded-md px-1.5 py-1 transition-colors -mx-1.5 ${isComplete ? "bg-emerald-50 hover:bg-emerald-100" : isIncomplete ? "bg-amber-50 hover:bg-amber-100" : "hover:bg-accent"}`}>
                         <div className="flex items-center justify-between text-xs mb-1">
                           <div className="flex items-center gap-1.5">
                             <StageBadge stage={ps.stage} size="sm" />
@@ -337,7 +340,7 @@ export default function OrienteeWorkspacePage() {
                           </span>
                         </div>
                         <div className="h-1 bg-muted rounded-full overflow-hidden">
-                          <div className="h-full bg-primary rounded-full" style={{ width: `${pct}%` }} />
+                          <div className={`h-full rounded-full ${isComplete ? "bg-emerald-500" : isIncomplete ? "bg-amber-500" : "bg-primary"}`} style={{ width: `${pct}%` }} />
                         </div>
                       </button>
                     </HoverCard.Trigger>
