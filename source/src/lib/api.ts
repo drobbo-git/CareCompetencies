@@ -45,6 +45,9 @@ const patch = <T>(path: string, body: unknown) => request<T>('PATCH', path, body
 const del = (path: string) => request<void>('DELETE', path);
 
 export const api = {
+  // config — public, no token required
+  getConfig: () => get<{ sessionTimeoutMinutes: number }>('/config'),
+
   // auth — public endpoints (no token required)
   login: (username: string, password: string) => post<{ token: string; login: Login }>('/auth/login', { username, password }),
 

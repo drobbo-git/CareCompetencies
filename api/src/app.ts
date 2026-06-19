@@ -13,6 +13,7 @@ import auditRouter from './routes/audit';
 import integrationRouter from './routes/integration';
 import importsRouter from './routes/imports';
 import selfAssessmentsRouter from './routes/self-assessments';
+import configRouter from './routes/config';
 
 export function createApp() {
   const app = express();
@@ -25,6 +26,7 @@ export function createApp() {
   app.use(express.json());
 
   app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+  app.use('/config', configRouter);
 
   app.use('/auth', authRouter);
   app.use('/', referenceRouter);              // /units, /person-roles, /person-privileges
