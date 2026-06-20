@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StageBadge } from "@/components/common/StageBadge";
-import { StatusBadge } from "@/components/common/StatusBadge";
 import { STAGES, getStageDays, type Stage, type SelfAssessmentRating } from "@/data/types";
 import type { Competency, CompetencyCategory } from "@/data/types";
 
@@ -22,7 +21,7 @@ import { openCompetencySummaryWindow } from "@/lib/competency-summary";
 import { getOtherCompetencyAchievements } from "@/lib/other-competencies";
 import {
   CalendarClock, CheckCircle2, Clock, AlertTriangle,
-  FileText, ExternalLink, ClipboardList,
+  FileText, ClipboardList,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -105,35 +104,42 @@ export default function MyCompetenciesPage() {
     );
   }, [assignments, person]);
 
+  const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
+    ? STAGES.length
+    : STAGES.indexOf(stage as Stage);
+
   // Per-stage rollup (includes competency detail for hover popover)
   const perStage = useMemo(() => {
     if (!person) return [];
-    return STAGES.map((s) => {
+    return STAGES.map((s, sIdx) => {
+      const isOverdue = sIdx < currentStageIdx;
       const inStage = myAssignments.filter((a) => a.stage === s);
       const withComp = inStage
         .map((a) => {
           const comp = competencies.find((c) => c.id === a.competencyId);
           const cat = comp ? categories.find((c) => c.id === comp.categoryId) : undefined;
           const progress = getCompetencyProgress(person.id, a.competencyId);
-          return comp ? { comp, cat, progress } : null;
+          const overdue = isOverdue && progress !== "Achieved";
+          return comp ? { comp, cat, progress, overdue } : null;
         })
-        .filter((x): x is { comp: Competency; cat: CompetencyCategory | undefined; progress: "Achieved" | "InProgress" | "NotStarted" } => !!x)
-        .sort((a, b) => a.comp.name.localeCompare(b.comp.name));
+        .filter((x): x is { comp: Competency; cat: CompetencyCategory | undefined; progress: "Achieved" | "InProgress" | "NotStarted"; overdue: boolean } => !!x)
+        .sort((a, b) => {
+          if (a.overdue !== b.overdue) return a.overdue ? -1 : 1;
+          if (a.progress === "Achieved" && b.progress !== "Achieved") return 1;
+          if (a.progress !== "Achieved" && b.progress === "Achieved") return -1;
+          return a.comp.name.localeCompare(b.comp.name);
+        });
       const achieved = withComp.filter((x) => x.progress === "Achieved");
       const remaining = withComp.filter((x) => x.progress !== "Achieved");
-      return { stage: s, total: inStage.length, achieved: achieved.length, inProgress: remaining.filter(x => x.progress === "InProgress").length, achievedItems: achieved, remainingItems: remaining };
+      return { stage: s, total: inStage.length, achieved: achieved.length, inProgress: remaining.filter(x => x.progress === "InProgress").length, achievedItems: achieved, remainingItems: remaining, items: withComp };
     });
-  }, [myAssignments, person, competencies, categories, getCompetencyProgress]);
+  }, [myAssignments, person, competencies, categories, getCompetencyProgress, currentStageIdx]);
 
   const totalAchieved = perStage.reduce((s, r) => s + r.achieved, 0);
   const totalRequired = myAssignments.length;
   const overallPct = totalRequired === 0 ? 0 : Math.round((totalAchieved / totalRequired) * 100);
 
   // Overdue: prior-stage competencies not yet achieved
-  const currentStageIdx = stage === "FullyOriented" || stage === "Nonclinical"
-    ? STAGES.length
-    : STAGES.indexOf(stage as Stage);
-
   const overdueItems = useMemo(() => {
     if (!person || currentStageIdx <= 0) return [];
     const priorStages = STAGES.slice(0, currentStageIdx);
@@ -169,42 +175,6 @@ export default function MyCompetenciesPage() {
     [person, achievements, assignments, competencies, units],
   );
 
-  // Up Next: not yet achieved in current stage, in-progress first
-  const upNext = useMemo(() => {
-    if (!person || stage === "FullyOriented" || stage === "Nonclinical") return [];
-    const s = stage as Stage;
-    return myAssignments
-      .filter((a) => a.stage === s && getCompetencyProgress(person.id, a.competencyId) !== "Achieved")
-      .map((a) => {
-        const comp = competencies.find((c) => c.id === a.competencyId);
-        if (!comp) return null;
-        const progress = getCompetencyProgress(person.id, a.competencyId);
-        const lastObs = [...observations]
-          .filter((o) => o.personId === person.id && o.competencyId === a.competencyId)
-          .sort((x, y) => y.observedAt.localeCompare(x.observedAt))[0];
-        return { comp, progress, lastObs };
-      })
-      .filter((x): x is NonNullable<typeof x> => !!x)
-      .sort((a, b) => {
-        if (a.progress !== b.progress) return a.progress === "InProgress" ? -1 : 1;
-        return a.comp.name.localeCompare(b.comp.name);
-      });
-  }, [myAssignments, person, stage, competencies, observations, getCompetencyProgress]);
-
-  // Recent activity: latest achievements for this person
-  const recentActivity = useMemo(() => {
-    if (!person) return [];
-    return [...achievements]
-      .filter((a) => a.personId === person.id)
-      .sort((a, b) => b.achievedAt.localeCompare(a.achievedAt))
-      .slice(0, 6)
-      .map((ach) => ({
-        ach,
-        comp: competencies.find((c) => c.id === ach.competencyId),
-        observer: persons.find((n) => n.id === ach.observerId),
-      }))
-      .filter((x) => !!x.comp);
-  }, [achievements, person, competencies, persons]);
 
   // Competency Summary window
   function handleSummary() {
@@ -529,118 +499,94 @@ export default function MyCompetenciesPage() {
 
       </div>
 
-      {/* ── Up Next + Recent Activity ───────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-
-        {/* Up Next */}
-        <Card className="lg:col-span-3">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center justify-between">
-              <span>Up Next</span>
-              {stage !== "FullyOriented" && stage !== "Nonclinical" && (
-                <span className="text-xs font-normal text-muted-foreground">
-                  {stage} stage · {upNext.length} item{upNext.length !== 1 ? "s" : ""}
-                </span>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            {upNext.length === 0 ? (
-              <p className="px-4 pb-4 text-sm text-muted-foreground">
-                {stage === "FullyOriented"
-                  ? "All competencies achieved — in continuous learning!"
-                  : "All current-stage competencies achieved."}
-              </p>
-            ) : (
-              <ul className="divide-y">
-                {upNext.map(({ comp, progress, lastObs }) => {
-                  const latestSA = [...selfAssessments]
-                    .filter((sa) => sa.personId === person.id && sa.competencyId === comp.id)
-                    .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
-                  return (
-                    <li key={comp.id} className="px-4 py-3 flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <Link
-                          to={`/competencies/${comp.id}`}
-                          className="text-sm font-medium hover:underline truncate block"
-                        >
-                          {comp.name}
-                        </Link>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          Due by {fmtDate(stageEndDate)}
-                          {lastObs && <> · last observed {fmtISO(lastObs.observedAt)}</>}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        {latestSA && (
-                          <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 ${SA_BADGE[latestSA.overallRating].cls}`}>
-                            {SA_BADGE[latestSA.overallRating].label}
-                          </span>
-                        )}
-                        <StatusBadge status={progress} size="sm" />
-                        <button
-                          type="button"
-                          onClick={() => navigate(`/my-competencies/self-assess/${comp.id}`)}
-                          className="flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                        >
-                          <ClipboardList className="h-3 w-3" />
-                          {latestSA ? "Re-assess" : "Self-assess"}
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Recent Activity */}
-        <Card className="lg:col-span-2">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm flex items-center justify-between">
-              <span>Recent Activity</span>
-              <Link
-                to="/audit"
-                className="text-xs font-normal text-primary hover:underline flex items-center gap-0.5"
-              >
-                Audit trail <ExternalLink className="h-3 w-3 ml-0.5" />
-              </Link>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            {recentActivity.length === 0 ? (
-              <p className="px-4 pb-4 text-sm text-muted-foreground">
-                No achievements recorded yet.
-              </p>
-            ) : (
-              <ul className="divide-y">
-                {recentActivity.map(({ ach, comp, observer }) => (
-                  <li key={ach.id} className="px-4 py-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <Link
-                          to={`/competencies/${comp!.id}`}
-                          className="text-sm font-medium hover:underline truncate block"
-                        >
-                          {comp!.name}
-                        </Link>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          Signed off by {observer?.name ?? "—"} · {fmtISO(ach.achievedAt)}
-                        </p>
-                      </div>
-                      <Badge className="shrink-0 text-[10px] bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-100">
-                        Achieved
-                      </Badge>
+      {/* ── Required Competencies ────────────────────────────────────── */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm">Required Competencies</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          {perStage.every((ps) => ps.total === 0) ? (
+            <p className="px-4 pb-4 text-sm text-muted-foreground">No competency assignments found.</p>
+          ) : (
+            <div>
+              {perStage.map(({ stage: s, total, achieved, items }, sIdx) => {
+                if (total === 0) return null;
+                const isCurrentStage = s === stage;
+                const isPriorStage   = sIdx < currentStageIdx;
+                const overdueCount   = items.filter((i) => i.overdue).length;
+                return (
+                  <div key={s}>
+                    <div className={`flex items-center gap-2 px-4 py-2 border-t first:border-t-0 ${isPriorStage && overdueCount > 0 ? "bg-red-50" : "bg-muted/40"}`}>
+                      <StageBadge stage={s} size="sm" />
+                      {isCurrentStage && (
+                        <span className="text-[10px] font-semibold text-primary uppercase tracking-wide">Current</span>
+                      )}
+                      {overdueCount > 0 && (
+                        <span className="flex items-center gap-1 text-[10px] font-semibold text-red-600">
+                          <AlertTriangle className="h-3 w-3" />
+                          {overdueCount} overdue
+                        </span>
+                      )}
+                      <span className="ml-auto text-xs text-muted-foreground tabular-nums">
+                        {achieved}/{total} achieved
+                      </span>
                     </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+                    <ul className="divide-y">
+                      {items.map(({ comp, progress, overdue }) => {
+                        const latestSA = [...selfAssessments]
+                          .filter((sa) => sa.personId === person.id && sa.competencyId === comp.id)
+                          .sort((a, b) => b.submittedAt.localeCompare(a.submittedAt))[0];
+                        return (
+                          <li
+                            key={comp.id}
+                            className={`px-4 py-2.5 flex items-center justify-between gap-3 ${overdue ? "bg-red-50/50" : ""}`}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              {progress === "Achieved" ? (
+                                <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                              ) : overdue ? (
+                                <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
+                              ) : progress === "InProgress" ? (
+                                <Clock className="h-4 w-4 text-blue-400 shrink-0" />
+                              ) : (
+                                <div className="h-4 w-4 rounded-full border-2 border-muted-foreground/30 shrink-0" />
+                              )}
+                              <Link
+                                to={`/competencies/${comp.id}`}
+                                className={`text-sm font-medium hover:underline truncate ${overdue ? "text-red-800" : ""}`}
+                              >
+                                {comp.name}
+                              </Link>
+                            </div>
+                            {progress !== "Achieved" && (
+                              <div className="flex items-center gap-2 shrink-0">
+                                {latestSA && (
+                                  <span className={`text-[10px] font-medium border rounded-full px-2 py-0.5 ${SA_BADGE[latestSA.overallRating].cls}`}>
+                                    {SA_BADGE[latestSA.overallRating].label}
+                                  </span>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => navigate(`/my-competencies/self-assess/${comp.id}`)}
+                                  className="flex items-center gap-1 px-2.5 py-1 rounded-md border text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                >
+                                  <ClipboardList className="h-3 w-3" />
+                                  {latestSA ? "Re-assess" : "Self-assess"}
+                                </button>
+                              </div>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-      </div>
     </div>
   );
 }
